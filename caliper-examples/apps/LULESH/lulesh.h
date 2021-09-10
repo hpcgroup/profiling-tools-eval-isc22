@@ -619,7 +619,6 @@ Real_t CalcElemVolume( const Real_t x[8],
                        const Real_t z[8]);
 
 // lulesh-util
-void RecordGlobals(const cmdLineOpts& opts, int num_threads);
 void ParseCommandLineOptions(int argc, char *argv[],
                              Int_t myRank, struct cmdLineOpts *opts);
 void VerifyAndWriteFinalOutput(Real_t elapsed_time,

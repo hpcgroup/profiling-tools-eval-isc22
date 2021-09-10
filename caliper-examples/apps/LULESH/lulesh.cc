@@ -166,8 +166,6 @@ Additional BSD Notice
 #include <caliper/cali-mpi.h>
 #endif
 
-#include <adiak.hpp>
-
 #include "lulesh.h"
 
 /* Work Routines */
@@ -2705,8 +2703,6 @@ int main(int argc, char *argv[])
    int myRank = 0;
    struct cmdLineOpts opts;
 
-   void* adiak_comm_p = NULL;
-
    int num_threads = 1;
 
    cali_config_set("CALI_CALIPER_ATTRIBUTE_DEFAULT_SCOPE", "process");
@@ -2733,13 +2729,7 @@ int main(int argc, char *argv[])
    MPI_Comm_rank(MPI_COMM_WORLD, &myRank) ;
 
    cali_mpi_init();
-
-   MPI_Comm adiak_comm;
-   MPI_Comm_dup(MPI_COMM_WORLD, &adiak_comm);
-   adiak_comm_p = &adiak_comm;
 #endif
-
-   adiak::init(adiak_comm_p);
 
    /* Set defaults that can be overridden by command line opts */
    opts.its = 9999999;
@@ -2760,8 +2750,6 @@ int main(int argc, char *argv[])
       std::cerr << "Caliper config parse error: " << mgr.error_msg() << std::endl;
 
    mgr.start();
-
-   RecordGlobals(opts, num_threads);
 
    CALI_MARK_FUNCTION_BEGIN;
 
@@ -2864,7 +2852,6 @@ int main(int argc, char *argv[])
    CALI_MARK_FUNCTION_END;
 
    mgr.flush();
-   adiak::fini();
 
 #if USE_MPI
    MPI_Finalize() ;
