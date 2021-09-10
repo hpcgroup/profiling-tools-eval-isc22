@@ -160,10 +160,12 @@ Additional BSD Notice
 # include <omp.h>
 #endif
 
+#ifdef WITH_CALIPER
 #include <caliper/cali.h>
 #include <caliper/cali-manager.h>
-#if USE_MPI
-#include <caliper/cali-mpi.h>
+   #if USE_MPI
+   #include <caliper/cali-mpi.h>
+   #endif
 #endif
 
 #include "lulesh.h"
@@ -173,7 +175,9 @@ Additional BSD Notice
 static inline
 void TimeIncrement(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Real_t targetdt = domain.stoptime() - domain.time() ;
 
@@ -505,7 +509,9 @@ void IntegrateStressForElems( Domain &domain,
                               Real_t *sigxx, Real_t *sigyy, Real_t *sigzz,
                               Real_t *determ, Index_t numElem, Index_t numNode)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
 #if _OPENMP
    Index_t numthreads = omp_get_max_threads();
@@ -726,7 +732,9 @@ void CalcFBHourglassForceForElems( Domain &domain,
                                    Real_t hourg, Index_t numElem,
                                    Index_t numNode)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
 #if _OPENMP
    Index_t numthreads = omp_get_max_threads();
@@ -1008,7 +1016,9 @@ static inline
 void CalcHourglassControlForElems(Domain& domain,
                                   Real_t determ[], Real_t hgcoef)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Index_t numElem = domain.numElem() ;
    Index_t numElem8 = numElem * 8 ;
@@ -1075,7 +1085,9 @@ void CalcHourglassControlForElems(Domain& domain,
 static inline
 void CalcVolumeForceForElems(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Index_t numElem = domain.numElem() ;
    if (numElem != 0) {
@@ -1119,7 +1131,9 @@ void CalcVolumeForceForElems(Domain& domain)
 
 static inline void CalcForceForNodes(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Index_t numNode = domain.numNode() ;
 
@@ -1241,7 +1255,9 @@ void CalcPositionForNodes(Domain &domain, const Real_t dt, Index_t numNode)
 static inline
 void LagrangeNodal(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
 #ifdef SEDOV_SYNC_POS_VEL_EARLY
    Domain_member fieldData[6] ;
@@ -1525,7 +1541,9 @@ void CalcElemVelocityGradient( const Real_t* const xvel,
 void CalcKinematicsForElems( Domain &domain,
                              Real_t deltaTime, Index_t numElem )
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
   // loop over all elements
 #pragma omp parallel for firstprivate(numElem, deltaTime)
@@ -1593,7 +1611,9 @@ void CalcKinematicsForElems( Domain &domain,
 static inline
 void CalcLagrangeElements(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Index_t numElem = domain.numElem() ;
    if (numElem > 0) {
@@ -1948,21 +1968,27 @@ void CalcMonotonicQRegionForElems(Domain &domain, Int_t r,
 static inline
 void CalcMonotonicQForElems(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    //
    // initialize parameters
    //
    const Real_t ptiny = Real_t(1.e-36) ;
 
+   #ifdef WITH_CALIPER
    cali::Annotation r_ann("lulesh.region", CALI_ATTR_SCOPE_PROCESS);
+   #endif
 
    //
    // calculate the monotonic q for all regions
    //
    for (Index_t r=0 ; r<domain.numReg() ; ++r) {
+      #ifdef WITH_CALIPER
       cali::Annotation::Guard 
-         g(r_ann.begin(static_cast<int>(r)));         
+         g(r_ann.begin(static_cast<int>(r)));   
+      #endif
       if (domain.regElemSize(r) > 0) {
          CalcMonotonicQRegionForElems(domain, r, ptiny) ;
       }
@@ -1974,7 +2000,9 @@ void CalcMonotonicQForElems(Domain& domain)
 static inline
 void CalcQForElems(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
    //
    // MONOTONIC Q option
    //
@@ -2087,7 +2115,9 @@ void CalcEnergyForElems(Real_t* p_new, Real_t* e_new, Real_t* q_new,
                         Real_t eosvmax,
                         Index_t length, Index_t *regElemList)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Real_t *pHalfStep = Allocate<Real_t>(length) ;
 
@@ -2237,7 +2267,9 @@ static inline
 void EvalEOSForElems(Domain& domain, Real_t *vnewc,
                      Int_t numElemReg, Index_t *regElemList, Int_t rep)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    Real_t  e_cut = domain.e_cut() ;
    Real_t  p_cut = domain.p_cut() ;
@@ -2362,7 +2394,9 @@ void EvalEOSForElems(Domain& domain, Real_t *vnewc,
 static inline
 void ApplyMaterialPropertiesForElems(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
    Index_t numElem = domain.numElem() ;
 
   if (numElem != 0) {
@@ -2419,11 +2453,15 @@ void ApplyMaterialPropertiesForElems(Domain& domain)
        }
     }
 
+    #ifdef WITH_CALIPER
     cali::Annotation r_ann("lulesh.region", CALI_ATTR_SCOPE_PROCESS);
+    #endif
 
     for (Int_t r=0 ; r<domain.numReg() ; r++) {
+       #ifdef WITH_CALIPER
        cali::Annotation::Guard
          g(r_ann.begin(static_cast<int>(r)));
+       #endif
 
        Index_t numElemReg = domain.regElemSize(r);
        Index_t *regElemList = domain.regElemlist(r);
@@ -2471,7 +2509,9 @@ void UpdateVolumesForElems(Domain &domain,
 static inline
 void LagrangeElements(Domain& domain, Index_t numElem)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
    CalcLagrangeElements(domain) ;
 
   /* Calculate Q.  (Monotonic q option requires communication) */
@@ -2616,17 +2656,23 @@ void CalcHydroConstraintForElems(Domain &domain, Index_t length,
 
 static inline
 void CalcTimeConstraintsForElems(Domain& domain) {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
    // Initialize conditions to a very large value
    domain.dtcourant() = 1.0e+20;
    domain.dthydro() = 1.0e+20;
 
+   #ifdef WITH_CALIPER
    cali::Annotation r_ann("lulesh.region", CALI_ATTR_SCOPE_PROCESS);
+   #endif
 
    for (Index_t r=0 ; r < domain.numReg() ; ++r) {
+      #ifdef WITH_CALIPER
       cali::Annotation::Guard 
          g(r_ann.begin(static_cast<int>(r)));
+      #endif
 
       /* evaluate time constraint */
       CalcCourantConstraintForElems(domain, domain.regElemSize(r),
@@ -2647,7 +2693,9 @@ void CalcTimeConstraintsForElems(Domain& domain) {
 static inline
 void LagrangeLeapFrog(Domain& domain)
 {
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_FUNCTION;
+   #endif
 
 #ifdef SEDOV_SYNC_POS_VEL_LATE
    Domain_member fieldData[6] ;
@@ -2705,7 +2753,9 @@ int main(int argc, char *argv[])
 
    int num_threads = 1;
 
+   #ifdef WITH_CALIPER
    cali_config_set("CALI_CALIPER_ATTRIBUTE_DEFAULT_SCOPE", "process");
+   #endif
 
 #if USE_MPI
    Domain_member fieldData ;
@@ -2728,7 +2778,10 @@ int main(int argc, char *argv[])
    MPI_Comm_size(MPI_COMM_WORLD, &numRanks) ;
    MPI_Comm_rank(MPI_COMM_WORLD, &myRank) ;
 
+   #ifdef WITH_CALIPER
    cali_mpi_init();
+   #endif
+
 #endif
 
    /* Set defaults that can be overridden by command line opts */
@@ -2744,6 +2797,7 @@ int main(int argc, char *argv[])
 
    ParseCommandLineOptions(argc, argv, myRank, &opts);
 
+   #ifdef WITH_CALIPER
    cali::ConfigManager mgr(opts.caliperConfig.c_str());
 
    if (mgr.error())
@@ -2752,6 +2806,7 @@ int main(int argc, char *argv[])
    mgr.start();
 
    CALI_MARK_FUNCTION_BEGIN;
+   #endif
 
    if ((myRank == 0) && (opts.quiet == 0)) {
       std::cout << "Running problem size " << opts.nx << "^3 per domain until completion\n";
@@ -2802,10 +2857,14 @@ int main(int argc, char *argv[])
    gettimeofday(&start, NULL) ;
 #endif
 
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_LOOP_BEGIN(cycleloop, "lulesh.cycle");
+   #endif
 
    while((locDom->time() < locDom->stoptime()) && (locDom->cycle() < opts.its)) {
+      #ifdef WITH_CALIPER
       CALI_CXX_MARK_LOOP_ITERATION(cycleloop, locDom->cycle());
+      #endif
 
       TimeIncrement(*locDom) ;
       LagrangeLeapFrog(*locDom) ;
@@ -2819,7 +2878,9 @@ int main(int argc, char *argv[])
       }
    }
 
+   #ifdef WITH_CALIPER
    CALI_CXX_MARK_LOOP_END(cycleloop);
+   #endif
 
    // Use reduced max elapsed time
    double elapsed_time;
@@ -2849,9 +2910,11 @@ int main(int argc, char *argv[])
 
    delete locDom;
 
+   #ifdef WITH_CALIPER
    CALI_MARK_FUNCTION_END;
 
    mgr.flush();
+   #endif
 
 #if USE_MPI
    MPI_Finalize() ;

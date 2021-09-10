@@ -2,15 +2,24 @@ cmake_minimum_required(VERSION 3.0)
 
 project(LULESH CXX)
 
+set(CMAKE_CXX_STANDARD 11)
+
 option(WITH_MPI    "Build LULESH with MPI"          TRUE)
 option(WITH_OPENMP "Build LULESH with OpenMP"       TRUE)
 option(WITH_SILO   "Build LULESH with silo support" FALSE)
+option(WITH_CALIPER   "Build LULESH with Caliper support" FALSE)
 
-find_package(caliper REQUIRED)
-include_directories(${caliper_INCLUDE_DIR})
-list(APPEND LULESH_EXTERNAL_LIBS caliper)
+set(LULESH_USE_CALIPER FALSE)
 
-set(CMAKE_CXX_STANDARD 11)
+# add Caliper Support
+if (WITH_CALIPER)
+  find_package(caliper REQUIRED)
+  include_directories(${caliper_INCLUDE_DIR})
+  add_definitions("-DWITH_CALIPER=1")
+  list(APPEND LULESH_EXTERNAL_LIBS caliper)
+  set(LULESH_USE_CALIPER TRUE)
+endif()
+message(STATUS "Caliper support is ${LULESH_USE_CALIPER}")
 
 if (WITH_MPI)
   find_package(MPI REQUIRED)
@@ -59,7 +68,19 @@ set(LULESH_SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/lulesh-build-metadata.cc
   lulesh.cc)
 
-set(LULESH_EXEC lulesh2.0)
+if (WITH_CALIPER)  
+  set(LULESH_EXEC lulesh-caliper2.0)
+else ()
+  set(LULESH_EXEC lulesh2.0)
+endif ()
 
 add_executable(${LULESH_EXEC} ${LULESH_SOURCES})
 target_link_libraries(${LULESH_EXEC} ${LULESH_EXTERNAL_LIBS})
+
+# How to Build 
+# Without Tools
+# cmake -DCMAKE_CXX_COMPILER=`which mpicxx` -DMPI_CXX_COMPILER=`which mpicxx` -DWITH_MPI=On -DWITH_OPENMP=Off -DCMAKE_CXX_FLAGS="-g -O3" ..
+
+# With Caliper
+# export CALI_DIR=$(spack location --install-dir caliper)
+# cmake -DCMAKE_CXX_COMPILER=`which mpicxx` -DMPI_CXX_COMPILER=`which mpicxx` -DCMAKE_PREFIX_PATH=$CALI_DIR/share/cmake/caliper -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_CALIPER=1 -DCMAKE_CXX_FLAGS="-g -O3" ..
