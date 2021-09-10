@@ -168,6 +168,13 @@ Additional BSD Notice
    #endif
 #endif
 
+/*
+TODO: Use to turn on/off profiling 
+#ifdef WITH_HPCTOOLKIT
+#include <hpctoolkit.h>
+#endif
+*/
+
 #include "lulesh.h"
 
 /* Work Routines */

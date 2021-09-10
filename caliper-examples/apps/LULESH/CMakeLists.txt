@@ -21,6 +21,16 @@ if (WITH_CALIPER)
 endif()
 message(STATUS "Caliper support is ${LULESH_USE_CALIPER}")
 
+# add HPCToolkit Support
+if (WITH_HPCTOOLKIT)
+  include_directories(${hpctoolkit_INCLUDE_DIR})
+  link_directories(${hpctoolkit_LIB_DIR})
+  add_definitions("-DWITH_HPCTOOLKIT=1")
+  list(APPEND LULESH_EXTERNAL_LIBS hpctoolkit)
+  set(LULESH_USE_HPCTOOLKIT TRUE)
+endif()
+message(STATUS "HPCToolkit support is ${LULESH_USE_HPCTOOLKIT}")
+
 if (WITH_MPI)
   find_package(MPI REQUIRED)
   include_directories(${MPI_C_INCLUDE_PATH} ${MPI_CXX_INCLUDE_PATH})
@@ -70,6 +80,8 @@ set(LULESH_SOURCES
 
 if (WITH_CALIPER)  
   set(LULESH_EXEC lulesh-caliper2.0)
+elseif (WITH_HPCTOOLKIT)
+  set(LULESH_EXEC lulesh-hpctoolkit2.0)
 else ()
   set(LULESH_EXEC lulesh2.0)
 endif ()
@@ -84,3 +96,7 @@ target_link_libraries(${LULESH_EXEC} ${LULESH_EXTERNAL_LIBS})
 # With Caliper
 # export CALI_DIR=$(spack location --install-dir caliper)
 # cmake -DCMAKE_CXX_COMPILER=`which mpicxx` -DMPI_CXX_COMPILER=`which mpicxx` -DCMAKE_PREFIX_PATH=$CALI_DIR/share/cmake/caliper -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_CALIPER=1 -DCMAKE_CXX_FLAGS="-g -O3" ..
+
+# With HPCToolkit
+# export HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
+# cmake -DCMAKE_CXX_COMPILER=`which mpicxx` -DMPI_CXX_COMPILER=`which mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dhpctoolkit_INCLUDE_DIR=$HPCTOOLKIT_DIR/include -Dhpctoolkit_LIB_DIR=$HPCTOOLKIT_DIR/lib/hpctoolkit -DWITH_HPCTOOLKIT=1 ..
