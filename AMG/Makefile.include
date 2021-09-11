@@ -53,12 +53,17 @@ INCLUDE_CFLAGS = -O3 -g -DTIMER_USE_MPI -DHYPRE_BIGINT
 #INCLUDE_LFLAGS = -lm -fopenmp
 INCLUDE_LFLAGS = -lm 
 
+#CALIPER_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/caliper-2.6.0-x2tz5isw6guoxzjh7tn4fpi2tsir4yxg
+#HPCTOOLKIT_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/hpctoolkit-2021.05.15-rdd42gsx7bni3uuatbimhzw5vvtjeo6u
+#SCOREP_DIR = $(HOME)/tools/scorep/scorep-7.1/_build_with_gnu/
+#TIMEMORY_DIR = 
+
 ifeq ($(TOOL), caliper)
     INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${CALIPER_DIR}/include
     INCLUDE_LFLAGS = -lm -L${CALIPER_DIR}/lib64 -lcaliper
 endif
 ifeq ($(TOOL), timemory)
-    INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${TIMEMORY_DIR}/include/
+    INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${TIMEMORY_DIR}/include
     INCLUDE_LFLAGS = -lm -L${TIMEMORY_DIR}/lib64 -ltimemory
 endif
 ifeq ($(TOOL), hpctoolkit)
@@ -72,7 +77,7 @@ endif
 # add TAU - errors with PDT
 
 # How to Build
-
+# Use the following commands or uncomment corresponding variables above (CALIPER_DIR, HPCTOOLKIT_DIR, etc.).
 # With Caliper
 # make TOOL=caliper CALIPER_DIR=$(spack location --install-dir caliper)
 
