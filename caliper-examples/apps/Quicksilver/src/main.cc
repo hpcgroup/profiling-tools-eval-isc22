@@ -29,6 +29,18 @@
 #include <caliper/cali.h>
 #endif
 
+#ifdef HAVE_HPCTOOLKIT
+#include <hpctoolkit.h>
+#endif
+
+#ifdef HAVE_TIMEMORY
+#include <timemory/library.h>
+#endif
+
+#ifdef HAVE_SCOREP
+#include <scorep/SCOREP_User_Types.h>
+#endif
+
 void gameOver();
 void cycleInit( bool loadBalance );
 void cycleTracking(MonteCarlo* monteCarlo);

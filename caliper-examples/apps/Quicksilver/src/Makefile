@@ -99,10 +99,25 @@ CXXFLAGS =
 CPPFLAGS = 
 LDFLAGS =
 
-CALIPER_DIR = $(HOME)/local/src/caliper/install/linux-rhel7-x86_64/
+# CALIPER_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/caliper-2.6.0-x2tz5isw6guoxzjh7tn4fpi2tsir4yxg
 CALIPER_CPPFLAGS = -DHAVE_CALIPER
 CALIPER_CXXFLAGS = -I$(CALIPER_DIR)/include
-CALIPER_LDFLAGS = -L$(CALIPER_DIR)/lib64 -lcaliper -lcaliper-mpi
+CALIPER_LDFLAGS = -L$(CALIPER_DIR)/lib64 -lcaliper
+
+#HPCTOOLKIT_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/hpctoolkit-2021.05.15-rdd42gsx7bni3uuatbimhzw5vvtjeo6u
+HPCTOOLKIT_CPPFLAGS = -DHAVE_HPCTOOLKIT
+HPCTOOLKIT_CXXFLAGS = -I$(HPCTOOLKIT_DIR)/include
+HPCTOOLKIT_LDFLAGS = -L${HPCTOOLKIT_DIR}/lib/hpctoolkit -lhpctoolkit
+
+#TIMEMORY_DIR = 
+TIMEMORY_CPPFLAGS = -DHAVE_TIMEMORY
+TIMEMORY_CXXFLAGS = -I${TIMEMORY_DIR}/include
+TIMEMORY_LDFLAGS = -L${TIMEMORY_DIR}/lib64 -ltimemory
+
+#SCOREP_DIR = $(HOME)/tools/scorep/scorep-7.1/_build_with_gnu/
+SCOREP_CPPFLAGS = -DHAVE_SCOREP
+SCOREP_CXXFLAGS = -I${SCOREP_DIR}/include # include scorep/SCOREP_User_Types.h
+# SCOREP_LDFLAGS = -L${SCOREP_DIR}/lib ??????
 
 ###############################################################################
 # Very simple GCC build with OpenMP but without MPI.  
@@ -118,19 +133,58 @@ CALIPER_LDFLAGS = -L$(CALIPER_DIR)/lib64 -lcaliper -lcaliper-mpi
 #CPPFLAGS = $(OPENMP_FLAGS)
 #LDFLAGS = $(OPENMP_LDFLAGS) 
 
+###############################################################################
+### GCC -- with MPI
+###############################################################################
+MPI_FLAGS = -DHAVE_MPI
+OPTFLAGS = -g -O3
+
+ifeq ($(TOOL), caliper)
+    CXX=mpicxx
+    CXXFLAGS = $(OPTFLAGS) $(CALIPER_CXXFLAGS)
+    CPPFLAGS = $(MPI_FLAGS) $(CALIPER_CPPFLAGS)
+    LDFLAGS = $(CALIPER_LDFLAGS)
+endif
+ifeq ($(TOOL), hpctoolkit)
+    CXX=mpicxx
+    CXXFLAGS = $(OPTFLAGS) $(HPCTOOLKIT_CXXFLAGS)
+    CPPFLAGS = $(MPI_FLAGS) $(HPCTOOLKIT_CPPFLAGS)
+    LDFLAGS = $(HPCTOOLKIT_LDFLAGS)
+endif
+ifeq ($(TOOL), timemory)
+    CXX=mpicxx
+    CXXFLAGS = $(OPTFLAGS) $(TIMEMORY_CXXFLAGS)
+    CPPFLAGS = $(MPI_FLAGS) $(TIMEMORY_CPPFLAGS)
+    LDFLAGS = $(TIMEMORY_LDFLAGS)
+endif
+ifeq ($(TOOL), scorep)
+    CXX=scorep-mpicxx
+    CXXFLAGS = $(OPTFLAGS) $(SCOREP_CXXFLAGS)
+    CPPFLAGS = $(MPI_FLAGS) 
+endif
+#ifeq ($(TOOL), tau)
+#    CXX=tau_cxx.sh
+#    CXXFLAGS = $(OPTFLAGS)
+#    CPPFLAGS = $(MPI_FLAGS)
+#endif
+ifeq ($(TOOL),)
+    CXX=mpicxx
+    CXXFLAGS = $(OPTFLAGS) 
+    CPPFLAGS = $(MPI_FLAGS) 
+endif
 
 ###############################################################################
 ### GCC -- with MPI and OpenMP 
 ###############################################################################
-OPENMP_FLAGS = -DHAVE_OPENMP -fopenmp
-OPENMP_LDFLAGS = -fopenmp
-MPI_FLAGS = -DHAVE_MPI
-OPTFLAGS = -g -O2
+#OPENMP_FLAGS = -DHAVE_OPENMP -fopenmp
+#OPENMP_LDFLAGS = -fopenmp
+#MPI_FLAGS = -DHAVE_MPI
+#OPTFLAGS = -g -O2
 
-CXX=mpicxx
-CXXFLAGS = -std=c++11 $(OPTFLAGS) $(CALIPER_CXXFLAGS)
-CPPFLAGS = $(MPI_FLAGS) $(OPENMP_FLAGS) $(CALIPER_CPPFLAGS)
-LDFLAGS = $(OPENMP_LDFLAGS) $(CALIPER_LDFLAGS)
+#CXX=mpicxx
+#CXXFLAGS = -std=c++11 $(OPTFLAGS) $(CALIPER_CXXFLAGS)
+#CPPFLAGS = $(MPI_FLAGS) $(OPENMP_FLAGS) $(CALIPER_CPPFLAGS)
+#LDFLAGS = $(OPENMP_LDFLAGS) $(CALIPER_LDFLAGS)
 
 
 ###############################################################################
@@ -263,7 +317,7 @@ LDFLAGS = $(OPENMP_LDFLAGS) $(CALIPER_LDFLAGS)
 GITVERS := "$(shell git log -n 1 |  grep Date   | awk -F " " '{print $$6 "-" $$3 "-" $$4 "-" $$5}')"
 GITHASH := "$(shell git log -n 1 |  grep commit | awk -F " " '{print $$2}')"
 
-Quicksilver_EXE=qs
+Quicksilver_EXE=qs${TOOL}.exe
 
 # clear all suffixes
 .SUFFIXES:
@@ -346,3 +400,20 @@ depend:
 	@makedepend -f .depend -Y. --$(CXXFLAGS) $(CPPFLAGS)-- $(SOURCES) 2> /dev/null
 
 -include .depend
+
+# How to Build
+# Use the following commands or uncomment corresponding variables above (CALIPER_DIR, HPCTOOLKIT_DIR, etc.).
+# With Caliper
+# make TOOL=caliper CALIPER_DIR=$(spack location --install-dir caliper)
+
+# With HPCToolkit
+# make TOOL=hpctoolkit HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
+
+# With Timemory
+# make TOOL=timemory TIMEMORY_DIR=$(spack location --install-dir timemory)
+
+# With Score-P
+# make TOOL=scorep SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
+
+# How to Clean
+# make clean or make veryclean TOOL=caliper
