@@ -175,6 +175,12 @@ TODO: Use to turn on/off profiling
 #endif
 */
 
+/*TODO: Manual instrumentation
+#ifdef WITH_SCOREP
+#include <scorep/SCOREP_User_Types.h>
+#endif
+*/
+
 #include "lulesh.h"
 
 /* Work Routines */

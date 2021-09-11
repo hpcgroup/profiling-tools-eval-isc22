@@ -8,8 +8,12 @@ option(WITH_MPI    "Build LULESH with MPI"          TRUE)
 option(WITH_OPENMP "Build LULESH with OpenMP"       TRUE)
 option(WITH_SILO   "Build LULESH with silo support" FALSE)
 option(WITH_CALIPER   "Build LULESH with Caliper support" FALSE)
+option(WITH_HPCTOOLKIT   "Build LULESH with HPCToolkit support" FALSE)
+option(WITH_SCOREP   "Build LULESH with Score-P support" FALSE)
 
 set(LULESH_USE_CALIPER FALSE)
+set(LULESH_USE_HPCTOOLKIT FALSE)
+set(LULESH_USE_SCOREP FALSE)
 
 # add Caliper Support
 if (WITH_CALIPER)
@@ -21,6 +25,7 @@ if (WITH_CALIPER)
 endif()
 message(STATUS "Caliper support is ${LULESH_USE_CALIPER}")
 
+
 # add HPCToolkit Support
 if (WITH_HPCTOOLKIT)
   include_directories(${hpctoolkit_INCLUDE_DIR})
@@ -30,6 +35,16 @@ if (WITH_HPCTOOLKIT)
   set(LULESH_USE_HPCTOOLKIT TRUE)
 endif()
 message(STATUS "HPCToolkit support is ${LULESH_USE_HPCTOOLKIT}")
+
+# add Score-P Support
+if (WITH_SCOREP)
+  include_directories(${scorep_INCLUDE_DIR})
+  #link_directories(${scorep_LIB_DIR})
+  add_definitions("-DWITH_SCOREP=1")
+  #list(APPEND LULESH_EXTERNAL_LIBS scorep)
+  set(LULESH_USE_SCOREP TRUE)
+endif()
+message(STATUS "Score-P support is ${LULESH_USE_SCOREP}")
 
 if (WITH_MPI)
   find_package(MPI REQUIRED)
@@ -82,6 +97,8 @@ if (WITH_CALIPER)
   set(LULESH_EXEC lulesh-caliper2.0)
 elseif (WITH_HPCTOOLKIT)
   set(LULESH_EXEC lulesh-hpctoolkit2.0)
+elseif (WITH_SCOREP)
+  set(LULESH_EXEC lulesh-scorep2.0)
 else ()
   set(LULESH_EXEC lulesh2.0)
 endif ()
@@ -100,3 +117,7 @@ target_link_libraries(${LULESH_EXEC} ${LULESH_EXTERNAL_LIBS})
 # With HPCToolkit
 # export HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
 # cmake -DCMAKE_CXX_COMPILER=`which mpicxx` -DMPI_CXX_COMPILER=`which mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dhpctoolkit_INCLUDE_DIR=$HPCTOOLKIT_DIR/include -Dhpctoolkit_LIB_DIR=$HPCTOOLKIT_DIR/lib/hpctoolkit -DWITH_HPCTOOLKIT=1 ..
+
+# With Score-P
+# export SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
+# cmake -DCMAKE_CXX_COMPILER=`which scorep-mpicxx` -DMPI_CXX_COMPILER=`which scorep-mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dscorep_INCLUDE_DIR=$SCOREP_DIR/include -DWITH_SCOREP=1 ..
