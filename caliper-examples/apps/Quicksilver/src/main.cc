@@ -56,6 +56,15 @@ int main(int argc, char** argv)
     CALI_CXX_MARK_FUNCTION;
 #endif
     mpiInit(&argc, &argv);
+    double min_time, max_time, sum_time;
+    double local_time, start_time, end_time;
+    int numRanks = 1;
+    int myRank = 0;
+    
+    start_time = MPI_Wtime();
+    MPI_Comm_size(MPI_COMM_WORLD, &numRanks);
+    MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
+
     printBanner(GIT_VERS, GIT_HASH);
 
     Parameters params = getParameters(argc, argv);
@@ -98,6 +107,15 @@ int main(int argc, char** argv)
 #else
     delete mcco;
 #endif
+    end_time = MPI_Wtime();
+
+    local_time = end_time - start_time;
+        MPI_Reduce(&local_time, &sum_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+        MPI_Reduce(&local_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+        MPI_Reduce(&local_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    if (myRank == 0) {
+        std::cout << "TIME: Min: " << min_time << " s Avg: " << sum_time/numRanks << " s Max: " << max_time << " s " << std::endl;
+    }
 
     mpiFinalize();
 
