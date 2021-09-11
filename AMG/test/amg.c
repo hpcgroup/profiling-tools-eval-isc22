@@ -156,8 +156,13 @@ main( hypre_int argc,
 
    /* Initialize MPI */
    hypre_MPI_Init(&argc, &argv);
+   HYPRE_Int num_procs;
+   double min_time, max_time, sum_time;
+   double local_time, start_time, end_time;
 
+   start_time = MPI_Wtime();
    hypre_MPI_Comm_rank(hypre_MPI_COMM_WORLD, &myid );
+   hypre_MPI_Comm_size(comm, &num_procs );
 
    /*-----------------------------------------------------------
     * Set defaults
@@ -607,6 +612,16 @@ main( hypre_int argc,
 /*
   hypre_FinalizeMemoryDebug();
 */
+   end_time = MPI_Wtime();
+
+   local_time = end_time - start_time;
+	MPI_Reduce(&local_time, &sum_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&local_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&local_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+   if (myid == 0) {
+      hypre_printf("TIME: Min: %.5f s Avg: %.5f s Max: %.5f s\n", min_time, sum_time/num_procs, max_time);
+   }
+
    hypre_MPI_Finalize();
 
    return (0);
