@@ -43,11 +43,47 @@ CC = mpicc
 #INCLUDE_CFLAGS = -g -DTIMER_USE_MPI 
 #INCLUDE_CFLAGS = -g -DTIMER_USE_MPI -DHYPRE_USING_OPENMP
 #INCLUDE_CFLAGS = -O2 -DTIMER_USE_MPI -DHYPRE_USING_OPENMP -DHYPRE_BIGINT -fopenmp
-INCLUDE_CFLAGS = -O2 -DTIMER_USE_MPI -DHYPRE_USING_OPENMP -fopenmp -DHYPRE_HOPSCOTCH -DHYPRE_USING_PERSISTENT_COMM -DHYPRE_BIGINT
+#INCLUDE_CFLAGS = -O2 -DTIMER_USE_MPI -DHYPRE_USING_OPENMP -fopenmp -DHYPRE_HOPSCOTCH -DHYPRE_USING_PERSISTENT_COMM -DHYPRE_BIGINT
 #INCLUDE_CFLAGS = -O2 -DTIMER_USE_MPI -DHYPRE_USING_OPENMP -qsmp=omp -qmaxmem=-1 -DHYPRE_HOPSCOTCH -DHYPRE_USING_PERSISTENT_COMM -DHYPRE_BIGINT
+
+INCLUDE_CFLAGS = -O3 -g -DTIMER_USE_MPI -DHYPRE_BIGINT
 
 # set link flags here
 #INCLUDE_LFLAGS = -lm -qsmp=omp
-INCLUDE_LFLAGS = -lm -fopenmp
-#INCLUDE_LFLAGS = -lm 
+#INCLUDE_LFLAGS = -lm -fopenmp
+INCLUDE_LFLAGS = -lm 
 
+ifeq ($(TOOL), caliper)
+    INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${CALIPER_DIR}/include
+    INCLUDE_LFLAGS = -lm -L${CALIPER_DIR}/lib64 -lcaliper
+endif
+ifeq ($(TOOL), timemory)
+    INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${TIMEMORY_DIR}/include/
+    INCLUDE_LFLAGS = -lm -L${TIMEMORY_DIR}/lib64 -ltimemory
+endif
+ifeq ($(TOOL), hpctoolkit)
+    INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${HPCTOOLKIT_DIR}/include
+    INCLUDE_LFLAGS = -lm -L${HPCTOOLKIT_DIR}/lib/hpctoolkit -lhpctoolkit
+endif
+ifeq ($(TOOL), scorep)
+    CC= scorep-mpicc
+    INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT 
+endif
+# add TAU - errors with PDT
+
+# How to Build
+
+# With Caliper
+# make TOOL=caliper CALIPER_DIR=$(spack location --install-dir caliper)
+
+# With HPCToolkit
+# make TOOL=hpctoolkit HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
+
+# With Timemory
+# make TOOL=timemory TIMEMORY_DIR=$(spack location --install-dir timemory)
+
+# With Score-P
+# make TOOL=scorep
+
+# How to Clean
+# make clean or make veryclean TOOL=caliper

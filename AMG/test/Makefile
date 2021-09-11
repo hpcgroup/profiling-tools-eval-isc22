@@ -59,26 +59,32 @@ LFLAGS =\
 # Targets
 ##################################################################
                                                                                                                                          
-all: amg 
+all: amg$(TOOL).exe
                                                                                                                                          
 clean:
-	@rm -f *.o
+	@rm -f *.o *.inst.* *.pdb *.a
                                                                                                                                          
 veryclean: clean
-	@rm -f amg
+	@rm -f *.o *.inst.* *.pdb *.a amg${TOOL}.exe
                                                                                                                                          
 ##################################################################
 # Rules
 ##################################################################
                                                                                                                                          
-amg: amg.o
+amg$(TOOL).exe: amg.o
 	@echo  "Linking" $@ "... "
+ifeq (${TOOL},)
 	${CC} -o amg amg.o ${LFLAGS}
-                 
+else 
+	${CC} -o amg$(TOOL).exe amg.o ${LFLAGS}
+endif
 ##################################################################
 # Generic rules
 ##################################################################
                                                                                                                                          
 .c.o:
+ifeq (${TOOL},)
 	${CC} -o $@ -c ${CFLAGS} $<
-                                                             
+else 
+	${CC} -o $@ -c ${CFLAGS} $< -D${TOOL}
+endif

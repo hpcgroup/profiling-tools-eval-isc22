@@ -37,6 +37,20 @@
 
 #include <time.h>
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
+/*
+#ifdef timemory
+#include <timemory/library.h>
+#endif
+
+#ifdef hpctoolkit
+#include <hpctoolkit.h>
+#endif
+*/
+
 #ifdef __cplusplus
 extern "C" {
 #endif
