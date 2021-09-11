@@ -117,6 +117,46 @@ int main(int argc, char** argv)
         std::cout << "TIME: Min: " << min_time << " s Avg: " << sum_time/numRanks << " s Max: " << max_time << " s " << std::endl;
     }
 
+   // ---------------- MEMORY USAGE ---------------- //
+   FILE* file = fopen("/proc/self/status", "r");
+   char* line = NULL;
+   char mem_type[7], peak_RSS[256], peak_virtual[256];
+   long int p_rss, p_virtual = 0;   
+   size_t len = 0;
+   char *strtol_ptr;
+   ssize_t read;
+   
+   while ((read = getline(&line, &len, file)) != -1) {
+      if(strstr(line, "VmHWM") != NULL) {
+         strcpy(mem_type, strtok(line , " "));
+         strcpy(peak_RSS, strtok(NULL , " "));
+         p_rss = strtol(peak_RSS, &strtol_ptr, 10);
+         //printf("proc: %d - %s - %ld=%s\n", myid, "VmHWM", p_rss, peak_RSS);
+      }
+      if(strstr(line, "VmPeak") != NULL) {
+         strcpy(mem_type, strtok(line , " "));
+         strcpy(peak_virtual, strtok(NULL , " "));
+         p_virtual = strtol(peak_virtual, &strtol_ptr, 10);
+         //printf("proc: %d - %s - %ld=%s\n", myid, "VmPeak", p_virtual, peak_virtual);
+      }
+   }
+   fclose(file);
+
+   long int sum_peak_rss, min_peak_rss, max_peak_rss;
+   MPI_Reduce(&p_rss, &sum_peak_rss, 1, MPI_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
+   MPI_Reduce(&p_rss, &min_peak_rss, 1, MPI_LONG, MPI_MIN, 0, MPI_COMM_WORLD);
+   MPI_Reduce(&p_rss, &max_peak_rss, 1, MPI_LONG, MPI_MAX, 0, MPI_COMM_WORLD);
+
+   long int sum_peak_virtual, min_peak_virtual, max_peak_virtual;
+   MPI_Reduce(&p_virtual, &sum_peak_virtual, 1, MPI_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
+   MPI_Reduce(&p_virtual, &min_peak_virtual, 1, MPI_LONG, MPI_MIN, 0, MPI_COMM_WORLD);
+   MPI_Reduce(&p_virtual, &max_peak_virtual, 1, MPI_LONG, MPI_MAX, 0, MPI_COMM_WORLD);
+   if (myRank == 0) {
+      printf("PEAK_RSS (kB): Min: %ld s Avg: %ld s Max: %ld s\n", min_peak_rss, sum_peak_rss/numRanks, max_peak_rss);
+      printf("PEAK_Virtual (kB): Min: %ld s Avg: %ld s Max: %ld s\n", min_peak_virtual, sum_peak_virtual/numRanks, max_peak_virtual);
+   }
+   // ---------------- END OF MEMORY USAGE ---------------- //
+
     mpiFinalize();
 
     return 0;
