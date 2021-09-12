@@ -164,6 +164,11 @@ main( hypre_int argc,
    hypre_MPI_Comm_rank(hypre_MPI_COMM_WORLD, &myid );
    hypre_MPI_Comm_size(comm, &num_procs );
 
+   #ifdef caliper
+   hypre_printf("CALI_INIT\n");
+   cali_init();
+   #endif
+
    /*-----------------------------------------------------------
     * Set defaults
     *-----------------------------------------------------------*/
