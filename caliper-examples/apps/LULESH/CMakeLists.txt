@@ -10,10 +10,12 @@ option(WITH_SILO   "Build LULESH with silo support" FALSE)
 option(WITH_CALIPER   "Build LULESH with Caliper support" FALSE)
 option(WITH_HPCTOOLKIT   "Build LULESH with HPCToolkit support" FALSE)
 option(WITH_SCOREP   "Build LULESH with Score-P support" FALSE)
+option(WITH_TAU   "Build LULESH with TAU support" FALSE)
 
 set(LULESH_USE_CALIPER FALSE)
 set(LULESH_USE_HPCTOOLKIT FALSE)
 set(LULESH_USE_SCOREP FALSE)
+set(LULESH_USE_TAU FALSE)
 
 # add Caliper Support
 if (WITH_CALIPER)
@@ -45,6 +47,12 @@ if (WITH_SCOREP)
   set(LULESH_USE_SCOREP TRUE)
 endif()
 message(STATUS "Score-P support is ${LULESH_USE_SCOREP}")
+
+if (WITH_TAU)
+  # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
+  set(LULESH_USE_TAU TRUE)
+endif()
+message(STATUS "TAU support is ${LULESH_USE_TAU}")
 
 if (WITH_MPI)
   find_package(MPI REQUIRED)
@@ -99,6 +107,8 @@ elseif (WITH_HPCTOOLKIT)
   set(LULESH_EXEC lulesh-hpctoolkit2.0)
 elseif (WITH_SCOREP)
   set(LULESH_EXEC lulesh-scorep2.0)
+elseif (WITH_TAU)
+  set(LULESH_EXEC lulesh-tau2.0)
 else ()
   set(LULESH_EXEC lulesh2.0)
 endif ()
@@ -121,3 +131,7 @@ target_link_libraries(${LULESH_EXEC} ${LULESH_EXTERNAL_LIBS})
 # With Score-P
 # export SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
 # cmake -DCMAKE_CXX_COMPILER=`which scorep-mpicxx` -DMPI_CXX_COMPILER=`which scorep-mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dscorep_INCLUDE_DIR=$SCOREP_DIR/include -DWITH_SCOREP=1 ..
+
+# With TAU
+# cmake -DCMAKE_CXX_FLAGS="-g -O3" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU=1 .. 
+# add -DCMAKE_CXX_COMPILER=tau_cxx.sh to instrument
