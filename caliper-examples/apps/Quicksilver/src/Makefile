@@ -162,11 +162,12 @@ ifeq ($(TOOL), scorep)
     CXXFLAGS = $(OPTFLAGS) $(SCOREP_CXXFLAGS)
     CPPFLAGS = $(MPI_FLAGS) 
 endif
-#ifeq ($(TOOL), tau)
-#    CXX=tau_cxx.sh
-#    CXXFLAGS = $(OPTFLAGS)
-#    CPPFLAGS = $(MPI_FLAGS)
-#endif
+ifeq ($(TOOL), tau)
+    CXX=mpicxx
+#    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
+    CXXFLAGS = $(OPTFLAGS)
+    CPPFLAGS = $(MPI_FLAGS)
+endif
 ifeq ($(TOOL),)
     CXX=mpicxx
     CXXFLAGS = $(OPTFLAGS) 
@@ -416,4 +417,4 @@ depend:
 # make TOOL=scorep SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
 
 # How to Clean
-# make clean or make veryclean TOOL=caliper
+# make clean or make distclean TOOL=caliper
