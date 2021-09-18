@@ -36,6 +36,7 @@
 #include "HYPRE_krylov.h"
 
 #include <time.h>
+#include <sys/resource.h>
 
 #ifdef caliper
 #include <caliper/cali.h>
@@ -617,18 +618,21 @@ main( hypre_int argc,
 /*
   hypre_FinalizeMemoryDebug();
 */
-   end_time = MPI_Wtime();
+   // ---------------- MEMORY USAGE ---------------- //
+   int who = RUSAGE_SELF;
+   struct rusage usage;
+   int ret;
 
-   local_time = end_time - start_time;
-	MPI_Reduce(&local_time, &sum_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-	MPI_Reduce(&local_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
-	MPI_Reduce(&local_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+   ret = getrusage(who, &usage);
+
+   long int max_getrusage;
+   MPI_Reduce(&usage.ru_maxrss, &max_getrusage, 1, MPI_LONG, MPI_MAX, 0, MPI_COMM_WORLD);
+
    if (myid == 0) {
-      hypre_printf("TIME: Min: %.5f s Avg: %.5f s Max: %.5f s\n", min_time, sum_time/num_procs, max_time);
+      printf("getrusage ru_maxrss (kB):%ld\n", max_getrusage);
    }
 
-   // ---------------- MEMORY USAGE ---------------- //
-   FILE* file = fopen("/proc/self/status", "r");
+   /*FILE* file = fopen("/proc/self/status", "r");
    char* line = NULL;
    char mem_type[7], peak_RSS[256], peak_virtual[256];
    long int p_rss, p_virtual = 0;   
@@ -664,8 +668,18 @@ main( hypre_int argc,
    if (myid == 0) {
       hypre_printf("PEAK_RSS (kB): Min: %ld s Avg: %ld s Max: %ld s\n", min_peak_rss, sum_peak_rss/num_procs, max_peak_rss);
       hypre_printf("PEAK_Virtual (kB): Min: %ld s Avg: %ld s Max: %ld s\n", min_peak_virtual, sum_peak_virtual/num_procs, max_peak_virtual);
-   }
+   }*/
    // ---------------- END OF MEMORY USAGE ---------------- //
+
+   end_time = MPI_Wtime();
+
+   local_time = end_time - start_time;
+	MPI_Reduce(&local_time, &sum_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&local_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&local_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+   if (myid == 0) {
+      hypre_printf("MinTime(s):%.5f-AvgTime(s):%.5f-MaxTime(s):%.5f\n", min_time, sum_time/num_procs, max_time);
+   }
 
    hypre_MPI_Finalize();
 
