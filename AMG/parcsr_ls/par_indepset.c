@@ -24,6 +24,9 @@
 
 #include "_hypre_parcsr_ls.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*==========================================================================*/
 /*==========================================================================*/
 /**
@@ -47,6 +50,9 @@ hypre_BoomerAMGIndepSetInit( hypre_ParCSRMatrix *S,
                           HYPRE_Real         *measure_array ,
                           HYPRE_Int   seq_rand)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *S_diag = hypre_ParCSRMatrixDiag(S);
    MPI_Comm         comm = hypre_ParCSRMatrixComm(S);
    HYPRE_Int              S_num_nodes = hypre_CSRMatrixNumRows(S_diag);
@@ -67,6 +73,9 @@ hypre_BoomerAMGIndepSetInit( hypre_ParCSRMatrix *S,
       measure_array[i] += hypre_Rand();
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (ierr);
 }
 
@@ -118,6 +127,9 @@ hypre_BoomerAMGIndepSet( hypre_ParCSRMatrix *S,
                       HYPRE_Int                *IS_marker,
                       HYPRE_Int                *IS_marker_offd     )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *S_diag      = hypre_ParCSRMatrixDiag(S);
    HYPRE_Int             *S_diag_i    = hypre_CSRMatrixI(S_diag);
    HYPRE_Int             *S_diag_j    = hypre_CSRMatrixJ(S_diag);
@@ -207,7 +219,10 @@ hypre_BoomerAMGIndepSet( hypre_ParCSRMatrix *S,
          }
       }
    }
-            
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif    
    return (ierr);
 }
          

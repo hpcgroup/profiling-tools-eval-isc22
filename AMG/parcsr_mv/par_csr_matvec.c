@@ -24,6 +24,9 @@
 #include "_hypre_parcsr_mv.h"
 #include <assert.h>
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_ParCSRMatrixMatvec
  *--------------------------------------------------------------------------*/
@@ -36,6 +39,9 @@ hypre_ParCSRMatrixMatvecOutOfPlace( HYPRE_Complex       alpha,
                                     hypre_ParVector    *b,
                                     hypre_ParVector    *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle **comm_handle;
    hypre_ParCSRCommPkg *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
    hypre_CSRMatrix   *diag   = hypre_ParCSRMatrixDiag(A);
@@ -245,6 +251,9 @@ hypre_ParCSRMatrixMatvecOutOfPlace( HYPRE_Complex       alpha,
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_PACK_UNPACK] += hypre_MPI_Wtime();
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -255,6 +264,10 @@ hypre_ParCSRMatrixMatvec( HYPRE_Complex       alpha,
                           HYPRE_Complex       beta,
                           hypre_ParVector    *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_ParCSRMatrixMatvecOutOfPlace(alpha, A, x, beta, y, y);
 }
 
@@ -272,6 +285,9 @@ hypre_ParCSRMatrixMatvecT( HYPRE_Complex       alpha,
                            HYPRE_Complex       beta,
                            hypre_ParVector    *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle **comm_handle;
    hypre_ParCSRCommPkg *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
    hypre_CSRMatrix     *diag = hypre_ParCSRMatrixDiag(A);
@@ -498,6 +514,9 @@ hypre_ParCSRMatrixMatvecT( HYPRE_Complex       alpha,
    hypre_profile_times[HYPRE_TIMER_ID_PACK_UNPACK] += hypre_MPI_Wtime();
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -513,6 +532,9 @@ hypre_ParCSRMatrixMatvec_FF( HYPRE_Complex       alpha,
                              HYPRE_Int          *CF_marker,
                              HYPRE_Int           fpt )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm                comm = hypre_ParCSRMatrixComm(A);
    hypre_ParCSRCommHandle *comm_handle;
    hypre_ParCSRCommPkg    *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -628,5 +650,8 @@ hypre_ParCSRMatrixMatvec_FF( HYPRE_Complex       alpha,
       hypre_TFree(CF_marker_offd);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }

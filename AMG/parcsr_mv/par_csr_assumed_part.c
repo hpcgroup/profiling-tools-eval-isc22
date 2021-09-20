@@ -26,6 +26,10 @@
 
 #include "_hypre_parcsr_mv.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /* This is used only in the function below */
 #define CONTACT(a,b)  (contact_list[(a)*3+(b)])
 
@@ -42,6 +46,9 @@ hypre_LocateAssummedPartition(MPI_Comm comm, HYPRE_Int row_start, HYPRE_Int row_
                         hypre_IJAssumedPart *part, HYPRE_Int myid)
 {  
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int       i;
 
    HYPRE_Int       *contact_list;
@@ -318,6 +325,9 @@ hypre_LocateAssummedPartition(MPI_Comm comm, HYPRE_Int row_start, HYPRE_Int row_
    hypre_TFree(contact_list);
 
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
    
 
@@ -336,6 +346,9 @@ HYPRE_Int
 hypre_ParCSRMatrixCreateAssumedPartition( hypre_ParCSRMatrix *matrix) 
 {
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 
    HYPRE_Int global_num_cols;
    HYPRE_Int myid;
@@ -377,6 +390,9 @@ hypre_ParCSRMatrixCreateAssumedPartition( hypre_ParCSRMatrix *matrix)
     /* this partition will be saved in the matrix data structure until the matrix is destroyed */
     hypre_ParCSRMatrixAssumedPartition(matrix) = apart;
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif   
     return hypre_error_flag;
 
 
@@ -388,6 +404,9 @@ hypre_ParCSRMatrixCreateAssumedPartition( hypre_ParCSRMatrix *matrix)
 HYPRE_Int 
 hypre_AssumedPartitionDestroy(hypre_IJAssumedPart *apart )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if(apart->storage_length > 0) 
    {      
       hypre_TFree(apart->proc_list);
@@ -398,6 +417,9 @@ hypre_AssumedPartitionDestroy(hypre_IJAssumedPart *apart )
 
    hypre_TFree(apart);
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -414,7 +436,9 @@ hypre_GetAssumedPartitionProcFromRow( MPI_Comm comm, HYPRE_Int row,
 			HYPRE_Int global_first_row,
 			HYPRE_Int global_num_rows, HYPRE_Int *proc_id)
 {
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int     num_procs;
    HYPRE_Int     size, switch_row, extra;
    
@@ -443,6 +467,9 @@ hypre_GetAssumedPartitionProcFromRow( MPI_Comm comm, HYPRE_Int row,
    }
 
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 
@@ -459,6 +486,9 @@ hypre_GetAssumedPartitionRowRange( MPI_Comm comm, HYPRE_Int proc_id, HYPRE_Int g
 				HYPRE_Int global_num_rows, HYPRE_Int *row_start, HYPRE_Int* row_end) 
 {
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int    num_procs;
    HYPRE_Int    size, extra;
    
@@ -482,7 +512,9 @@ hypre_GetAssumedPartitionRowRange( MPI_Comm comm, HYPRE_Int proc_id, HYPRE_Int g
    *row_end += hypre_min(proc_id+1, extra);
    *row_end = *row_end - 1;
 
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -504,7 +536,9 @@ HYPRE_Int
 hypre_ParVectorCreateAssumedPartition( hypre_ParVector *vector) 
 {
 
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int global_num;
    HYPRE_Int myid;
    HYPRE_Int  start=0, end=0;
@@ -544,7 +578,10 @@ hypre_ParVectorCreateAssumedPartition( hypre_ParVector *vector)
 
     /* this partition will be saved in the vector data structure until the vector is destroyed */
     hypre_ParVectorAssumedPartition(vector) = apart;
-   
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif   
     return hypre_error_flag;
 
 

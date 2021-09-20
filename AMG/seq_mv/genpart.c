@@ -20,7 +20,10 @@
 
  
 #include "seq_mv.h"
- 
+
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_GeneratePartitioning:
  * generates load balanced partitioning of a 1-d array
@@ -31,6 +34,9 @@
 HYPRE_Int
 hypre_GeneratePartitioning(HYPRE_Int length, HYPRE_Int num_procs, HYPRE_Int **part_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int ierr = 0;
    HYPRE_Int *part;
    HYPRE_Int size, rest;
@@ -49,6 +55,9 @@ hypre_GeneratePartitioning(HYPRE_Int length, HYPRE_Int num_procs, HYPRE_Int **pa
 
 
    *part_ptr = part;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -61,7 +70,9 @@ HYPRE_Int
 hypre_GenerateLocalPartitioning(HYPRE_Int length, HYPRE_Int num_procs, HYPRE_Int myid, HYPRE_Int **part_ptr)
 {
 
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int ierr = 0;
    HYPRE_Int *part;
    HYPRE_Int size, rest;
@@ -84,5 +95,8 @@ hypre_GenerateLocalPartitioning(HYPRE_Int length, HYPRE_Int num_procs, HYPRE_Int
    
 
    *part_ptr = part;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }

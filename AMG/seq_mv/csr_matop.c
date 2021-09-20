@@ -26,6 +26,9 @@
 #include "seq_mv.h"
 #include "csr_matrix.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_CSRMatrixAdd:
  * adds two CSR Matrices A and B and returns a CSR Matrix C;
@@ -38,6 +41,9 @@ hypre_CSRMatrix *
 hypre_CSRMatrixAdd( hypre_CSRMatrix *A,
                     hypre_CSRMatrix *B )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Complex    *A_data   = hypre_CSRMatrixData(A);
    HYPRE_Int        *A_i      = hypre_CSRMatrixI(A);
    HYPRE_Int        *A_j      = hypre_CSRMatrixJ(A);
@@ -60,6 +66,9 @@ hypre_CSRMatrixAdd( hypre_CSRMatrix *A,
    if (nrows_A != nrows_B || ncols_A != ncols_B)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC,"Warning! incompatible matrix dimensions!\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
    }
 
@@ -130,6 +139,9 @@ hypre_CSRMatrixAdd( hypre_CSRMatrix *A,
    }
 
    hypre_TFree(marker);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return C;
 }       
 
@@ -145,6 +157,9 @@ hypre_CSRMatrix *
 hypre_CSRMatrixMultiply( hypre_CSRMatrix *A,
                          hypre_CSRMatrix *B)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Complex    *A_data   = hypre_CSRMatrixData(A);
    HYPRE_Int        *A_i      = hypre_CSRMatrixI(A);
    HYPRE_Int        *A_j      = hypre_CSRMatrixJ(A);
@@ -170,6 +185,9 @@ hypre_CSRMatrixMultiply( hypre_CSRMatrix *A,
    if (ncols_A != nrows_B)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC,"Warning! incompatible matrix dimensions!\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
    }
 
@@ -302,12 +320,18 @@ hypre_CSRMatrixMultiply( hypre_CSRMatrix *A,
    hypre_TFree(B_marker);
   } /*end parallel region */
   hypre_TFree(jj_count);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
   return C;
 }       
 
 hypre_CSRMatrix *
 hypre_CSRMatrixDeleteZeros( hypre_CSRMatrix *A, HYPRE_Real tol)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Complex    *A_data   = hypre_CSRMatrixData(A);
    HYPRE_Int        *A_i      = hypre_CSRMatrixI(A);
    HYPRE_Int        *A_j      = hypre_CSRMatrixJ(A);
@@ -357,9 +381,15 @@ hypre_CSRMatrixDeleteZeros( hypre_CSRMatrix *A, HYPRE_Real tol)
          }
          B_i[i+1] = pos_B;
       }
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return B;
    }
    else
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
 }       
 
@@ -377,6 +407,12 @@ hypre_CSRMatrixDeleteZeros( hypre_CSRMatrix *A, HYPRE_Real tol)
  */
 static inline HYPRE_Int transpose_idx(HYPRE_Int idx, HYPRE_Int dim1, HYPRE_Int dim2)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
   return idx%dim1*dim2 + idx/dim1;
 }
 
@@ -389,6 +425,9 @@ HYPRE_Int hypre_CSRMatrixTranspose(hypre_CSRMatrix   *A, hypre_CSRMatrix   **AT,
                                    HYPRE_Int data)
 
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Complex      *A_data = hypre_CSRMatrixData(A);
    HYPRE_Int          *A_i = hypre_CSRMatrixI(A);
    HYPRE_Int          *A_j = hypre_CSRMatrixJ(A);
@@ -441,6 +480,9 @@ HYPRE_Int hypre_CSRMatrixTranspose(hypre_CSRMatrix   *A, hypre_CSRMatrix   **AT,
       // JSP: parallel counting sorting breaks down
       // when A has no columns
       hypre_CSRMatrixInitialize(*AT);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return 0;
    }
 
@@ -569,7 +611,9 @@ HYPRE_Int hypre_CSRMatrixTranspose(hypre_CSRMatrix   *A, hypre_CSRMatrix   **AT,
       // If the memory size is a concern, we can allocate
       // a new memory for AT_i and copy from bucket.
    hypre_CSRMatrixI(*AT)[num_colsA] = num_nonzerosA;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(0);
 }
 
@@ -582,6 +626,9 @@ HYPRE_Int hypre_CSRMatrixTranspose(hypre_CSRMatrix   *A, hypre_CSRMatrix   **AT,
 
 HYPRE_Int hypre_CSRMatrixReorder(hypre_CSRMatrix *A)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int     i, j, tempi, row_size;
    HYPRE_Complex tempd;
 
@@ -593,6 +640,9 @@ HYPRE_Int hypre_CSRMatrixReorder(hypre_CSRMatrix *A)
 
    /* the matrix should be square */
    if (num_rowsA != num_colsA)
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return -1;
 
    for (i = 0; i < num_rowsA; i++)
@@ -618,13 +668,18 @@ HYPRE_Int hypre_CSRMatrixReorder(hypre_CSRMatrix *A)
 
          /* diagonal element is missing */
          if (j == row_size-1)
+            #ifdef caliper
+            CALI_MARK_FUNCTION_END;
+            #endif
             return -2;
       }
 
       A_j    += row_size;
       A_data += row_size;
    }
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
@@ -635,12 +690,18 @@ HYPRE_Int hypre_CSRMatrixReorder(hypre_CSRMatrix *A)
 
 HYPRE_Complex hypre_CSRMatrixSumElts( hypre_CSRMatrix *A )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Complex  sum = 0;
    HYPRE_Complex *data = hypre_CSRMatrixData( A );
    HYPRE_Int      num_nonzeros = hypre_CSRMatrixNumNonzeros(A);
    HYPRE_Int      i;
 
    for ( i=0; i<num_nonzeros; ++i ) sum += data[i];
-
+   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return sum;
 }

@@ -21,6 +21,10 @@
 #include "hypre_hopscotch_hash.h"
 #include "_hypre_parcsr_mv.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /* RDF: The following prototype already exists in _hypre_parcsr_ls.h, so
  * something needs to be reorganized here.*/
 
@@ -69,6 +73,9 @@ void hypre_ParMatmul_RowSizes(
    HYPRE_Int num_cols_offd_C
    )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i1, i2, i3, jj2, jj3;
    HYPRE_Int jj_count_diag, jj_count_offd, jj_row_begin_diag, jj_row_begin_offd;
    HYPRE_Int start_indexing = 0; /* start indexing for C_data at 0 */
@@ -290,6 +297,9 @@ void hypre_ParMatmul_RowSizes(
    hypre_TFree(jj_count_offd_array);
  
    /* End of First Pass */
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -302,6 +312,9 @@ void hypre_ParMatmul_RowSizes(
 hypre_ParCSRMatrix *hypre_ParMatmul( hypre_ParCSRMatrix  *A,
                                      hypre_ParCSRMatrix  *B )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_MATMUL] -= hypre_MPI_Wtime();
 #endif
@@ -403,6 +416,9 @@ hypre_ParCSRMatrix *hypre_ParMatmul( hypre_ParCSRMatrix  *A,
    if (n_cols_A != n_rows_B || num_cols_diag_A != num_rows_diag_B)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC," Error! Incompatible matrix dimensions!\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
    }
    if ( num_rows_diag_A==num_cols_diag_B) allsquare = 1;
@@ -1042,6 +1058,9 @@ hypre_ParCSRMatrix *hypre_ParMatmul( hypre_ParCSRMatrix  *A,
    hypre_profile_times[HYPRE_TIMER_ID_MATMUL] += hypre_MPI_Wtime();
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return C;
 }            
 
@@ -1088,6 +1107,9 @@ void hypre_ParCSRMatrixExtractBExt_Arrays_Overlap(
    // other interpolation: skip_fine = 0, skip_same_sign = 0
    )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle *comm_handle, *row_map_comm_handle = NULL;
    hypre_ParCSRCommPkg *tmp_comm_pkg;
    HYPRE_Int *B_int_i;
@@ -1125,6 +1147,9 @@ void hypre_ParCSRMatrixExtractBExt_Arrays_Overlap(
       if ( data ) *pB_ext_data = NULL;
       if ( find_row_map ) *pB_ext_row_map = NULL;
       *num_nonzeros = 0;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    };
    B_int_i = hypre_CTAlloc(HYPRE_Int, send_map_starts[num_sends]+1);
@@ -1498,6 +1523,9 @@ void hypre_ParCSRMatrixExtractBExt_Arrays_Overlap(
    if ( find_row_map ) hypre_TFree(B_int_row_map);
 
    /* end generic part */
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 void hypre_ParCSRMatrixExtractBExt_Arrays(
@@ -1527,6 +1555,9 @@ void hypre_ParCSRMatrixExtractBExt_Arrays(
    HYPRE_Real * offd_data
    )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle *comm_handle_idx, *comm_handle_data;
 
    hypre_ParCSRMatrixExtractBExt_Arrays_Overlap(
@@ -1548,6 +1579,9 @@ void hypre_ParCSRMatrixExtractBExt_Arrays(
       hypre_ParCSRCommHandleDestroy(comm_handle_data);
       hypre_TFree(send_data);
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -1565,6 +1599,9 @@ hypre_ParCSRMatrixExtractBExt_Overlap( hypre_ParCSRMatrix *B,
                                HYPRE_Int *CF_marker, HYPRE_Int *CF_marker_offd,
                                HYPRE_Int skip_fine, HYPRE_Int skip_same_sign )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm  comm = hypre_ParCSRMatrixComm(B);
    HYPRE_Int first_col_diag = hypre_ParCSRMatrixFirstColDiag(B);
    /*HYPRE_Int first_row_index = hypre_ParCSRMatrixFirstRowIndex(B);*/
@@ -1638,6 +1675,9 @@ hypre_ParCSRMatrixExtractBExt_Overlap( hypre_ParCSRMatrix *B,
    hypre_CSRMatrixJ(B_ext) = B_ext_j;
    if (data) hypre_CSRMatrixData(B_ext) = B_ext_data;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return B_ext;
 }
 
@@ -1646,6 +1686,9 @@ hypre_ParCSRMatrixExtractBExt( hypre_ParCSRMatrix *B,
                                hypre_ParCSRMatrix *A,
                                HYPRE_Int data )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle *comm_handle_idx, *comm_handle_data;
 
    hypre_CSRMatrix *B_ext = hypre_ParCSRMatrixExtractBExt_Overlap(B, A, data, &comm_handle_idx, &comm_handle_data, NULL, NULL, 0, 0);
@@ -1661,6 +1704,9 @@ hypre_ParCSRMatrixExtractBExt( hypre_ParCSRMatrix *B,
       hypre_TFree(send_data);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return B_ext;
 }
 
@@ -1673,6 +1719,9 @@ hypre_ParCSRMatrixTranspose( hypre_ParCSRMatrix *A,
                              hypre_ParCSRMatrix **AT_ptr,
                              HYPRE_Int          data ) 
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle *comm_handle;
    MPI_Comm comm = hypre_ParCSRMatrixComm(A);
    hypre_ParCSRCommPkg  *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -1977,6 +2026,9 @@ hypre_ParCSRMatrixTranspose( hypre_ParCSRMatrix *A,
 
    *AT_ptr = AT;
   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -1989,6 +2041,9 @@ void hypre_ParCSRMatrixGenSpanningTree( hypre_ParCSRMatrix *G_csr,
                                         HYPRE_Int **indices,
                                         HYPRE_Int G_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int nrows_G, ncols_G, *G_diag_i, *G_diag_j, *GT_diag_mat, i, j, k, edge;
    HYPRE_Int *nodes_marked, *edges_marked, *queue, queue_tail, queue_head, node;
    HYPRE_Int mypid, nprocs, n_children, *children, nsends, *send_procs, *recv_cnts;
@@ -2251,6 +2306,9 @@ void hypre_ParCSRMatrixGenSpanningTree( hypre_ParCSRMatrix *G_csr,
       free(G_diag_i);
       free(G_diag_j);
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /* -----------------------------------------------------------------------------
@@ -2261,6 +2319,9 @@ void hypre_ParCSRMatrixExtractSubmatrices( hypre_ParCSRMatrix *A_csr,
                                            HYPRE_Int *indices2,
                                            hypre_ParCSRMatrix ***submatrices )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int    nindices, *indices, nrows_A, *A_diag_i, *A_diag_j, mypid, nprocs;
    HYPRE_Int    i, j, k, *proc_offsets1, *proc_offsets2, *itmp_array, *exp_indices;
    HYPRE_Int    nnz11, nnz12, nnz21, nnz22, col, ncols_offd, nnz_offd, nnz_diag;
@@ -2610,6 +2671,9 @@ void hypre_ParCSRMatrixExtractSubmatrices( hypre_ParCSRMatrix *A_csr,
    free(proc_offsets1);
    free(proc_offsets2);
    free(exp_indices);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /* -----------------------------------------------------------------------------
@@ -2620,6 +2684,9 @@ void hypre_ParCSRMatrixExtractRowSubmatrices( hypre_ParCSRMatrix *A_csr,
                                               HYPRE_Int *indices2,
                                               hypre_ParCSRMatrix ***submatrices )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int    nindices, *indices, nrows_A, *A_diag_i, *A_diag_j, mypid, nprocs;
    HYPRE_Int    i, j, k, *proc_offsets1, *proc_offsets2, *itmp_array, *exp_indices;
    HYPRE_Int    nnz11, nnz21, col, ncols_offd, nnz_offd, nnz_diag;
@@ -2879,6 +2946,9 @@ void hypre_ParCSRMatrixExtractRowSubmatrices( hypre_ParCSRMatrix *A_csr,
    free(proc_offsets1);
    free(proc_offsets2);
    free(exp_indices);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /* -----------------------------------------------------------------------------
@@ -2887,9 +2957,15 @@ void hypre_ParCSRMatrixExtractRowSubmatrices( hypre_ParCSRMatrix *A_csr,
 
 HYPRE_Complex hypre_ParCSRMatrixLocalSumElts( hypre_ParCSRMatrix * A )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix * A_diag = hypre_ParCSRMatrixDiag( A );
    hypre_CSRMatrix * A_offd = hypre_ParCSRMatrixOffd( A );
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_CSRMatrixSumElts(A_diag) + hypre_CSRMatrixSumElts(A_offd);
 }
 
@@ -2903,6 +2979,9 @@ HYPRE_Int
 hypre_ParCSRMatrixAminvDB( hypre_ParCSRMatrix *A, hypre_ParCSRMatrix *B,
                  	   HYPRE_Complex *d, hypre_ParCSRMatrix **C_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm comm = hypre_ParCSRMatrixComm(B);
    hypre_CSRMatrix      *A_diag   = hypre_ParCSRMatrixDiag(A);
    hypre_CSRMatrix      *A_offd   = hypre_ParCSRMatrixOffd(A);
@@ -3159,6 +3238,9 @@ hypre_ParCSRMatrixAminvDB( hypre_ParCSRMatrix *A, hypre_ParCSRMatrix *B,
 
    *C_ptr = C;
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_error_flag);
 }
 
@@ -3172,6 +3254,9 @@ hypre_ParCSRMatrixAminvDB( hypre_ParCSRMatrix *A, hypre_ParCSRMatrix *B,
 hypre_ParCSRMatrix *hypre_ParTMatmul( hypre_ParCSRMatrix  *A,
 				     hypre_ParCSRMatrix  *B)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm 	   comm = hypre_ParCSRMatrixComm(A);
    hypre_ParCSRCommPkg *comm_pkg_A = hypre_ParCSRMatrixCommPkg(A);
 
@@ -3274,7 +3359,10 @@ hypre_ParCSRMatrix *hypre_ParTMatmul( hypre_ParCSRMatrix  *A,
    if (n_rows_A != n_rows_B || num_rows_diag_A != num_rows_diag_B)
    {
         hypre_error_w_msg(HYPRE_ERROR_GENERIC," Error! Incompatible matrix dimensions!\n");
-	return NULL;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
+   return NULL;
    }
 
    /*if (num_cols_diag_A == num_cols_diag_B) allsquare = 1;*/
@@ -3766,6 +3854,9 @@ hypre_ParCSRMatrix *hypre_ParTMatmul( hypre_ParCSRMatrix  *A,
    if (C_diag) hypre_CSRMatrixDestroy(C_tmp_diag);
    if (C_offd) hypre_CSRMatrixDestroy(C_tmp_offd);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return C;
    
 }            

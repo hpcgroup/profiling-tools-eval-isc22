@@ -32,6 +32,10 @@
 #include <caliper/cali.h>
 #endif
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /*--------------------------------------------------------------------------
  * hypre_BoomerAMGCycle
  *--------------------------------------------------------------------------*/
@@ -41,6 +45,9 @@ hypre_BoomerAMGCycle( void              *amg_vdata,
                    hypre_ParVector  **F_array,
                    hypre_ParVector  **U_array   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
 
    /* Data Structure variables */
@@ -392,6 +399,9 @@ hypre_BoomerAMGCycle( void              *amg_vdata,
 	      }
 
               if (Solve_err_flag != 0)
+                  #ifdef caliper
+                  CALI_MARK_FUNCTION_END;
+                  #endif
                  return(Solve_err_flag);
            }
         }
@@ -478,5 +488,8 @@ hypre_BoomerAMGCycle( void              *amg_vdata,
 
    hypre_TFree(lev_counter);
    hypre_TFree(num_coeffs);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(Solve_err_flag);
 }

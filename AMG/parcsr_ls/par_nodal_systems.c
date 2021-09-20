@@ -27,7 +27,9 @@
 
 #include "_hypre_parcsr_ls.h"
 
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 /*==========================================================================*/
 /*==========================================================================*/
@@ -55,6 +57,9 @@ hypre_BoomerAMGCreateNodalA(hypre_ParCSRMatrix    *A,
                             HYPRE_Int                    diag_option,     
                             hypre_ParCSRMatrix   **AN_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm 	       comm            = hypre_ParCSRMatrixComm(A);
    hypre_CSRMatrix    *A_diag          = hypre_ParCSRMatrixDiag(A);
    HYPRE_Int                *A_diag_i        = hypre_CSRMatrixI(A_diag);
@@ -826,6 +831,9 @@ hypre_BoomerAMGCreateNodalA(hypre_ParCSRMatrix    *A,
 
    hypre_TFree(counter);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -844,6 +852,9 @@ hypre_BoomerAMGCreateScalarCFS(hypre_ParCSRMatrix    *SN,
                        HYPRE_Int                  **col_offd_S_to_A_ptr,
                        hypre_ParCSRMatrix   **S_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm	       comm = hypre_ParCSRMatrixComm(SN);
    hypre_ParCSRMatrix *S;
    hypre_CSRMatrix    *S_diag;
@@ -1152,6 +1163,9 @@ hypre_BoomerAMGCreateScalarCFS(hypre_ParCSRMatrix    *SN,
 
    *S_ptr = S; 
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1166,6 +1180,10 @@ hypre_BoomerAMGCreateScalarCF(HYPRE_Int                   *CFN_marker,
                               HYPRE_Int                  **CF_marker_ptr)
 
 {
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int		      *CF_marker;
    HYPRE_Int		      *dof_func;
    HYPRE_Int		       num_variables;
@@ -1202,5 +1220,8 @@ hypre_BoomerAMGCreateScalarCF(HYPRE_Int                   *CFN_marker,
    *CF_marker_ptr = CF_marker;
 
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }

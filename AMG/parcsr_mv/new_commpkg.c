@@ -25,6 +25,10 @@
 
 #include "_hypre_parcsr_mv.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /* some debugging tools*/
 #define mydebug 0
 
@@ -34,7 +38,10 @@
 
 HYPRE_Int hypre_PrintCommpkg(hypre_ParCSRMatrix *A, const char *file_name)
 {
-   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+
    HYPRE_Int num_sends, num_recvs;
    
    HYPRE_Int *recv_vec_starts, *recv_procs;
@@ -89,6 +96,10 @@ HYPRE_Int hypre_PrintCommpkg(hypre_ParCSRMatrix *A, const char *file_name)
 
    fclose(fp);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
+
    return hypre_error_flag;
 
 
@@ -115,6 +126,9 @@ hypre_NewCommPkgCreate_core(
    HYPRE_Int **p_send_map_elements, hypre_IJAssumedPart *apart)
 
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int        num_procs, myid;
    HYPRE_Int        j, i;
    HYPRE_Int        range_start, range_end; 
@@ -528,7 +542,9 @@ hypre_NewCommPkgCreate_core(
       recv_procs, recv_vec_starts.  These are aliased to the comm package and
       will be destroyed there */
 
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -655,7 +671,9 @@ HYPRE_Int
 hypre_NewCommPkgDestroy(hypre_ParCSRMatrix *parcsr_A)
 {
 
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommPkg	 *comm_pkg = hypre_ParCSRMatrixCommPkg(parcsr_A);
 
 
@@ -686,7 +704,9 @@ hypre_NewCommPkgDestroy(hypre_ParCSRMatrix *parcsr_A)
    hypre_ParCSRMatrixCommPkg(parcsr_A) = NULL;  /*this gets freed again in destroy 
                                                   parscr since there are two comm 
                                                   packages now*/  
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -705,6 +725,9 @@ hypre_RangeFillResponseIJDetermineRecvProcs(void *p_recv_contact_buf,
                                       MPI_Comm comm, void **p_send_response_buf, 
                                       HYPRE_Int *response_message_size)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int    myid, tmp_id, row_end;
    HYPRE_Int    j;
    HYPRE_Int    row_val, index, size;
@@ -781,6 +804,9 @@ hypre_RangeFillResponseIJDetermineRecvProcs(void *p_recv_contact_buf,
    *response_message_size = index;
    *p_send_response_buf = send_response_buf;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -799,6 +825,9 @@ hypre_FillResponseIJDetermineSendProcs(void *p_recv_contact_buf,
                                  MPI_Comm comm, void **p_send_response_buf, 
                                  HYPRE_Int *response_message_size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int    myid;
    HYPRE_Int    i, index, count, elength;
 
@@ -849,7 +878,10 @@ hypre_FillResponseIJDetermineSendProcs(void *p_recv_contact_buf,
 
   /*output - no message to return (confirmation) */
    *response_message_size = 0; 
-  
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif  
    return hypre_error_flag;
 
 }

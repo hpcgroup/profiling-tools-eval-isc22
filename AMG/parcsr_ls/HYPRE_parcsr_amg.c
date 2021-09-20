@@ -17,6 +17,10 @@
 
 #include "_hypre_parcsr_ls.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /*--------------------------------------------------------------------------
  * HYPRE_BoomerAMGCreate
  *--------------------------------------------------------------------------*/
@@ -24,13 +28,22 @@
 HYPRE_Int
 HYPRE_BoomerAMGCreate( HYPRE_Solver *solver)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (!solver)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    *solver = (HYPRE_Solver) hypre_BoomerAMGCreate( ) ;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -41,6 +54,10 @@ HYPRE_BoomerAMGCreate( HYPRE_Solver *solver)
 HYPRE_Int 
 HYPRE_BoomerAMGDestroy( HYPRE_Solver solver )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGDestroy( (void *) solver ) );
 }
 
@@ -54,6 +71,10 @@ HYPRE_BoomerAMGSetup( HYPRE_Solver solver,
                       HYPRE_ParVector b,
                       HYPRE_ParVector x      )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetup( (void *) solver,
                                  (hypre_ParCSRMatrix *) A,
                                  (hypre_ParVector *) b,
@@ -71,7 +92,10 @@ HYPRE_BoomerAMGSolve( HYPRE_Solver solver,
                       HYPRE_ParVector x      )
 {
 
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSolve( (void *) solver,
                                  (hypre_ParCSRMatrix *) A,
                                  (hypre_ParVector *) b,
@@ -86,6 +110,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRestriction( HYPRE_Solver solver,
                                HYPRE_Int          restr_par  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetRestriction( (void *) solver, restr_par ) );
 }
 
@@ -97,6 +125,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMaxLevels( HYPRE_Solver solver,
                              HYPRE_Int          max_levels  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMaxLevels( (void *) solver, max_levels ) );
 }
 
@@ -104,6 +136,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMaxLevels( HYPRE_Solver solver,
                              HYPRE_Int        * max_levels  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMaxLevels( (void *) solver, max_levels ) );
 }
 
@@ -115,6 +151,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMaxCoarseSize( HYPRE_Solver solver,
                                  HYPRE_Int          max_coarse_size  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMaxCoarseSize( (void *) solver, max_coarse_size ) );
 }
 
@@ -122,6 +162,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMaxCoarseSize( HYPRE_Solver solver,
                                  HYPRE_Int        * max_coarse_size  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMaxCoarseSize( (void *) solver, max_coarse_size ) );
 }
 
@@ -133,6 +177,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMinCoarseSize( HYPRE_Solver solver,
                                  HYPRE_Int          min_coarse_size  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMinCoarseSize( (void *) solver, min_coarse_size ) );
 }
 
@@ -140,6 +188,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMinCoarseSize( HYPRE_Solver solver,
                                  HYPRE_Int        * min_coarse_size  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMinCoarseSize( (void *) solver, min_coarse_size ) );
 }
 
@@ -151,6 +203,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetSeqThreshold( HYPRE_Solver solver,
                                 HYPRE_Int          seq_threshold  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetSeqThreshold( (void *) solver, seq_threshold ) );
 }
 
@@ -158,6 +214,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetSeqThreshold( HYPRE_Solver solver,
                                 HYPRE_Int        * seq_threshold  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetSeqThreshold( (void *) solver, seq_threshold ) );
 }
 
@@ -169,6 +229,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRedundant( HYPRE_Solver solver,
                                 HYPRE_Int          redundant  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetRedundant( (void *) solver, redundant ) );
 }
 
@@ -176,6 +240,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetRedundant( HYPRE_Solver solver,
                                 HYPRE_Int        * redundant  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetRedundant( (void *) solver, redundant ) );
 }
 
@@ -187,6 +255,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetStrongThreshold( HYPRE_Solver solver,
                                    HYPRE_Real   strong_threshold  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetStrongThreshold( (void *) solver,
                                               strong_threshold ) );
 }
@@ -195,6 +267,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetStrongThreshold( HYPRE_Solver solver,
                                    HYPRE_Real * strong_threshold  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetStrongThreshold( (void *) solver,
                                               strong_threshold ) );
 }
@@ -207,6 +283,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMaxRowSum( HYPRE_Solver solver,
                              HYPRE_Real   max_row_sum  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMaxRowSum( (void *) solver,
                                         max_row_sum ) );
 }
@@ -215,6 +295,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMaxRowSum( HYPRE_Solver solver,
                              HYPRE_Real * max_row_sum  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMaxRowSum( (void *) solver,
                                         max_row_sum ) );
 }
@@ -227,6 +311,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetTruncFactor( HYPRE_Solver solver,
                                HYPRE_Real   trunc_factor  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetTruncFactor( (void *) solver,
                                           trunc_factor ) );
 }
@@ -235,6 +323,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetTruncFactor( HYPRE_Solver solver,
                                HYPRE_Real * trunc_factor  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetTruncFactor( (void *) solver,
                                           trunc_factor ) );
 }
@@ -247,6 +339,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetPMaxElmts( HYPRE_Solver solver,
                              HYPRE_Int   P_max_elmts  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetPMaxElmts( (void *) solver,
                                         P_max_elmts ) );
 }
@@ -255,6 +351,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetPMaxElmts( HYPRE_Solver solver,
                              HYPRE_Int   * P_max_elmts  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetPMaxElmts( (void *) solver,
                                         P_max_elmts ) );
 }
@@ -267,6 +367,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetJacobiTruncThreshold( HYPRE_Solver solver,
                                         HYPRE_Real   jacobi_trunc_threshold  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetJacobiTruncThreshold( (void *) solver,
                                                    jacobi_trunc_threshold ) );
 }
@@ -275,6 +379,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetJacobiTruncThreshold( HYPRE_Solver solver,
                                         HYPRE_Real * jacobi_trunc_threshold  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetJacobiTruncThreshold( (void *) solver,
                                                    jacobi_trunc_threshold ) );
 }
@@ -289,6 +397,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetPostInterpType( HYPRE_Solver solver,
                                   HYPRE_Int       post_interp_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetPostInterpType( (void *) solver,
                                              post_interp_type ) );
 }
@@ -297,6 +409,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetPostInterpType( HYPRE_Solver solver,
                                   HYPRE_Int     * post_interp_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetPostInterpType( (void *) solver,
                                              post_interp_type ) );
 }
@@ -310,6 +426,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetSCommPkgSwitch( HYPRE_Solver solver,
                                   HYPRE_Real   S_commpkg_switch  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetSCommPkgSwitch( (void *) solver,
                                              S_commpkg_switch ) );
 }
@@ -322,6 +442,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetInterpType( HYPRE_Solver solver,
                               HYPRE_Int          interp_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetInterpType( (void *) solver, interp_type ) );
 }
 
@@ -333,6 +457,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetSepWeight( HYPRE_Solver solver,
                              HYPRE_Int          sep_weight  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetSepWeight( (void *) solver, sep_weight ) );
 }
 
@@ -344,6 +472,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMinIter( HYPRE_Solver solver,
                            HYPRE_Int          min_iter  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMinIter( (void *) solver, min_iter ) );
 }
 
@@ -355,6 +487,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMaxIter( HYPRE_Solver solver,
                            HYPRE_Int          max_iter  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMaxIter( (void *) solver, max_iter ) );
 }
 
@@ -362,6 +498,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMaxIter( HYPRE_Solver solver,
                            HYPRE_Int        * max_iter  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMaxIter( (void *) solver, max_iter ) );
 }
 
@@ -373,6 +513,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetCoarsenType( HYPRE_Solver solver,
                                HYPRE_Int          coarsen_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetCoarsenType( (void *) solver, coarsen_type ) );
 }
 
@@ -380,6 +524,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetCoarsenType( HYPRE_Solver solver,
                                HYPRE_Int        * coarsen_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetCoarsenType( (void *) solver, coarsen_type ) );
 }
 
@@ -391,6 +539,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMeasureType( HYPRE_Solver solver,
                                HYPRE_Int          measure_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMeasureType( (void *) solver, measure_type ) );
 }
 
@@ -398,6 +550,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMeasureType( HYPRE_Solver solver,
                                HYPRE_Int        * measure_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMeasureType( (void *) solver, measure_type ) );
 }
 
@@ -408,9 +564,15 @@ HYPRE_BoomerAMGGetMeasureType( HYPRE_Solver solver,
 HYPRE_Int
 HYPRE_BoomerAMGSetOldDefault( HYPRE_Solver solver)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_BoomerAMGSetCoarsenType( solver, 6 );
    HYPRE_BoomerAMGSetInterpType( solver, 0 );
    HYPRE_BoomerAMGSetPMaxElmts( solver, 0 );
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -422,6 +584,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetSetupType( HYPRE_Solver solver,
                              HYPRE_Int          setup_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetSetupType( (void *) solver, setup_type ) );
 }
 
@@ -433,6 +599,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetCycleType( HYPRE_Solver solver,
                              HYPRE_Int          cycle_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetCycleType( (void *) solver, cycle_type ) );
 }
 
@@ -440,6 +610,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetCycleType( HYPRE_Solver solver,
                              HYPRE_Int        * cycle_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetCycleType( (void *) solver, cycle_type ) );
 }
 
@@ -451,6 +625,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetTol( HYPRE_Solver solver,
                        HYPRE_Real   tol    )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetTol( (void *) solver, tol ) );
 }
 
@@ -458,6 +636,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetTol( HYPRE_Solver solver,
                        HYPRE_Real * tol    )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetTol( (void *) solver, tol ) );
 }
 
@@ -472,6 +654,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNumGridSweeps( HYPRE_Solver  solver,
                                  HYPRE_Int          *num_grid_sweeps  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNumGridSweeps( (void *) solver, num_grid_sweeps ) );
 }
 
@@ -484,6 +670,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNumSweeps( HYPRE_Solver  solver,
                              HYPRE_Int          num_sweeps  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNumSweeps( (void *) solver, num_sweeps ) );
 }
 
@@ -495,6 +685,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetCycleNumSweeps( HYPRE_Solver  solver,
                                   HYPRE_Int          num_sweeps, HYPRE_Int k  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetCycleNumSweeps( (void *) solver, num_sweeps, k ) );
 }
 
@@ -502,6 +696,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetCycleNumSweeps( HYPRE_Solver  solver,
                                   HYPRE_Int        * num_sweeps, HYPRE_Int k  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetCycleNumSweeps( (void *) solver, num_sweeps, k ) );
 }
 
@@ -516,7 +714,11 @@ HYPRE_BoomerAMGInitGridRelaxation( HYPRE_Int     **num_grid_sweeps_ptr,
                                    HYPRE_Int       coarsen_type,
                                    HYPRE_Real  **relax_weights_ptr,
                                    HYPRE_Int       max_levels         )
-{  HYPRE_Int i;
+{  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   HYPRE_Int i;
    HYPRE_Int *num_grid_sweeps;
    HYPRE_Int *grid_relax_type;
    HYPRE_Int **grid_relax_points;
@@ -592,6 +794,9 @@ HYPRE_BoomerAMGInitGridRelaxation( HYPRE_Int     **num_grid_sweeps_ptr,
    for (i = 0; i < max_levels; i++)
       relax_weights[i] = 1.;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -606,6 +811,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetGridRelaxType( HYPRE_Solver  solver,
                                  HYPRE_Int          *grid_relax_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetGridRelaxType( (void *) solver, grid_relax_type ) );
 }
 
@@ -617,6 +826,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRelaxType( HYPRE_Solver  solver,
                              HYPRE_Int          relax_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetRelaxType( (void *) solver, relax_type ) );
 }
 
@@ -628,6 +841,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetCycleRelaxType( HYPRE_Solver  solver,
                                   HYPRE_Int          relax_type, HYPRE_Int k  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetCycleRelaxType( (void *) solver, relax_type, k ) );
 }
 
@@ -635,6 +852,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetCycleRelaxType( HYPRE_Solver  solver,
                                   HYPRE_Int        * relax_type, HYPRE_Int k  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetCycleRelaxType( (void *) solver, relax_type, k ) );
 }
 
@@ -646,6 +867,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRelaxOrder( HYPRE_Solver  solver,
                               HYPRE_Int           relax_order)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetRelaxOrder( (void *) solver, relax_order ) );
 }
 
@@ -660,6 +885,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetGridRelaxPoints( HYPRE_Solver   solver,
                                    HYPRE_Int          **grid_relax_points  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetGridRelaxPoints( (void *) solver, grid_relax_points ) );
 }
 
@@ -674,6 +903,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRelaxWeight( HYPRE_Solver  solver,
                                HYPRE_Real   *relax_weight  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetRelaxWeight( (void *) solver, relax_weight ) );
 }
 
@@ -685,6 +918,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRelaxWt( HYPRE_Solver  solver,
                            HYPRE_Real    relax_wt  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetRelaxWt( (void *) solver, relax_wt ) );
 }
 
@@ -697,6 +934,10 @@ HYPRE_BoomerAMGSetLevelRelaxWt( HYPRE_Solver  solver,
                                 HYPRE_Real    relax_wt, 
 				HYPRE_Int 	      level  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetLevelRelaxWt( (void *) solver, relax_wt, level ) );
 }
 
@@ -708,6 +949,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetOmega( HYPRE_Solver  solver,
                          HYPRE_Real   *omega  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetOmega( (void *) solver, omega ) );
 }
 
@@ -719,6 +964,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetOuterWt( HYPRE_Solver  solver,
                            HYPRE_Real    outer_wt  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetOuterWt( (void *) solver, outer_wt ) );
 }
 
@@ -731,6 +980,10 @@ HYPRE_BoomerAMGSetLevelOuterWt( HYPRE_Solver  solver,
                                 HYPRE_Real    outer_wt, 
 				HYPRE_Int 	      level  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetLevelOuterWt( (void *) solver, outer_wt, level ) );
 }
 
@@ -742,6 +995,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetLogging( HYPRE_Solver solver,
                            HYPRE_Int          logging  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    /* This function should be called before Setup.  Logging changes
       may require allocation or freeing of arrays, which is presently
       only done there.
@@ -755,6 +1012,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetLogging( HYPRE_Solver solver,
                            HYPRE_Int        * logging  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetLogging( (void *) solver, logging ) );
 }
 
@@ -766,6 +1027,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetPrintLevel( HYPRE_Solver solver,
                               HYPRE_Int        print_level  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetPrintLevel( (void *) solver, print_level ) );
 }
 
@@ -773,6 +1038,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetPrintLevel( HYPRE_Solver solver,
                               HYPRE_Int      * print_level  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetPrintLevel( (void *) solver, print_level ) );
 }
 
@@ -784,6 +1053,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetPrintFileName( HYPRE_Solver  solver,
                                  const char   *print_file_name  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetPrintFileName( (void *) solver, print_file_name ) );
 }
 
@@ -795,6 +1068,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetDebugFlag( HYPRE_Solver solver,
                              HYPRE_Int          debug_flag  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetDebugFlag( (void *) solver, debug_flag ) );
 }
 
@@ -802,6 +1079,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetDebugFlag( HYPRE_Solver solver,
                              HYPRE_Int        * debug_flag  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetDebugFlag( (void *) solver, debug_flag ) );
 }
 
@@ -813,6 +1094,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetNumIterations( HYPRE_Solver  solver,
                                  HYPRE_Int          *num_iterations  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetNumIterations( (void *) solver, num_iterations ) );
 }
 
@@ -824,6 +1109,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetCumNumIterations( HYPRE_Solver  solver,
                                     HYPRE_Int          *cum_num_iterations  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetCumNumIterations( (void *) solver, cum_num_iterations ) );
 }
 
@@ -835,6 +1124,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetCumNnzAP( HYPRE_Solver  solver,
                                  HYPRE_Real          *cum_nnz_AP )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetCumNnzAP( (void *) solver, cum_nnz_AP ) );
 }
 
@@ -845,6 +1138,10 @@ HYPRE_BoomerAMGGetCumNnzAP( HYPRE_Solver  solver,
 HYPRE_Int
 HYPRE_BoomerAMGGetResidual( HYPRE_Solver solver, HYPRE_ParVector * residual )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_BoomerAMGGetResidual( (void *) solver,
                                       (hypre_ParVector **) residual );
 }
@@ -858,6 +1155,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetFinalRelativeResidualNorm( HYPRE_Solver  solver,
                                              HYPRE_Real   *rel_resid_norm  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetRelResidualNorm( (void *) solver, rel_resid_norm ) );
 }
 
@@ -869,6 +1170,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNumFunctions( HYPRE_Solver  solver,
                                 HYPRE_Int          num_functions  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNumFunctions( (void *) solver, num_functions ) );
 }
 
@@ -876,6 +1181,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetNumFunctions( HYPRE_Solver  solver,
                                 HYPRE_Int        * num_functions  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetNumFunctions( (void *) solver, num_functions ) );
 }
 
@@ -887,6 +1196,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNodal( HYPRE_Solver  solver,
                          HYPRE_Int          nodal  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNodal( (void *) solver, nodal ) );
 }
 /*--------------------------------------------------------------------------
@@ -897,6 +1210,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNodalLevels( HYPRE_Solver  solver,
                                HYPRE_Int          nodal_levels  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNodalLevels( (void *) solver, nodal_levels ) );
 }
 
@@ -909,6 +1226,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNodalDiag( HYPRE_Solver  solver,
                              HYPRE_Int          nodal  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNodalDiag( (void *) solver, nodal ) );
 }
 /*--------------------------------------------------------------------------
@@ -924,6 +1245,10 @@ HYPRE_BoomerAMGSetDofFunc( HYPRE_Solver  solver,
    dof_func by calling HYPRE_BoomerAMGSetDofFunc, this could be an unwanted surprise.
    As hypre is currently commonly used, this situation is likely to be rare. */
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetDofFunc( (void *) solver, dof_func ) );
 }
 
@@ -935,6 +1260,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNumPaths( HYPRE_Solver  solver,
                             HYPRE_Int          num_paths  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetNumPaths( (void *) solver, num_paths ) );
 }
 
@@ -946,6 +1275,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAggNumLevels( HYPRE_Solver  solver,
                                 HYPRE_Int          agg_num_levels  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAggNumLevels( (void *) solver, agg_num_levels ) );
 }
 
@@ -957,6 +1290,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAggInterpType( HYPRE_Solver  solver,
                                  HYPRE_Int          agg_interp_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAggInterpType( (void *) solver, agg_interp_type ) );
 }
 
@@ -968,6 +1305,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAggTruncFactor( HYPRE_Solver  solver,
                                   HYPRE_Real    agg_trunc_factor  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAggTruncFactor( (void *) solver, agg_trunc_factor ) );
 }
 
@@ -979,6 +1320,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAddTruncFactor( HYPRE_Solver  solver,
                                   HYPRE_Real        add_trunc_factor  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMultAddTruncFactor( (void *) solver, add_trunc_factor ) );
 }
 
@@ -990,6 +1335,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMultAddTruncFactor( HYPRE_Solver  solver,
                                   HYPRE_Real        add_trunc_factor  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMultAddTruncFactor( (void *) solver, add_trunc_factor ) );
 }
 
@@ -1001,6 +1350,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAddRelaxWt( HYPRE_Solver  solver,
                                   HYPRE_Real        add_rlx_wt  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAddRelaxWt( (void *) solver, add_rlx_wt ) );
 }
 
@@ -1012,6 +1365,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAddRelaxType( HYPRE_Solver  solver,
                                   HYPRE_Int        add_rlx_type  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAddRelaxType( (void *) solver, add_rlx_type ) );
 }
 /*--------------------------------------------------------------------------
@@ -1022,6 +1379,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAggP12TruncFactor( HYPRE_Solver  solver,
                                      HYPRE_Real    agg_P12_trunc_factor  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAggP12TruncFactor( (void *) solver, agg_P12_trunc_factor ) );
 }
 
@@ -1033,6 +1394,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAggPMaxElmts( HYPRE_Solver  solver,
                                 HYPRE_Int          agg_P_max_elmts  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAggPMaxElmts( (void *) solver, agg_P_max_elmts ) );
 }
 
@@ -1044,6 +1409,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAddPMaxElmts( HYPRE_Solver  solver,
                                 HYPRE_Int          add_P_max_elmts  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMultAddPMaxElmts( (void *) solver, add_P_max_elmts ) );
 }
 
@@ -1055,6 +1424,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMultAddPMaxElmts( HYPRE_Solver  solver,
                                 HYPRE_Int          add_P_max_elmts  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMultAddPMaxElmts( (void *) solver, add_P_max_elmts ) );
 }
 
@@ -1066,6 +1439,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAggP12MaxElmts( HYPRE_Solver  solver,
                                   HYPRE_Int          agg_P12_max_elmts  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAggP12MaxElmts( (void *) solver, agg_P12_max_elmts ) );
 }
 
@@ -1077,6 +1454,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetChebyOrder( HYPRE_Solver  solver,
                               HYPRE_Int        order )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetChebyOrder( (void *) solver, order ) );
 }
 /*--------------------------------------------------------------------------
@@ -1087,6 +1468,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetChebyFraction( HYPRE_Solver  solver,
                                  HYPRE_Real     ratio )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetChebyFraction( (void *) solver, ratio ) );
 }
 
@@ -1098,6 +1483,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetChebyScale( HYPRE_Solver  solver,
                                  HYPRE_Int     scale )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetChebyScale( (void *) solver, scale ) );
 }
 
@@ -1109,6 +1498,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetChebyVariant( HYPRE_Solver  solver,
                                  HYPRE_Int     variant )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetChebyVariant( (void *) solver, variant ) );
 }
 
@@ -1120,6 +1513,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetChebyEigEst( HYPRE_Solver  solver,
                                  HYPRE_Int     eig_est )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetChebyEigEst( (void *) solver, eig_est ) );
 }
 /*--------------------------------------------------------------------------
@@ -1130,6 +1527,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAdditive( HYPRE_Solver solver,
                           HYPRE_Int          additive  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAdditive( (void *) solver, additive ) );
 }
 
@@ -1137,6 +1538,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetAdditive( HYPRE_Solver solver,
                           HYPRE_Int        * additive  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetAdditive( (void *) solver, additive ) );
 }
 
@@ -1148,6 +1553,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetMultAdditive( HYPRE_Solver solver,
                           HYPRE_Int          mult_additive  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetMultAdditive( (void *) solver, mult_additive ) );
 }
 
@@ -1155,6 +1564,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetMultAdditive( HYPRE_Solver solver,
                           HYPRE_Int        * mult_additive  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetMultAdditive( (void *) solver, mult_additive ) );
 }
 
@@ -1166,6 +1579,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetSimple( HYPRE_Solver solver,
                           HYPRE_Int          simple  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetSimple( (void *) solver, simple ) );
 }
 
@@ -1173,6 +1590,10 @@ HYPRE_Int
 HYPRE_BoomerAMGGetSimple( HYPRE_Solver solver,
                           HYPRE_Int        * simple  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGGetSimple( (void *) solver, simple ) );
 }
 
@@ -1184,6 +1605,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetAddLastLvl( HYPRE_Solver solver,
                           HYPRE_Int          add_last_lvl  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_BoomerAMGSetAddLastLvl( (void *) solver, add_last_lvl ) );
 }
 
@@ -1195,6 +1620,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetNonGalerkinTol (HYPRE_Solver solver,
                                 HYPRE_Real  nongalerkin_tol)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_BoomerAMGSetNonGalerkinTol ( (void *) solver, nongalerkin_tol ) );
 }
 
@@ -1207,6 +1636,10 @@ HYPRE_BoomerAMGSetLevelNonGalerkinTol (HYPRE_Solver solver,
                                 HYPRE_Real  nongalerkin_tol,
                                 HYPRE_Int   level)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_BoomerAMGSetLevelNonGalerkinTol ( (void *) solver, nongalerkin_tol , level ) );
 }
 
@@ -1219,6 +1652,10 @@ HYPRE_BoomerAMGSetNonGalerkTol (HYPRE_Solver solver,
                                 HYPRE_Int    nongalerk_num_tol,
                                 HYPRE_Real  *nongalerk_tol)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_BoomerAMGSetNonGalerkTol ( (void *) solver, nongalerk_num_tol , nongalerk_tol ) );
 }
 
@@ -1230,6 +1667,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetRAP2 (HYPRE_Solver solver,
                                 HYPRE_Int    rap2)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_BoomerAMGSetRAP2 ( (void *) solver, rap2 ) );
 }
 
@@ -1241,6 +1682,10 @@ HYPRE_Int
 HYPRE_BoomerAMGSetKeepTranspose (HYPRE_Solver solver,
                                 HYPRE_Int    keepTranspose)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_BoomerAMGSetKeepTranspose ( (void *) solver, keepTranspose ) );
 }
 

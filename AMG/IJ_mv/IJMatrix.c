@@ -27,7 +27,9 @@
 #include "./_hypre_IJ_mv.h"
 
 #include "../HYPRE.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_IJMatrixGetRowPartitioning
  *--------------------------------------------------------------------------*/
@@ -44,11 +46,17 @@ HYPRE_Int
 hypre_IJMatrixGetRowPartitioning( HYPRE_IJMatrix matrix ,
 				  HYPRE_Int    **row_partitioning )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC,"Variable ijmatrix is NULL -- hypre_IJMatrixGetRowPartitioning\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -57,9 +65,15 @@ hypre_IJMatrixGetRowPartitioning( HYPRE_IJMatrix matrix ,
    else
    {
       hypre_error(HYPRE_ERROR_GENERIC);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -78,11 +92,17 @@ HYPRE_Int
 hypre_IJMatrixGetColPartitioning( HYPRE_IJMatrix matrix ,
 				  HYPRE_Int    **col_partitioning )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC,"Variable ijmatrix is NULL -- hypre_IJMatrixGetColPartitioning\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -91,9 +111,15 @@ hypre_IJMatrixGetColPartitioning( HYPRE_IJMatrix matrix ,
    else
    {
       hypre_error(HYPRE_ERROR_GENERIC);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -104,6 +130,9 @@ HYPRE_Int
 hypre_IJMatrixSetObject( HYPRE_IJMatrix  matrix, 
                          void           *object )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (hypre_IJMatrixObject(ijmatrix) != NULL)
@@ -111,10 +140,16 @@ hypre_IJMatrixSetObject( HYPRE_IJMatrix  matrix,
       /*hypre_printf("Referencing a new IJMatrix object can orphan an old -- ");
       hypre_printf("hypre_IJMatrixSetObject\n");*/
       hypre_error(HYPRE_ERROR_GENERIC);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_IJMatrixObject(ijmatrix) = object;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }

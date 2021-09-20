@@ -10,6 +10,10 @@
 #include "_hypre_parcsr_ls.h"
 #include "float.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 HYPRE_Int hypre_LINPACKcgtql1(HYPRE_Int*,HYPRE_Real *,HYPRE_Real *,HYPRE_Int *);
 
 /******************************************************************************
@@ -23,7 +27,10 @@ HYPRE_Int hypre_ParCSRMaxEigEstimate(hypre_ParCSRMatrix *A, /* matrix to relax w
                                HYPRE_Int scale, /* scale by diagonal?*/
                                HYPRE_Real *max_eig)
 {
-                              
+       
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif                       
    HYPRE_Real e_max;
    HYPRE_Real row_sum, max_norm;
    HYPRE_Real *A_diag_data;
@@ -96,6 +103,9 @@ HYPRE_Int hypre_ParCSRMaxEigEstimate(hypre_ParCSRMatrix *A, /* matrix to relax w
    /* return */
    *max_eig = e_max;
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -112,6 +122,9 @@ HYPRE_Int hypre_ParCSRMaxEigEstimateCG(hypre_ParCSRMatrix *A, /* matrix to relax
                                  HYPRE_Real *min_eig)
 {
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, j, err;
   
    hypre_ParVector    *p;
@@ -324,6 +337,9 @@ HYPRE_Int hypre_ParCSRMaxEigEstimateCG(hypre_ParCSRMatrix *A, /* matrix to relax
    *max_eig = lambda_max;
    *min_eig = lambda_min;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -365,6 +381,9 @@ HYPRE_Int hypre_ParCSRRelax_Cheby(hypre_ParCSRMatrix *A, /* matrix to relax with
                             hypre_ParVector *r    /*another temp vector */  )
 {
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    
    hypre_CSRMatrix *A_diag = hypre_ParCSRMatrixDiag(A);
    HYPRE_Real     *A_diag_data  = hypre_CSRMatrixData(A_diag);
@@ -642,6 +661,9 @@ HYPRE_Int hypre_ParCSRRelax_Cheby(hypre_ParCSRMatrix *A, /* matrix to relax with
 
    
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
    
@@ -659,6 +681,9 @@ HYPRE_Int hypre_BoomerAMGRelax_FCFJacobi( hypre_ParCSRMatrix *A,
                                     hypre_ParVector    *Vtemp)
 {
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i;
    HYPRE_Int relax_points[3];
    HYPRE_Int relax_type = 0;
@@ -701,6 +726,9 @@ HYPRE_Int hypre_BoomerAMGRelax_FCFJacobi( hypre_ParCSRMatrix *A,
    }
    
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
    
 }
@@ -716,6 +744,9 @@ HYPRE_Int hypre_ParCSRRelax_CG( HYPRE_Solver solver,
                              hypre_ParVector    *u,
                              HYPRE_Int num_its)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
   
    HYPRE_PCGSetMaxIter(solver, num_its); /* max iterations */
    HYPRE_ParCSRPCGSolve(solver, (HYPRE_ParCSRMatrix)A, (HYPRE_ParVector)f, (HYPRE_ParVector)u);
@@ -737,6 +768,9 @@ HYPRE_Int hypre_ParCSRRelax_CG( HYPRE_Solver solver,
     }
 #endif   
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 
 }
@@ -760,6 +794,9 @@ HYPRE_Real hypre_LINPACKcgpthy(HYPRE_Real*,HYPRE_Real*);
 
 HYPRE_Int hypre_LINPACKcgtql1(HYPRE_Int *n,HYPRE_Real *d,HYPRE_Real *e,HYPRE_Int *ierr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
     /* System generated locals */
     HYPRE_Int  i__1,i__2;
     HYPRE_Real d__1,d__2,c_b10 = 1.0;
@@ -942,6 +979,9 @@ L270:
 L1000:
     *ierr = l;
 L1001:
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
     return 0;
     
 } /* cgtql1_ */
@@ -949,6 +989,9 @@ L1001:
 
 HYPRE_Real hypre_LINPACKcgpthy(HYPRE_Real *a,HYPRE_Real *b)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
     /* System generated locals */
     HYPRE_Real ret_val,d__1,d__2,d__3;
  
@@ -985,6 +1028,9 @@ L10:
 L20:
     ret_val = p;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
     return ret_val;
 } /* cgpthy_ */
 
@@ -1005,6 +1051,9 @@ HYPRE_Int  hypre_ParCSRRelax_L1_Jacobi( hypre_ParCSRMatrix *A,
                                   hypre_ParVector    *Vtemp )
 
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 
     
     MPI_Comm	   comm = hypre_ParCSRMatrixComm(A);
@@ -1165,6 +1214,9 @@ HYPRE_Int  hypre_ParCSRRelax_L1_Jacobi( hypre_ParCSRMatrix *A,
        hypre_TFree(v_buf_data);
     }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
     return 0;
 
 }

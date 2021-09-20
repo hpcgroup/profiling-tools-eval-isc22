@@ -25,6 +25,9 @@
  *****************************************************************************/
 
 #include "_hypre_parcsr_ls.h"
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 /*--------------------------------------------------------------------------
  * hypre_ParCSRMatrixScaledNorm
@@ -33,6 +36,9 @@
 HYPRE_Int
 hypre_ParCSRMatrixScaledNorm( hypre_ParCSRMatrix *A, HYPRE_Real *scnorm)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParCSRCommHandle	*comm_handle;
    hypre_ParCSRCommPkg	*comm_pkg = hypre_ParCSRMatrixCommPkg(A);
    MPI_Comm		 comm = hypre_ParCSRMatrixComm(A);
@@ -137,5 +143,8 @@ hypre_ParCSRMatrixScaledNorm( hypre_ParCSRMatrix *A, HYPRE_Real *scnorm)
    hypre_TFree(d_buf_data);
 
    *scnorm = mat_norm;  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }

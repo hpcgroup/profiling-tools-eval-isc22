@@ -22,7 +22,9 @@
  *****************************************************************************/
 
 #include "krylov.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_PCGCreate: Call class-specific function, e.g. HYPRE_ParCSRPCGCreate
  *--------------------------------------------------------------------------*/
@@ -41,6 +43,10 @@ HYPRE_PCGSetup( HYPRE_Solver solver,
                 HYPRE_Vector b,
                 HYPRE_Vector x )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetup( solver,
                            A,
                            b,
@@ -57,6 +63,10 @@ HYPRE_PCGSolve( HYPRE_Solver solver,
                 HYPRE_Vector b,
                 HYPRE_Vector x )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSolve( (void *) solver,
                            (void *) A,
                            (void *) b,
@@ -71,6 +81,10 @@ HYPRE_Int
 HYPRE_PCGSetTol( HYPRE_Solver solver,
                  HYPRE_Real   tol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetTol( (void *) solver, tol ) );
 }
 
@@ -78,6 +92,10 @@ HYPRE_Int
 HYPRE_PCGGetTol( HYPRE_Solver  solver,
                  HYPRE_Real   *tol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetTol( (void *) solver, tol ) );
 }
 /*--------------------------------------------------------------------------
@@ -88,6 +106,10 @@ HYPRE_Int
 HYPRE_PCGSetAbsoluteTol( HYPRE_Solver solver,
                          HYPRE_Real   a_tol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetAbsoluteTol( (void *) solver, a_tol ) );
 }
 
@@ -95,6 +117,10 @@ HYPRE_Int
 HYPRE_PCGGetAbsoluteTol( HYPRE_Solver  solver,
                          HYPRE_Real   *a_tol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetAbsoluteTol( (void *) solver, a_tol ) );
 }
 
@@ -106,6 +132,10 @@ HYPRE_Int
 HYPRE_PCGSetResidualTol( HYPRE_Solver solver,
                          HYPRE_Real   rtol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetResidualTol( (void *) solver, rtol ) );
 }
 
@@ -113,6 +143,10 @@ HYPRE_Int
 HYPRE_PCGGetResidualTol( HYPRE_Solver  solver,
                          HYPRE_Real   *rtol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetResidualTol( (void *) solver, rtol ) );
 }
 
@@ -124,6 +158,10 @@ HYPRE_Int
 HYPRE_PCGSetAbsoluteTolFactor( HYPRE_Solver solver,
                                HYPRE_Real   abstolf )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetAbsoluteTolFactor( (void *) solver, abstolf ) );
 }
 
@@ -131,6 +169,10 @@ HYPRE_Int
 HYPRE_PCGGetAbsoluteTolFactor( HYPRE_Solver  solver,
                                HYPRE_Real   *abstolf )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetAbsoluteTolFactor( (void *) solver, abstolf ) );
 }
 
@@ -142,6 +184,10 @@ HYPRE_Int
 HYPRE_PCGSetConvergenceFactorTol( HYPRE_Solver solver,
                                   HYPRE_Real   cf_tol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_PCGSetConvergenceFactorTol( (void *) solver,
                                             cf_tol );
 }
@@ -150,6 +196,10 @@ HYPRE_Int
 HYPRE_PCGGetConvergenceFactorTol( HYPRE_Solver  solver,
                                   HYPRE_Real   *cf_tol )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_PCGGetConvergenceFactorTol( (void *) solver,
                                             cf_tol );
 }
@@ -162,6 +212,10 @@ HYPRE_Int
 HYPRE_PCGSetMaxIter( HYPRE_Solver solver,
                      HYPRE_Int    max_iter )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetMaxIter( (void *) solver, max_iter ) );
 }
 
@@ -169,6 +223,10 @@ HYPRE_Int
 HYPRE_PCGGetMaxIter( HYPRE_Solver  solver,
                      HYPRE_Int    *max_iter )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetMaxIter( (void *) solver, max_iter ) );
 }
 
@@ -180,6 +238,10 @@ HYPRE_Int
 HYPRE_PCGSetStopCrit( HYPRE_Solver solver,
                       HYPRE_Int    stop_crit )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetStopCrit( (void *) solver, stop_crit ) );
 }
 
@@ -187,6 +249,10 @@ HYPRE_Int
 HYPRE_PCGGetStopCrit( HYPRE_Solver  solver,
                       HYPRE_Int    *stop_crit )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetStopCrit( (void *) solver, stop_crit ) );
 }
 
@@ -198,6 +264,10 @@ HYPRE_Int
 HYPRE_PCGSetTwoNorm( HYPRE_Solver solver,
                      HYPRE_Int    two_norm )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetTwoNorm( (void *) solver, two_norm ) );
 }
 
@@ -205,6 +275,10 @@ HYPRE_Int
 HYPRE_PCGGetTwoNorm( HYPRE_Solver  solver,
                      HYPRE_Int    *two_norm )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetTwoNorm( (void *) solver, two_norm ) );
 }
 
@@ -216,6 +290,10 @@ HYPRE_Int
 HYPRE_PCGSetRelChange( HYPRE_Solver solver,
                        HYPRE_Int    rel_change )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetRelChange( (void *) solver, rel_change ) );
 }
 
@@ -223,6 +301,10 @@ HYPRE_Int
 HYPRE_PCGGetRelChange( HYPRE_Solver  solver,
                        HYPRE_Int    *rel_change )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetRelChange( (void *) solver, rel_change ) );
 }
 
@@ -234,6 +316,10 @@ HYPRE_Int
 HYPRE_PCGSetRecomputeResidual( HYPRE_Solver solver,
                                HYPRE_Int    recompute_residual )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetRecomputeResidual( (void *) solver, recompute_residual ) );
 }
 
@@ -241,6 +327,10 @@ HYPRE_Int
 HYPRE_PCGGetRecomputeResidual( HYPRE_Solver  solver,
                                HYPRE_Int    *recompute_residual )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetRecomputeResidual( (void *) solver, recompute_residual ) );
 }
 
@@ -252,6 +342,10 @@ HYPRE_Int
 HYPRE_PCGSetRecomputeResidualP( HYPRE_Solver solver,
                                 HYPRE_Int    recompute_residual_p )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetRecomputeResidualP( (void *) solver, recompute_residual_p ) );
 }
 
@@ -259,6 +353,10 @@ HYPRE_Int
 HYPRE_PCGGetRecomputeResidualP( HYPRE_Solver  solver,
                                 HYPRE_Int    *recompute_residual_p )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetRecomputeResidualP( (void *) solver, recompute_residual_p ) );
 }
 
@@ -272,6 +370,10 @@ HYPRE_PCGSetPrecond( HYPRE_Solver         solver,
                      HYPRE_PtrToSolverFcn precond_setup,
                      HYPRE_Solver         precond_solver )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetPrecond( (void *) solver,
                                 (HYPRE_Int (*)(void*, void*, void*, void*))precond,
 								(HYPRE_Int (*)(void*, void*, void*, void*))precond_setup,
@@ -286,6 +388,10 @@ HYPRE_Int
 HYPRE_PCGGetPrecond( HYPRE_Solver  solver,
                      HYPRE_Solver *precond_data_ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetPrecond( (void *)     solver,
                                 (HYPRE_Solver *) precond_data_ptr ) );
 }
@@ -300,6 +406,10 @@ HYPRE_Int
 HYPRE_PCGSetLogging( HYPRE_Solver solver,
                      HYPRE_Int    level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( hypre_PCGSetLogging( (void *) solver, level ) );
 }
 
@@ -307,6 +417,10 @@ HYPRE_Int
 HYPRE_PCGGetLogging( HYPRE_Solver solver,
                      HYPRE_Int        * level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( hypre_PCGGetLogging( (void *) solver, level ) );
 }
 
@@ -318,6 +432,10 @@ HYPRE_Int
 HYPRE_PCGSetPrintLevel( HYPRE_Solver solver,
                         HYPRE_Int    level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGSetPrintLevel( (void *) solver, level ) );
 }
 
@@ -325,6 +443,10 @@ HYPRE_Int
 HYPRE_PCGGetPrintLevel( HYPRE_Solver  solver,
                         HYPRE_Int    *level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetPrintLevel( (void *) solver, level ) );
 }
 
@@ -336,6 +458,10 @@ HYPRE_Int
 HYPRE_PCGGetNumIterations( HYPRE_Solver  solver,
                            HYPRE_Int    *num_iterations )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetNumIterations( (void *) solver, num_iterations ) );
 }
 
@@ -347,6 +473,10 @@ HYPRE_Int
 HYPRE_PCGGetConverged( HYPRE_Solver  solver,
                        HYPRE_Int    *converged )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetConverged( (void *) solver, converged ) );
 }
 
@@ -358,6 +488,10 @@ HYPRE_Int
 HYPRE_PCGGetFinalRelativeResidualNorm( HYPRE_Solver  solver,
                                        HYPRE_Real   *norm )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_PCGGetFinalRelativeResidualNorm( (void *) solver, norm ) );
 }
 
@@ -369,6 +503,10 @@ HYPRE_Int HYPRE_PCGGetResidual( HYPRE_Solver   solver,
                                 void         **residual )
 {
    /* returns a pointer to the residual vector */
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_PCGGetResidual( (void *) solver, residual );
 }
 

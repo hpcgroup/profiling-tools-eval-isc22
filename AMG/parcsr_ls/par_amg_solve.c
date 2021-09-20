@@ -28,6 +28,10 @@
 #include "_hypre_parcsr_ls.h"
 #include "par_amg.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /*--------------------------------------------------------------------
  * hypre_BoomerAMGSolve
  *--------------------------------------------------------------------*/
@@ -38,7 +42,9 @@ hypre_BoomerAMGSolve( void               *amg_vdata,
                    hypre_ParVector    *f,
                    hypre_ParVector    *u         )
 {
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm 	      comm = hypre_ParCSRMatrixComm(A);   
 
    hypre_ParAMGData   *amg_data = (hypre_ParAMGData*) amg_vdata;
@@ -191,6 +197,9 @@ hypre_BoomerAMGSolve( void               *amg_vdata,
         }
         hypre_error(HYPRE_ERROR_GENERIC);
         /*HYPRE_ANNOTATION_END("BoomerAMG.solve");*/
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
         return hypre_error_flag;
      }
 
@@ -347,6 +356,9 @@ hypre_BoomerAMGSolve( void               *amg_vdata,
 
    /* HYPRE_ANNOTATION_END("BoomerAMG.solve"); */
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

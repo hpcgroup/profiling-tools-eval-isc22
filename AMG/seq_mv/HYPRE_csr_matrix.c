@@ -25,7 +25,9 @@
  *****************************************************************************/
 
 #include "seq_mv.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_CSRMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -35,6 +37,9 @@ HYPRE_CSRMatrixCreate( HYPRE_Int  num_rows,
                        HYPRE_Int  num_cols,
                        HYPRE_Int *row_sizes )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *matrix;
    HYPRE_Int             *matrix_i;
    HYPRE_Int              i;
@@ -49,6 +54,9 @@ HYPRE_CSRMatrixCreate( HYPRE_Int  num_rows,
    matrix = hypre_CSRMatrixCreate(num_rows, num_cols, matrix_i[num_rows]);
    hypre_CSRMatrixI(matrix) = matrix_i;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( (HYPRE_CSRMatrix) matrix );
 }
 
@@ -59,6 +67,12 @@ HYPRE_CSRMatrixCreate( HYPRE_Int  num_rows,
 HYPRE_Int 
 HYPRE_CSRMatrixDestroy( HYPRE_CSRMatrix matrix )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_CSRMatrixDestroy( (hypre_CSRMatrix *) matrix ) );
 }
 
@@ -69,6 +83,12 @@ HYPRE_CSRMatrixDestroy( HYPRE_CSRMatrix matrix )
 HYPRE_Int
 HYPRE_CSRMatrixInitialize( HYPRE_CSRMatrix matrix )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( hypre_CSRMatrixInitialize( (hypre_CSRMatrix *) matrix ) );
 }
 
@@ -79,6 +99,12 @@ HYPRE_CSRMatrixInitialize( HYPRE_CSRMatrix matrix )
 HYPRE_CSRMatrix 
 HYPRE_CSRMatrixRead( char            *file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( (HYPRE_CSRMatrix) hypre_CSRMatrixRead( file_name ) );
 }
 
@@ -90,6 +116,12 @@ void
 HYPRE_CSRMatrixPrint( HYPRE_CSRMatrix  matrix,
                       char            *file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    hypre_CSRMatrixPrint( (hypre_CSRMatrix *) matrix,
                          file_name );
 }
@@ -101,10 +133,16 @@ HYPRE_CSRMatrixPrint( HYPRE_CSRMatrix  matrix,
 HYPRE_Int
 HYPRE_CSRMatrixGetNumRows( HYPRE_CSRMatrix matrix, HYPRE_Int *num_rows )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *csr_matrix = (hypre_CSRMatrix *) matrix;
 
    *num_rows =  hypre_CSRMatrixNumRows( csr_matrix );
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 

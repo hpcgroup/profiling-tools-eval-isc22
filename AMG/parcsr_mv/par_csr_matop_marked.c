@@ -18,6 +18,11 @@
 #include "_hypre_parcsr_mv.h"
 #include "assert.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
+
 void hypre_ParCSRMatrixCopy_C( hypre_ParCSRMatrix * P,
                                hypre_ParCSRMatrix * C, HYPRE_Int * CF_marker );
 void hypre_ParCSRMatrixZero_F( hypre_ParCSRMatrix * P, HYPRE_Int * CF_marker );
@@ -44,6 +49,9 @@ void hypre_ParMatmul_RowSizes_Marked(
    data, C only has fine data.  But C is the full size of the product A*B.
 */
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i1, i2, i3, jj2, jj3;
    HYPRE_Int jj_count_diag, jj_count_offd, jj_row_begin_diag, jj_row_begin_offd;
    HYPRE_Int start_indexing = 0; /* start indexing for C_data at 0 */
@@ -229,6 +237,9 @@ void hypre_ParMatmul_RowSizes_Marked(
    *C_offd_size = jj_count_offd;
 
    /* End of First Pass */
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 hypre_ParCSRMatrix * hypre_ParMatmul_FC(
@@ -253,6 +264,10 @@ hypre_ParCSRMatrix * hypre_ParMatmul_FC(
       matrix would need global information that depends on which rows are
       "Fine".
    */
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 
    MPI_Comm            comm = hypre_ParCSRMatrixComm(A);
                       
@@ -357,6 +372,9 @@ hypre_ParCSRMatrix * hypre_ParMatmul_FC(
    if (n_cols_A_global != n_rows_P_global || num_cols_diag_A != num_rows_diag_P)
    {
       hypre_printf(" Error! Incompatible matrix dimensions!\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
    }
    /* if (num_rows_A==num_cols_P) allsquare = 1; */
@@ -770,6 +788,9 @@ hypre_ParCSRMatrix * hypre_ParMatmul_FC(
    }
    if (num_cols_offd_P) hypre_TFree(map_P_to_C);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return C;
    
 }
@@ -793,6 +814,10 @@ void hypre_ParMatScaleDiagInv_F(
      Unlike a matmul, this computation is purely local, only the diag
      blocks are involved.
    */
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 
    hypre_CSRMatrix *A_diag = hypre_ParCSRMatrixDiag(A);
    hypre_CSRMatrix *C_diag = hypre_ParCSRMatrixDiag(C);
@@ -860,6 +885,9 @@ void hypre_ParMatScaleDiagInv_F(
       }
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 hypre_ParCSRMatrix * hypre_ParMatMinus_F(
@@ -881,6 +909,10 @@ hypre_ParCSRMatrix * hypre_ParMatMinus_F(
       This is written for an interpolation problem where it is known that C(i,k)
       exists whenever P(i,k) does (because C=A*P where A has nonzero diagonal elements).
    */
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 
    hypre_ParCSRMatrix *Pnew;
    hypre_CSRMatrix    *P_diag = hypre_ParCSRMatrixDiag(P);
@@ -1092,6 +1124,9 @@ hypre_ParCSRMatrix * hypre_ParMatMinus_F(
 
    hypre_TFree(Pnew_j2m);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return Pnew;
 }
 
@@ -1099,6 +1134,9 @@ hypre_ParCSRMatrix * hypre_ParMatMinus_F(
 void  hypre_ParCSRMatrixZero_F( hypre_ParCSRMatrix * P,
                                 HYPRE_Int * CF_marker )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *P_diag = hypre_ParCSRMatrixDiag(P);
    hypre_CSRMatrix *P_offd = hypre_ParCSRMatrixOffd(P);
 
@@ -1133,6 +1171,9 @@ void  hypre_ParCSRMatrixZero_F( hypre_ParCSRMatrix * P,
          }
       }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /* coarse (marked >=0) rows of P copied from C Both matrices have the same sizes. */
@@ -1140,6 +1181,9 @@ void hypre_ParCSRMatrixCopy_C( hypre_ParCSRMatrix * P,
                                hypre_ParCSRMatrix * C,
                                HYPRE_Int * CF_marker )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *C_diag = hypre_ParCSRMatrixDiag(C);
    hypre_CSRMatrix *C_offd = hypre_ParCSRMatrixOffd(C);
    hypre_CSRMatrix *P_diag = hypre_ParCSRMatrixDiag(P);
@@ -1179,6 +1223,9 @@ void hypre_ParCSRMatrixCopy_C( hypre_ParCSRMatrix * P,
          }
       }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /* RDF: Commented out due to issues with complex types and comparisons that

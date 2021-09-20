@@ -23,7 +23,9 @@
 
 #include "_hypre_IJ_mv.h"
 #include "aux_parcsr_matrix.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_AuxParCSRMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -34,6 +36,9 @@ hypre_AuxParCSRMatrixCreate( hypre_AuxParCSRMatrix **aux_matrix,
                        	     HYPRE_Int  local_num_cols,
 			     HYPRE_Int *sizes)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_AuxParCSRMatrix  *matrix;
    
    matrix = hypre_CTAlloc(hypre_AuxParCSRMatrix, 1);
@@ -67,6 +72,9 @@ hypre_AuxParCSRMatrixCreate( hypre_AuxParCSRMatrix **aux_matrix,
 
 
    *aux_matrix = matrix;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
@@ -77,6 +85,9 @@ hypre_AuxParCSRMatrixCreate( hypre_AuxParCSRMatrix **aux_matrix,
 HYPRE_Int 
 hypre_AuxParCSRMatrixDestroy( hypre_AuxParCSRMatrix *matrix )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int ierr=0;
    HYPRE_Int i;
    HYPRE_Int num_rows;
@@ -113,6 +124,9 @@ hypre_AuxParCSRMatrixDestroy( hypre_AuxParCSRMatrix *matrix )
       hypre_TFree(matrix);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -123,6 +137,9 @@ hypre_AuxParCSRMatrixDestroy( hypre_AuxParCSRMatrix *matrix )
 HYPRE_Int 
 hypre_AuxParCSRMatrixInitialize( hypre_AuxParCSRMatrix *matrix )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int local_num_rows = hypre_AuxParCSRMatrixLocalNumRows(matrix);
    HYPRE_Int *row_space = hypre_AuxParCSRMatrixRowSpace(matrix);
    HYPRE_Int max_off_proc_elmts = hypre_AuxParCSRMatrixMaxOffProcElmts(matrix);
@@ -130,10 +147,19 @@ hypre_AuxParCSRMatrixInitialize( hypre_AuxParCSRMatrix *matrix )
    HYPRE_Complex **aux_data;
    HYPRE_Int i;
 
-   if (local_num_rows < 0) 
+   if (local_num_rows < 0) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return -1;
-   if (local_num_rows == 0) 
+   }
+   if (local_num_rows == 0) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return 0;
+   }
+
    /* allocate stash for setting or adding off processor values */
    if (max_off_proc_elmts > 0)
    {
@@ -179,6 +205,9 @@ hypre_AuxParCSRMatrixInitialize( hypre_AuxParCSRMatrix *matrix )
       hypre_AuxParCSRMatrixIndxOffd(matrix) = hypre_CTAlloc(HYPRE_Int,local_num_rows);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
@@ -190,8 +219,14 @@ HYPRE_Int
 hypre_AuxParCSRMatrixSetMaxOffPRocElmts( hypre_AuxParCSRMatrix *matrix,
 					 HYPRE_Int max_off_proc_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int ierr = 0;
    hypre_AuxParCSRMatrixMaxOffProcElmts(matrix) = max_off_proc_elmts;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 

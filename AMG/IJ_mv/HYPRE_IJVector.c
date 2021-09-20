@@ -24,7 +24,9 @@
 #include "./_hypre_IJ_mv.h"
 
 #include "../HYPRE.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_IJVectorCreate
  *--------------------------------------------------------------------------*/
@@ -35,6 +37,9 @@ HYPRE_IJVectorCreate( MPI_Comm        comm,
                       HYPRE_Int       jupper,
                       HYPRE_IJVector *vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec;
    HYPRE_Int num_procs, my_id, *partitioning;
  
@@ -51,6 +56,9 @@ HYPRE_IJVectorCreate( MPI_Comm        comm,
    if (!vec)
    {  
       hypre_error(HYPRE_ERROR_MEMORY);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -61,11 +69,17 @@ HYPRE_IJVectorCreate( MPI_Comm        comm,
    {
       hypre_error_in_arg(2);
       hypre_TFree(vec);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (jupper < -1)
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -120,6 +134,9 @@ HYPRE_IJVectorCreate( MPI_Comm        comm,
          hypre_TFree(recv_buf);
          hypre_TFree(partitioning);
          hypre_TFree(vec);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
          return hypre_error_flag;
       }
       else
@@ -147,6 +164,9 @@ HYPRE_IJVectorCreate( MPI_Comm        comm,
 
    *vector = (HYPRE_IJVector) vec;
   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -157,11 +177,17 @@ HYPRE_IJVectorCreate( MPI_Comm        comm,
 HYPRE_Int 
 HYPRE_IJVectorDestroy( HYPRE_IJVector vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
@@ -183,11 +209,17 @@ HYPRE_IJVectorDestroy( HYPRE_IJVector vector )
    else if ( hypre_IJVectorObjectType(vec) != -1 )
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_TFree(vec);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -198,11 +230,17 @@ HYPRE_IJVectorDestroy( HYPRE_IJVector vector )
 HYPRE_Int 
 HYPRE_IJVectorInitialize( HYPRE_IJVector vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
@@ -218,6 +256,9 @@ HYPRE_IJVectorInitialize( HYPRE_IJVector vector )
       hypre_error_in_arg(1);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -229,15 +270,24 @@ HYPRE_Int
 HYPRE_IJVectorSetPrintLevel( HYPRE_IJVector vector,
                              HYPRE_Int print_level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *ijvector = (hypre_IJVector *) vector;
 
    if (!ijvector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_IJVectorPrintLevel(ijvector) = 1;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -252,30 +302,51 @@ HYPRE_IJVectorSetValues( HYPRE_IJVector        vector,
                          const HYPRE_Int      *indices,
                          const HYPRE_Complex  *values   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
-   if (nvalues == 0) return hypre_error_flag;
+   if (nvalues == 0) {
+
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
+      return hypre_error_flag;
+   }
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (nvalues < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (!values)
    {
       hypre_error_in_arg(4);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return( hypre_IJVectorSetValuesPar(vec, nvalues, indices, values) );
    }
    else
@@ -283,6 +354,9 @@ HYPRE_IJVectorSetValues( HYPRE_IJVector        vector,
       hypre_error_in_arg(1);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -296,30 +370,50 @@ HYPRE_IJVectorAddToValues( HYPRE_IJVector        vector,
                            const HYPRE_Int      *indices,
                            const HYPRE_Complex  *values )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
-   if (nvalues == 0) return hypre_error_flag;
+   if (nvalues == 0) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
+      return hypre_error_flag;
+   }
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (nvalues < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (!values)
    {
       hypre_error_in_arg(4);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return( hypre_IJVectorAddToValuesPar(vec, nvalues, indices, values) );
    }
    else
@@ -327,6 +421,9 @@ HYPRE_IJVectorAddToValues( HYPRE_IJVector        vector,
       hypre_error_in_arg(1);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -337,16 +434,25 @@ HYPRE_IJVectorAddToValues( HYPRE_IJVector        vector,
 HYPRE_Int 
 HYPRE_IJVectorAssemble( HYPRE_IJVector  vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return( hypre_IJVectorAssemblePar(vec) );
    }
    else 
@@ -354,6 +460,9 @@ HYPRE_IJVectorAssemble( HYPRE_IJVector  vector )
       hypre_error_in_arg(1);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -367,30 +476,50 @@ HYPRE_IJVectorGetValues( HYPRE_IJVector   vector,
                          const HYPRE_Int *indices,
                          HYPRE_Complex   *values )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
-   if (nvalues == 0) return hypre_error_flag;
+   if (nvalues == 0) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
+      return hypre_error_flag;
+   }
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (nvalues < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (!values)
    {
       hypre_error_in_arg(4);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return( hypre_IJVectorGetValuesPar(vec, nvalues, indices, values) );
    }
    else
@@ -398,6 +527,9 @@ HYPRE_IJVectorGetValues( HYPRE_IJVector   vector,
       hypre_error_in_arg(1);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -409,16 +541,25 @@ HYPRE_Int
 HYPRE_IJVectorSetMaxOffProcElmts( HYPRE_IJVector vector, 
 				  HYPRE_Int      max_off_proc_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return( hypre_IJVectorSetMaxOffProcElmtsPar(vec, max_off_proc_elmts));
    }
    else
@@ -426,6 +567,9 @@ HYPRE_IJVectorSetMaxOffProcElmts( HYPRE_IJVector vector,
       hypre_error_in_arg(1);
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -437,16 +581,25 @@ HYPRE_Int
 HYPRE_IJVectorSetObjectType( HYPRE_IJVector vector,
                              HYPRE_Int      type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_IJVectorObjectType(vec) = type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -458,16 +611,25 @@ HYPRE_Int
 HYPRE_IJVectorGetObjectType( HYPRE_IJVector  vector,
                              HYPRE_Int      *type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *type = hypre_IJVectorObjectType(vec);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -480,6 +642,9 @@ HYPRE_IJVectorGetLocalRange( HYPRE_IJVector  vector,
                              HYPRE_Int      *jlower,
                              HYPRE_Int      *jupper )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
    MPI_Comm comm;
    HYPRE_Int *partitioning;
@@ -488,6 +653,9 @@ HYPRE_IJVectorGetLocalRange( HYPRE_IJVector  vector,
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
@@ -502,6 +670,9 @@ HYPRE_IJVectorGetLocalRange( HYPRE_IJVector  vector,
    *jlower = partitioning[my_id];
    *jupper = partitioning[my_id+1]-1;
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -513,16 +684,25 @@ HYPRE_Int
 HYPRE_IJVectorGetObject( HYPRE_IJVector   vector,
                          void           **object )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *object = hypre_IJVectorObject(vec);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -536,6 +716,9 @@ HYPRE_IJVectorRead( const char     *filename,
                     HYPRE_Int       type,
                     HYPRE_IJVector *vector_ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_IJVector  vector;
    HYPRE_Int       jlower, jupper, j;
    HYPRE_Complex   value;
@@ -550,6 +733,9 @@ HYPRE_IJVectorRead( const char     *filename,
    if ((file = fopen(new_filename, "r")) == NULL)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -568,6 +754,9 @@ HYPRE_IJVectorRead( const char     *filename,
       if (ret != 2)
       {
          hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Error in IJ vector input file.");
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
          return hypre_error_flag;
       }
       if (j < jlower || j > jupper)
@@ -582,6 +771,9 @@ HYPRE_IJVectorRead( const char     *filename,
 
    *vector_ptr = vector;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -593,6 +785,9 @@ HYPRE_Int
 HYPRE_IJVectorPrint( HYPRE_IJVector  vector,
                      const char     *filename )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm        comm;
    HYPRE_Int      *partitioning;
    HYPRE_Int       jlower, jupper, j;
@@ -604,6 +799,9 @@ HYPRE_IJVectorPrint( HYPRE_IJVector  vector,
    if (!vector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
@@ -615,6 +813,9 @@ HYPRE_IJVectorPrint( HYPRE_IJVector  vector,
    if ((file = fopen(new_filename, "w")) == NULL)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -637,5 +838,8 @@ HYPRE_IJVectorPrint( HYPRE_IJVector  vector,
 
    fclose(file);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }

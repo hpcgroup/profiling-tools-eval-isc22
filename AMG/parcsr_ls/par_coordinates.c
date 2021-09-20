@@ -21,6 +21,10 @@
  
 #include "_hypre_parcsr_ls.h"
  
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 /*--------------------------------------------------------------------------
  * GenerateCoordinates
  *--------------------------------------------------------------------------*/
@@ -38,6 +42,10 @@ GenerateCoordinates( MPI_Comm comm,
 		     HYPRE_Int      r,
 		     HYPRE_Int      coorddim)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+
    HYPRE_Int ix, iy, iz;
    HYPRE_Int cnt;
 
@@ -51,6 +59,9 @@ GenerateCoordinates( MPI_Comm comm,
    float *coord=NULL;
 
    if (coorddim<1 || coorddim>3) {
+    #ifdef caliper
+    CALI_MARK_FUNCTION_END;
+    #endif
      return NULL;
    }
 
@@ -87,5 +98,8 @@ GenerateCoordinates( MPI_Comm comm,
    hypre_TFree(ny_part);
    hypre_TFree(nz_part);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return coord;
 }

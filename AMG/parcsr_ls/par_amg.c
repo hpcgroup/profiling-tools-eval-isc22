@@ -29,6 +29,9 @@
 #include "par_amg.h"
 #include <assert.h>
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_BoomerAMGCreate
  *--------------------------------------------------------------------------*/
@@ -36,6 +39,9 @@
 void *
 hypre_BoomerAMGCreate()
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data;
 
    /* setup params */
@@ -316,6 +322,9 @@ hypre_BoomerAMGCreate()
 
    /*HYPRE_ANNOTATION_END("BoomerAMG.create");*/
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (void *) amg_data;
 }
 
@@ -326,6 +335,9 @@ hypre_BoomerAMGCreate()
 HYPRE_Int
 hypre_BoomerAMGDestroy( void *data )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    HYPRE_Int num_levels = hypre_ParAMGDataNumLevels(amg_data);
    void *amg = hypre_ParAMGDataCoarseSolver(amg_data);
@@ -514,6 +526,9 @@ hypre_BoomerAMGDestroy( void *data )
 
    /*HYPRE_ANNOTATION_END("BoomerAMG.destroy");*/
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -525,16 +540,25 @@ HYPRE_Int
 hypre_BoomerAMGSetRestriction( void *data,
                             HYPRE_Int   restr_par )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 	hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataRestriction(amg_data) = restr_par;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -542,17 +566,26 @@ HYPRE_Int
 hypre_BoomerAMGSetMaxLevels( void *data,
                           HYPRE_Int   max_levels )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    HYPRE_Int old_max_levels;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (max_levels < 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -591,7 +624,9 @@ hypre_BoomerAMGSetMaxLevels( void *data,
       }
    }
    hypre_ParAMGDataMaxLevels(amg_data) = max_levels;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -599,16 +634,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMaxLevels( void *data,
                              HYPRE_Int *  max_levels )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *max_levels = hypre_ParAMGDataMaxLevels(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -616,22 +660,34 @@ HYPRE_Int
 hypre_BoomerAMGSetMaxCoarseSize( void *data,
                           HYPRE_Int   max_coarse_size )
 {
+   #ifdef caliper 
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (max_coarse_size < 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataMaxCoarseSize(amg_data) = max_coarse_size;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -639,16 +695,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMaxCoarseSize( void *data,
                              HYPRE_Int *  max_coarse_size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *max_coarse_size = hypre_ParAMGDataMaxCoarseSize(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -656,22 +721,34 @@ HYPRE_Int
 hypre_BoomerAMGSetMinCoarseSize( void *data,
                           HYPRE_Int   min_coarse_size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (min_coarse_size < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataMinCoarseSize(amg_data) = min_coarse_size;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -679,16 +756,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMinCoarseSize( void *data,
                              HYPRE_Int *  min_coarse_size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *min_coarse_size = hypre_ParAMGDataMinCoarseSize(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -696,22 +782,34 @@ HYPRE_Int
 hypre_BoomerAMGSetSeqThreshold( void *data,
                           HYPRE_Int   seq_threshold )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (seq_threshold < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataSeqThreshold(amg_data) = seq_threshold;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -719,16 +817,25 @@ HYPRE_Int
 hypre_BoomerAMGGetSeqThreshold( void *data,
                              HYPRE_Int *  seq_threshold )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *seq_threshold = hypre_ParAMGDataSeqThreshold(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -736,22 +843,34 @@ HYPRE_Int
 hypre_BoomerAMGSetRedundant( void *data,
                           HYPRE_Int   redundant )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    if (redundant < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataRedundant(amg_data) = redundant;
-
+   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -759,16 +878,25 @@ HYPRE_Int
 hypre_BoomerAMGGetRedundant( void *data,
                              HYPRE_Int *  redundant )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    *redundant = hypre_ParAMGDataRedundant(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -776,22 +904,34 @@ HYPRE_Int
 hypre_BoomerAMGSetStrongThreshold( void     *data,
                                 HYPRE_Real    strong_threshold )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (strong_threshold < 0 || strong_threshold > 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataStrongThreshold(amg_data) = strong_threshold;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -799,16 +939,25 @@ HYPRE_Int
 hypre_BoomerAMGGetStrongThreshold( void     *data,
                                 HYPRE_Real *  strong_threshold )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *strong_threshold = hypre_ParAMGDataStrongThreshold(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -816,22 +965,34 @@ HYPRE_Int
 hypre_BoomerAMGSetMaxRowSum( void     *data,
                           HYPRE_Real    max_row_sum )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (max_row_sum <= 0 || max_row_sum > 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataMaxRowSum(amg_data) = max_row_sum;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -839,16 +1000,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMaxRowSum( void     *data,
                           HYPRE_Real *  max_row_sum )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *max_row_sum = hypre_ParAMGDataMaxRowSum(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -856,22 +1026,34 @@ HYPRE_Int
 hypre_BoomerAMGSetTruncFactor( void     *data,
                             HYPRE_Real    trunc_factor )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (trunc_factor < 0 || trunc_factor >= 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataTruncFactor(amg_data) = trunc_factor;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -879,16 +1061,25 @@ HYPRE_Int
 hypre_BoomerAMGGetTruncFactor( void     *data,
                             HYPRE_Real *  trunc_factor )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *trunc_factor = hypre_ParAMGDataTruncFactor(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -896,22 +1087,34 @@ HYPRE_Int
 hypre_BoomerAMGSetPMaxElmts( void     *data,
                             HYPRE_Int    P_max_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (P_max_elmts < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataPMaxElmts(amg_data) = P_max_elmts;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -919,16 +1122,25 @@ HYPRE_Int
 hypre_BoomerAMGGetPMaxElmts( void     *data,
                             HYPRE_Int *  P_max_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *P_max_elmts = hypre_ParAMGDataPMaxElmts(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -936,22 +1148,34 @@ HYPRE_Int
 hypre_BoomerAMGSetJacobiTruncThreshold( void     *data,
                             HYPRE_Real    jacobi_trunc_threshold )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (jacobi_trunc_threshold < 0 || jacobi_trunc_threshold >= 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataJacobiTruncThreshold(amg_data) = jacobi_trunc_threshold;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -959,16 +1183,25 @@ HYPRE_Int
 hypre_BoomerAMGGetJacobiTruncThreshold( void     *data,
                             HYPRE_Real *  jacobi_trunc_threshold )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *jacobi_trunc_threshold = hypre_ParAMGDataJacobiTruncThreshold(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -976,22 +1209,34 @@ HYPRE_Int
 hypre_BoomerAMGSetPostInterpType( void     *data,
                                   HYPRE_Int    post_interp_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (post_interp_type < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataPostInterpType(amg_data) = post_interp_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -999,16 +1244,25 @@ HYPRE_Int
 hypre_BoomerAMGGetPostInterpType( void     *data,
                                   HYPRE_Int  * post_interp_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *post_interp_type = hypre_ParAMGDataPostInterpType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1016,16 +1270,25 @@ HYPRE_Int
 hypre_BoomerAMGSetSCommPkgSwitch( void     *data,
                                   HYPRE_Real    S_commpkg_switch )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataSCommPkgSwitch(amg_data) = S_commpkg_switch;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1033,16 +1296,25 @@ HYPRE_Int
 hypre_BoomerAMGGetSCommPkgSwitch( void     *data,
                                   HYPRE_Real *  S_commpkg_switch )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *S_commpkg_switch = hypre_ParAMGDataSCommPkgSwitch(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1050,11 +1322,17 @@ HYPRE_Int
 hypre_BoomerAMGSetInterpType( void     *data,
                            HYPRE_Int       interp_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
@@ -1063,11 +1341,17 @@ hypre_BoomerAMGSetInterpType( void     *data,
 
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataInterpType(amg_data) = interp_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1075,16 +1359,25 @@ HYPRE_Int
 hypre_BoomerAMGGetInterpType( void     *data,
                            HYPRE_Int *     interp_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *interp_type = hypre_ParAMGDataInterpType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1092,16 +1385,25 @@ HYPRE_Int
 hypre_BoomerAMGSetSepWeight( void     *data,
                            HYPRE_Int       sep_weight )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataSepWeight(amg_data) = sep_weight;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1109,16 +1411,25 @@ HYPRE_Int
 hypre_BoomerAMGSetMinIter( void     *data,
                         HYPRE_Int       min_iter )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataMinIter(amg_data) = min_iter;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 } 
 
@@ -1126,16 +1437,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMinIter( void     *data,
                         HYPRE_Int *     min_iter )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *min_iter = hypre_ParAMGDataMinIter(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 } 
 
@@ -1143,22 +1463,34 @@ HYPRE_Int
 hypre_BoomerAMGSetMaxIter( void     *data,
                         HYPRE_Int     max_iter )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (max_iter < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataMaxIter(amg_data) = max_iter;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 } 
 
@@ -1166,16 +1498,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMaxIter( void     *data,
                         HYPRE_Int *   max_iter )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *max_iter = hypre_ParAMGDataMaxIter(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 } 
 
@@ -1183,16 +1524,25 @@ HYPRE_Int
 hypre_BoomerAMGSetCoarsenType( void  *data,
                           HYPRE_Int    coarsen_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataCoarsenType(amg_data) = coarsen_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1200,16 +1550,25 @@ HYPRE_Int
 hypre_BoomerAMGGetCoarsenType( void  *data,
                           HYPRE_Int *  coarsen_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *coarsen_type = hypre_ParAMGDataCoarsenType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1217,16 +1576,25 @@ HYPRE_Int
 hypre_BoomerAMGSetMeasureType( void  *data,
                             HYPRE_Int    measure_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataMeasureType(amg_data) = measure_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1234,16 +1602,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMeasureType( void  *data,
                             HYPRE_Int *  measure_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *measure_type = hypre_ParAMGDataMeasureType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1251,16 +1628,25 @@ HYPRE_Int
 hypre_BoomerAMGSetSetupType( void  *data,
                              HYPRE_Int    setup_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_ParAMGDataSetupType(amg_data) = setup_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1268,16 +1654,25 @@ HYPRE_Int
 hypre_BoomerAMGGetSetupType( void  *data,
                              HYPRE_Int  *  setup_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *setup_type = hypre_ParAMGDataSetupType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1285,22 +1680,34 @@ HYPRE_Int
 hypre_BoomerAMGSetCycleType( void  *data,
                           HYPRE_Int    cycle_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (cycle_type < 0 || cycle_type > 2)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataCycleType(amg_data) = cycle_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1308,16 +1715,25 @@ HYPRE_Int
 hypre_BoomerAMGGetCycleType( void  *data,
                           HYPRE_Int *  cycle_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *cycle_type = hypre_ParAMGDataCycleType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1325,22 +1741,34 @@ HYPRE_Int
 hypre_BoomerAMGSetTol( void     *data,
                     HYPRE_Real    tol  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (tol < 0 || tol > 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataTol(amg_data) = tol;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1348,16 +1776,25 @@ HYPRE_Int
 hypre_BoomerAMGGetTol( void     *data,
                     HYPRE_Real *  tol  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    *tol = hypre_ParAMGDataTol(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1366,6 +1803,9 @@ HYPRE_Int
 hypre_BoomerAMGSetNumSweeps( void     *data,
                               HYPRE_Int      num_sweeps )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i;
    HYPRE_Int *num_grid_sweeps;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
@@ -1373,12 +1813,18 @@ hypre_BoomerAMGSetNumSweeps( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (num_sweeps < 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1393,6 +1839,9 @@ hypre_BoomerAMGSetNumSweeps( void     *data,
 
    hypre_ParAMGDataUserNumSweeps(amg_data) = num_sweeps;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
  
@@ -1401,6 +1850,9 @@ hypre_BoomerAMGSetCycleNumSweeps( void     *data,
                                   HYPRE_Int      num_sweeps,
                                   HYPRE_Int      k )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i;
    HYPRE_Int *num_grid_sweeps;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
@@ -1408,18 +1860,27 @@ hypre_BoomerAMGSetCycleNumSweeps( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (num_sweeps < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    if (k < 1 || k > 3)
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1433,6 +1894,9 @@ hypre_BoomerAMGSetCycleNumSweeps( void     *data,
        
    hypre_ParAMGDataNumGridSweeps(amg_data)[k] = num_sweeps;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
  
@@ -1441,27 +1905,42 @@ hypre_BoomerAMGGetCycleNumSweeps( void     *data,
                                   HYPRE_Int *    num_sweeps,
                                   HYPRE_Int      k )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (k < 1 || k > 3)
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    if (hypre_ParAMGDataNumGridSweeps(amg_data) == NULL)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
        
    *num_sweeps = hypre_ParAMGDataNumGridSweeps(amg_data)[k];
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
  
@@ -1469,16 +1948,25 @@ HYPRE_Int
 hypre_BoomerAMGSetNumGridSweeps( void     *data,
                               HYPRE_Int      *num_grid_sweeps )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (!num_grid_sweeps)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1486,6 +1974,9 @@ hypre_BoomerAMGSetNumGridSweeps( void     *data,
       hypre_TFree(hypre_ParAMGDataNumGridSweeps(amg_data));
    hypre_ParAMGDataNumGridSweeps(amg_data) = num_grid_sweeps;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
  
@@ -1493,15 +1984,24 @@ HYPRE_Int
 hypre_BoomerAMGGetNumGridSweeps( void     *data,
                               HYPRE_Int    ** num_grid_sweeps )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *num_grid_sweeps = hypre_ParAMGDataNumGridSweeps(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
  
@@ -1510,6 +2010,9 @@ HYPRE_Int
 hypre_BoomerAMGSetRelaxType( void     *data,
                               HYPRE_Int      relax_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i;
    HYPRE_Int *grid_relax_type;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
@@ -1517,11 +2020,17 @@ hypre_BoomerAMGSetRelaxType( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (relax_type < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1535,6 +2044,9 @@ hypre_BoomerAMGSetRelaxType( void     *data,
    hypre_ParAMGDataUserCoarseRelaxType(amg_data) = 9;
    hypre_ParAMGDataUserRelaxType(amg_data) = relax_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1543,6 +2055,9 @@ hypre_BoomerAMGSetCycleRelaxType( void     *data,
                                   HYPRE_Int      relax_type,
                                   HYPRE_Int      k )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i;
    HYPRE_Int *grid_relax_type;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
@@ -1550,16 +2065,25 @@ hypre_BoomerAMGSetCycleRelaxType( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (k < 1 || k > 3)
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (relax_type < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1576,6 +2100,9 @@ hypre_BoomerAMGSetCycleRelaxType( void     *data,
    if (k == 3)
       hypre_ParAMGDataUserCoarseRelaxType(amg_data) = relax_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1584,27 +2111,42 @@ hypre_BoomerAMGGetCycleRelaxType( void     *data,
                                   HYPRE_Int    * relax_type,
                                   HYPRE_Int      k )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (k < 1 || k > 3)
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    if (hypre_ParAMGDataGridRelaxType(amg_data) == NULL)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
       
    *relax_type = hypre_ParAMGDataGridRelaxType(amg_data)[k];
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1612,15 +2154,24 @@ HYPRE_Int
 hypre_BoomerAMGSetRelaxOrder( void     *data,
                               HYPRE_Int       relax_order)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataRelaxOrder(amg_data) = relax_order;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1628,15 +2179,24 @@ HYPRE_Int
 hypre_BoomerAMGGetRelaxOrder( void     *data,
                               HYPRE_Int     * relax_order)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *relax_order = hypre_ParAMGDataRelaxOrder(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1644,16 +2204,25 @@ HYPRE_Int
 hypre_BoomerAMGSetGridRelaxType( void     *data,
                               HYPRE_Int      *grid_relax_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (!grid_relax_type)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1662,6 +2231,9 @@ hypre_BoomerAMGSetGridRelaxType( void     *data,
    hypre_ParAMGDataGridRelaxType(amg_data) = grid_relax_type;
    hypre_ParAMGDataUserCoarseRelaxType(amg_data) = grid_relax_type[3];
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1669,15 +2241,24 @@ HYPRE_Int
 hypre_BoomerAMGGetGridRelaxType( void     *data,
                               HYPRE_Int    ** grid_relax_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *grid_relax_type = hypre_ParAMGDataGridRelaxType(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1685,17 +2266,26 @@ HYPRE_Int
 hypre_BoomerAMGSetGridRelaxPoints( void     *data,
                                 HYPRE_Int      **grid_relax_points )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (!grid_relax_points)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1707,6 +2297,9 @@ hypre_BoomerAMGSetGridRelaxPoints( void     *data,
    }
    hypre_ParAMGDataGridRelaxPoints(amg_data) = grid_relax_points; 
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1714,15 +2307,24 @@ HYPRE_Int
 hypre_BoomerAMGGetGridRelaxPoints( void     *data,
                                 HYPRE_Int    *** grid_relax_points )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *grid_relax_points = hypre_ParAMGDataGridRelaxPoints(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1730,16 +2332,25 @@ HYPRE_Int
 hypre_BoomerAMGSetRelaxWeight( void     *data,
                                HYPRE_Real   *relax_weight )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (!relax_weight)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1747,6 +2358,9 @@ hypre_BoomerAMGSetRelaxWeight( void     *data,
       hypre_TFree(hypre_ParAMGDataRelaxWeight(amg_data));
    hypre_ParAMGDataRelaxWeight(amg_data) = relax_weight;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1754,15 +2368,24 @@ HYPRE_Int
 hypre_BoomerAMGGetRelaxWeight( void     *data,
                                HYPRE_Real ** relax_weight )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *relax_weight = hypre_ParAMGDataRelaxWeight(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1770,6 +2393,9 @@ HYPRE_Int
 hypre_BoomerAMGSetRelaxWt( void     *data,
                            HYPRE_Real    relax_weight )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, num_levels;
    HYPRE_Real *relax_weight_array;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
@@ -1777,6 +2403,9 @@ hypre_BoomerAMGSetRelaxWt( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    num_levels = hypre_ParAMGDataMaxLevels(amg_data);
@@ -1789,6 +2418,9 @@ hypre_BoomerAMGSetRelaxWt( void     *data,
 
    hypre_ParAMGDataUserRelaxWeight(amg_data) = relax_weight;
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1797,17 +2429,26 @@ hypre_BoomerAMGSetLevelRelaxWt( void    *data,
                                 HYPRE_Real   relax_weight,
                                 HYPRE_Int      level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, num_levels;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    num_levels = hypre_ParAMGDataMaxLevels(amg_data);
    if (level > num_levels-1 || level < 0) 
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (hypre_ParAMGDataRelaxWeight(amg_data) == NULL)
@@ -1818,7 +2459,9 @@ hypre_BoomerAMGSetLevelRelaxWt( void    *data,
    }
                
    hypre_ParAMGDataRelaxWeight(amg_data)[level] = relax_weight;
-   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif 
    return hypre_error_flag;
 }
 
@@ -1827,27 +2470,41 @@ hypre_BoomerAMGGetLevelRelaxWt( void    *data,
                                 HYPRE_Real * relax_weight,
                                 HYPRE_Int      level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int num_levels;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    num_levels = hypre_ParAMGDataMaxLevels(amg_data);
    if (level > num_levels-1 || level < 0) 
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (hypre_ParAMGDataRelaxWeight(amg_data) == NULL)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
                
    *relax_weight = hypre_ParAMGDataRelaxWeight(amg_data)[level];
-   
+      #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1855,22 +2512,33 @@ HYPRE_Int
 hypre_BoomerAMGSetOmega( void     *data,
                          HYPRE_Real   *omega )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (!omega)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (hypre_ParAMGDataOmega(amg_data))
       hypre_TFree(hypre_ParAMGDataOmega(amg_data));
    hypre_ParAMGDataOmega(amg_data) = omega;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1878,15 +2546,23 @@ HYPRE_Int
 hypre_BoomerAMGGetOmega( void     *data,
                          HYPRE_Real ** omega )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *omega = hypre_ParAMGDataOmega(amg_data);
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1894,6 +2570,9 @@ HYPRE_Int
 hypre_BoomerAMGSetOuterWt( void     *data,
                            HYPRE_Real    omega )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, num_levels;
    HYPRE_Real *omega_array;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
@@ -1901,6 +2580,9 @@ hypre_BoomerAMGSetOuterWt( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    num_levels = hypre_ParAMGDataMaxLevels(amg_data);
@@ -1911,7 +2593,9 @@ hypre_BoomerAMGSetOuterWt( void     *data,
    for (i=0; i < num_levels; i++)
       omega_array[i] = omega;
    hypre_ParAMGDataOuterWt(amg_data) = omega;
- 
+    #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1920,17 +2604,26 @@ hypre_BoomerAMGSetLevelOuterWt( void    *data,
                                 HYPRE_Real   omega,
                                 HYPRE_Int      level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, num_levels;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    num_levels = hypre_ParAMGDataMaxLevels(amg_data);
    if (level > num_levels-1) 
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (hypre_ParAMGDataOmega(amg_data) == NULL)
@@ -1941,7 +2634,9 @@ hypre_BoomerAMGSetLevelOuterWt( void    *data,
    }
                
    hypre_ParAMGDataOmega(amg_data)[level] = omega;
-   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif   
    return hypre_error_flag;
 }
 
@@ -1950,27 +2645,41 @@ hypre_BoomerAMGGetLevelOuterWt( void    *data,
                                 HYPRE_Real * omega,
                                 HYPRE_Int      level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int num_levels;
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    num_levels = hypre_ParAMGDataMaxLevels(amg_data);
    if (level > num_levels-1) 
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (hypre_ParAMGDataOmega(amg_data) == NULL)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
                
    *omega = hypre_ParAMGDataOmega(amg_data)[level];
-   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif   
    return hypre_error_flag;
 }
 
@@ -1978,6 +2687,9 @@ HYPRE_Int
 hypre_BoomerAMGSetLogging( void     *data,
                             HYPRE_Int       logging )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    /* This function should be called before Setup.  Logging changes
       may require allocation or freeing of arrays, which is presently
       only done there.
@@ -1989,10 +2701,15 @@ hypre_BoomerAMGSetLogging( void     *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataLogging(amg_data) = logging;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2000,15 +2717,23 @@ HYPRE_Int
 hypre_BoomerAMGGetLogging( void     *data,
                             HYPRE_Int     * logging )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *logging = hypre_ParAMGDataLogging(amg_data);
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2016,15 +2741,23 @@ HYPRE_Int
 hypre_BoomerAMGSetPrintLevel( void     *data,
                         HYPRE_Int print_level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataPrintLevel(amg_data) = print_level;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2032,15 +2765,23 @@ HYPRE_Int
 hypre_BoomerAMGGetPrintLevel( void     *data,
                         HYPRE_Int * print_level )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *print_level =  hypre_ParAMGDataPrintLevel(amg_data);
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2048,20 +2789,31 @@ HYPRE_Int
 hypre_BoomerAMGSetPrintFileName( void       *data,
                                const char *print_file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data =  (hypre_ParAMGData*)data;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if( strlen(print_file_name) > 256 )
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    hypre_sprintf(hypre_ParAMGDataLogFileName(amg_data), "%s", print_file_name);
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2069,15 +2821,24 @@ HYPRE_Int
 hypre_BoomerAMGGetPrintFileName( void       *data,
                                  char ** print_file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_sprintf( *print_file_name, "%s", hypre_ParAMGDataLogFileName(amg_data) );
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2085,15 +2846,24 @@ HYPRE_Int
 hypre_BoomerAMGSetNumIterations( void    *data,
                               HYPRE_Int      num_iterations )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNumIterations(amg_data) = num_iterations;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2101,15 +2871,24 @@ HYPRE_Int
 hypre_BoomerAMGSetDebugFlag( void     *data,
                           HYPRE_Int       debug_flag )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataDebugFlag(amg_data) = debug_flag;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2117,15 +2896,24 @@ HYPRE_Int
 hypre_BoomerAMGGetDebugFlag( void     *data,
                           HYPRE_Int     * debug_flag )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *debug_flag = hypre_ParAMGDataDebugFlag(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2137,20 +2925,32 @@ HYPRE_Int
 hypre_BoomerAMGSetNumFunctions( void     *data,
                             HYPRE_Int       num_functions )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (num_functions < 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNumFunctions(amg_data) = num_functions;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2158,15 +2958,23 @@ HYPRE_Int
 hypre_BoomerAMGGetNumFunctions( void     *data,
                             HYPRE_Int     * num_functions )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *num_functions = hypre_ParAMGDataNumFunctions(amg_data);
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2178,15 +2986,23 @@ HYPRE_Int
 hypre_BoomerAMGSetNodal( void     *data,
                           HYPRE_Int    nodal )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNodal(amg_data) = nodal;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -2197,15 +3013,23 @@ HYPRE_Int
 hypre_BoomerAMGSetNodalLevels( void     *data,
                           HYPRE_Int    nodal_levels )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNodalLevels(amg_data) = nodal_levels;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2218,15 +3042,23 @@ HYPRE_Int
 hypre_BoomerAMGSetNodalDiag( void     *data,
                           HYPRE_Int    nodal )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNodalDiag(amg_data) = nodal;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -2237,20 +3069,31 @@ HYPRE_Int
 hypre_BoomerAMGSetNumPaths( void     *data,
                             HYPRE_Int       num_paths )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (num_paths < 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNumPaths(amg_data) = num_paths;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2262,20 +3105,31 @@ HYPRE_Int
 hypre_BoomerAMGSetAggNumLevels( void     *data,
                             HYPRE_Int       agg_num_levels )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (agg_num_levels < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAggNumLevels(amg_data) = agg_num_levels;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2287,20 +3141,31 @@ HYPRE_Int
 hypre_BoomerAMGSetAggInterpType( void     *data,
                             HYPRE_Int       agg_interp_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (agg_interp_type < 0 || agg_interp_type > 4)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAggInterpType(amg_data) = agg_interp_type;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2313,20 +3178,31 @@ HYPRE_Int
 hypre_BoomerAMGSetAggPMaxElmts( void     *data,
                             HYPRE_Int       agg_P_max_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (agg_P_max_elmts < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAggPMaxElmts(amg_data) = agg_P_max_elmts;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2339,20 +3215,31 @@ HYPRE_Int
 hypre_BoomerAMGSetMultAddPMaxElmts( void     *data,
                             HYPRE_Int       add_P_max_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (add_P_max_elmts < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataMultAddPMaxElmts(amg_data) = add_P_max_elmts;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2364,15 +3251,24 @@ HYPRE_Int
 hypre_BoomerAMGSetAddRelaxType( void     *data,
                             HYPRE_Int       add_rlx_type )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAddRelaxType(amg_data) = add_rlx_type;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2384,15 +3280,24 @@ HYPRE_Int
 hypre_BoomerAMGSetAddRelaxWt( void     *data,
                             HYPRE_Real       add_rlx_wt )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAddRelaxWt(amg_data) = add_rlx_wt;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2405,20 +3310,32 @@ HYPRE_Int
 hypre_BoomerAMGSetAggP12MaxElmts( void     *data,
                             HYPRE_Int       agg_P12_max_elmts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (agg_P12_max_elmts < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAggP12MaxElmts(amg_data) = agg_P12_max_elmts;
-
+   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2430,20 +3347,32 @@ HYPRE_Int
 hypre_BoomerAMGSetAggTruncFactor( void     *data,
                             HYPRE_Real  agg_trunc_factor )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (agg_trunc_factor < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAggTruncFactor(amg_data) = agg_trunc_factor;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2456,20 +3385,31 @@ HYPRE_Int
 hypre_BoomerAMGSetMultAddTruncFactor( void     *data,
                             HYPRE_Real      add_trunc_factor )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (add_trunc_factor < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataMultAddTruncFactor(amg_data) = add_trunc_factor;
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2482,20 +3422,32 @@ HYPRE_Int
 hypre_BoomerAMGSetAggP12TruncFactor( void     *data,
                             HYPRE_Real  agg_P12_trunc_factor )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (agg_P12_trunc_factor < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataAggP12TruncFactor(amg_data) = agg_P12_trunc_factor;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2503,15 +3455,24 @@ HYPRE_Int
 hypre_BoomerAMGSetNumPoints( void     *data,
                           HYPRE_Int       num_points )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataNumPoints(amg_data) = num_points;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2519,16 +3480,25 @@ HYPRE_Int
 hypre_BoomerAMGSetDofFunc( void     *data,
                            HYPRE_Int      *dof_func )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_TFree(hypre_ParAMGDataDofFunc(amg_data));
    hypre_ParAMGDataDofFunc(amg_data) = dof_func;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2536,16 +3506,25 @@ HYPRE_Int
 hypre_BoomerAMGSetPointDofMap( void     *data,
                          HYPRE_Int      *point_dof_map )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_TFree(hypre_ParAMGDataPointDofMap(amg_data));
    hypre_ParAMGDataPointDofMap(amg_data) = point_dof_map;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2553,16 +3532,25 @@ HYPRE_Int
 hypre_BoomerAMGSetDofPoint( void     *data,
                          HYPRE_Int      *dof_point )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_TFree(hypre_ParAMGDataDofPoint(amg_data));
    hypre_ParAMGDataDofPoint(amg_data) = dof_point;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2570,15 +3558,24 @@ HYPRE_Int
 hypre_BoomerAMGGetNumIterations( void     *data,
                               HYPRE_Int      *num_iterations )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *num_iterations = hypre_ParAMGDataNumIterations(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2586,17 +3583,26 @@ HYPRE_Int
 hypre_BoomerAMGGetCumNumIterations( void     *data,
                                     HYPRE_Int      *cum_num_iterations )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 #ifdef CUMNUMIT
    *cum_num_iterations = hypre_ParAMGDataCumNumIterations(amg_data);
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2605,28 +3611,46 @@ HYPRE_Int
 hypre_BoomerAMGGetCumNnzAP( void     *data,
                               HYPRE_Real      *cum_nnz_AP )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *cum_nnz_AP = hypre_ParAMGDataCumNnzAP(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
 HYPRE_Int
 hypre_BoomerAMGGetResidual( void * data, hypre_ParVector ** resid )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *resid = hypre_ParAMGDataResidual( amg_data );
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
                             
@@ -2635,15 +3659,24 @@ HYPRE_Int
 hypre_BoomerAMGGetRelResidualNorm( void     *data,
                                      HYPRE_Real   *rel_resid_norm )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    *rel_resid_norm = hypre_ParAMGDataRelativeResidualNorm(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2651,90 +3684,144 @@ HYPRE_Int
 hypre_BoomerAMGSetChebyOrder( void     *data,
                               HYPRE_Int       order)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (order < 1)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataChebyOrder(amg_data) = order;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 HYPRE_Int
 hypre_BoomerAMGSetChebyFraction( void     *data,
                                  HYPRE_Real  ratio)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (ratio <= 0.0 || ratio > 1.0 )
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataChebyFraction(amg_data) = ratio;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 HYPRE_Int
 hypre_BoomerAMGSetChebyEigEst( void     *data,
                               HYPRE_Int     cheby_eig_est)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    if (cheby_eig_est < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataChebyEigEst(amg_data) = cheby_eig_est;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 HYPRE_Int
 hypre_BoomerAMGSetChebyVariant( void     *data,
                               HYPRE_Int     cheby_variant)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataChebyVariant(amg_data) = cheby_variant;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 HYPRE_Int
 hypre_BoomerAMGSetChebyScale( void     *data,
                               HYPRE_Int     cheby_scale)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
    hypre_ParAMGDataChebyScale(amg_data) = cheby_scale;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2743,16 +3830,25 @@ HYPRE_Int
 hypre_BoomerAMGSetAdditive( void *data,
                           HYPRE_Int   additive )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataAdditive(amg_data) = additive;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2760,16 +3856,25 @@ HYPRE_Int
 hypre_BoomerAMGGetAdditive( void *data,
                              HYPRE_Int *  additive )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    *additive = hypre_ParAMGDataAdditive(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2777,16 +3882,25 @@ HYPRE_Int
 hypre_BoomerAMGSetMultAdditive( void *data,
                           HYPRE_Int   mult_additive )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataMultAdditive(amg_data) = mult_additive;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2794,16 +3908,25 @@ HYPRE_Int
 hypre_BoomerAMGGetMultAdditive( void *data,
                              HYPRE_Int *  mult_additive )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    *mult_additive = hypre_ParAMGDataMultAdditive(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2811,16 +3934,25 @@ HYPRE_Int
 hypre_BoomerAMGSetSimple( void *data,
                           HYPRE_Int   simple )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataSimple(amg_data) = simple;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2828,16 +3960,25 @@ HYPRE_Int
 hypre_BoomerAMGGetSimple( void *data,
                              HYPRE_Int *  simple )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    *simple = hypre_ParAMGDataSimple(amg_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2845,16 +3986,25 @@ HYPRE_Int
 hypre_BoomerAMGSetAddLastLvl( void *data,
                           HYPRE_Int   add_last_lvl )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
 
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParAMGDataAddLastLvl(amg_data) = add_last_lvl;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2862,6 +4012,9 @@ HYPRE_Int
 hypre_BoomerAMGSetNonGalerkinTol( void   *data,
                             HYPRE_Real nongalerkin_tol)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) data;
    HYPRE_Int i, max_num_levels;
    HYPRE_Real *nongal_tol_array;
@@ -2869,11 +4022,17 @@ hypre_BoomerAMGSetNonGalerkinTol( void   *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    if (nongalerkin_tol < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    max_num_levels = hypre_ParAMGDataMaxLevels(amg_data);
@@ -2889,6 +4048,9 @@ hypre_BoomerAMGSetNonGalerkinTol( void   *data,
    for (i=0; i < max_num_levels; i++)
       nongal_tol_array[i] = nongalerkin_tol;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2897,6 +4059,9 @@ hypre_BoomerAMGSetLevelNonGalerkinTol( void   *data,
                             HYPRE_Real   nongalerkin_tol,
                             HYPRE_Int level)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) data;
    HYPRE_Real *nongal_tol_array;
    HYPRE_Int max_num_levels;
@@ -2904,12 +4069,18 @@ hypre_BoomerAMGSetLevelNonGalerkinTol( void   *data,
    if (!amg_data)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    if (nongalerkin_tol < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -2925,10 +4096,16 @@ hypre_BoomerAMGSetLevelNonGalerkinTol( void   *data,
    if (level+1 > max_num_levels)
    {
       hypre_error_in_arg(3);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    nongal_tol_array[level] = nongalerkin_tol;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -2937,10 +4114,16 @@ hypre_BoomerAMGSetNonGalerkTol( void   *data,
                             HYPRE_Int   nongalerk_num_tol,
                             HYPRE_Real *nongalerk_tol)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
   hypre_ParAMGData *amg_data = (hypre_ParAMGData*) data;
 
   hypre_ParAMGDataNonGalerkNumTol(amg_data) = nongalerk_num_tol;
   hypre_ParAMGDataNonGalerkTol(amg_data) = nongalerk_tol;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
   return hypre_error_flag;
 }
 
@@ -2948,9 +4131,15 @@ HYPRE_Int
 hypre_BoomerAMGSetRAP2( void   *data,
                             HYPRE_Int   rap2)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
   hypre_ParAMGData *amg_data = (hypre_ParAMGData*) data;
 
   hypre_ParAMGDataRAP2(amg_data) = rap2;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
   return hypre_error_flag;
 }
 
@@ -2959,9 +4148,16 @@ HYPRE_Int
 hypre_BoomerAMGSetKeepTranspose( void   *data,
                             HYPRE_Int   keepTranspose)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
   hypre_ParAMGData *amg_data = (hypre_ParAMGData*) data;
 
   hypre_ParAMGDataKeepTranspose(amg_data) = keepTranspose;
+
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
   return hypre_error_flag;
 }
 

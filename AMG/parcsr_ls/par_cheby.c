@@ -8,7 +8,9 @@
 #include "_hypre_parcsr_mv.h"
 #include "float.h"
 
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /******************************************************************************
 
 Chebyshev relaxation
@@ -41,6 +43,9 @@ HYPRE_Int hypre_ParCSRRelax_Cheby_Setup(hypre_ParCSRMatrix *A, /* matrix to rela
                             HYPRE_Real **coefs_ptr,
                             HYPRE_Real **ds_ptr)   /* initial/updated approximation */
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *A_diag = hypre_ParCSRMatrixDiag(A);
    HYPRE_Real     *A_diag_data  = hypre_CSRMatrixData(A_diag);
    HYPRE_Int            *A_diag_i     = hypre_CSRMatrixI(A_diag);
@@ -176,7 +181,10 @@ HYPRE_Int hypre_ParCSRRelax_Cheby_Setup(hypre_ParCSRMatrix *A, /* matrix to rela
 
    }/* end of scaling code */
    *ds_ptr = ds_data;
-
+   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -191,6 +199,9 @@ HYPRE_Int hypre_ParCSRRelax_Cheby_Solve(hypre_ParCSRMatrix *A, /* matrix to rela
                             hypre_ParVector *v    /* temporary vector */,
                             hypre_ParVector *r    /*another temp vector */  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_CSRMatrix *A_diag = hypre_ParCSRMatrixDiag(A);
    HYPRE_Real *u_data = hypre_VectorData(hypre_ParVectorLocalVector(u));
    HYPRE_Real *f_data = hypre_VectorData(hypre_ParVectorLocalVector(f));
@@ -324,6 +335,9 @@ HYPRE_Int hypre_ParCSRRelax_Cheby_Solve(hypre_ParCSRMatrix *A, /* matrix to rela
 
    hypre_TFree(orig_u);
   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

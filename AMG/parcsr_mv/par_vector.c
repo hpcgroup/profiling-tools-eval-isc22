@@ -42,12 +42,18 @@ hypre_ParVectorCreate( MPI_Comm   comm,
                        HYPRE_Int  global_size, 
                        HYPRE_Int *partitioning )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParVector  *vector;
    HYPRE_Int num_procs, my_id;
 
    if (global_size < 0)
    {
       hypre_error_in_arg(2);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
    }
    vector = hypre_CTAlloc(hypre_ParVector, 1);
@@ -86,6 +92,9 @@ hypre_ParVectorCreate( MPI_Comm   comm,
    hypre_ParVectorOwnsPartitioning(vector) = 1;
    hypre_ParVectorActualLocalSize(vector) = 0;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return vector;
 }
 
@@ -99,10 +108,16 @@ hypre_ParMultiVectorCreate( MPI_Comm   comm,
                             HYPRE_Int *partitioning,
                             HYPRE_Int  num_vectors )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    /* note that global_size is the global length of a single vector */
    hypre_ParVector * vector =
       hypre_ParVectorCreate( comm, global_size, partitioning );
    hypre_ParVectorNumVectors(vector) = num_vectors;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return vector;
 }
 
@@ -113,6 +128,9 @@ hypre_ParMultiVectorCreate( MPI_Comm   comm,
 HYPRE_Int 
 hypre_ParVectorDestroy( hypre_ParVector *vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (vector)
    {
       if ( hypre_ParVectorOwnsData(vector) )
@@ -131,7 +149,9 @@ hypre_ParVectorDestroy( hypre_ParVector *vector )
 
       hypre_TFree(vector);
    }
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -142,14 +162,23 @@ hypre_ParVectorDestroy( hypre_ParVector *vector )
 HYPRE_Int 
 hypre_ParVectorInitialize( hypre_ParVector *vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (!vector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    hypre_SeqVectorInitialize(hypre_ParVectorLocalVector(vector));
    hypre_ParVectorActualLocalSize(vector) 
 	= hypre_VectorSize(hypre_ParVectorLocalVector(vector));
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -161,13 +190,22 @@ HYPRE_Int
 hypre_ParVectorSetDataOwner( hypre_ParVector *vector,
                              HYPRE_Int        owns_data )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (!vector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    hypre_ParVectorOwnsData(vector) = owns_data;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -179,14 +217,23 @@ HYPRE_Int
 hypre_ParVectorSetPartitioningOwner( hypre_ParVector *vector,
                                      HYPRE_Int        owns_partitioning )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (!vector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
    hypre_ParVectorOwnsPartitioning(vector) = owns_partitioning;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -217,6 +264,9 @@ hypre_ParVector
 *hypre_ParVectorRead( MPI_Comm    comm,
                       const char *file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    char             new_file_name[80];
    hypre_ParVector *par_vector;
    HYPRE_Int        my_id, num_procs;
@@ -266,6 +316,9 @@ hypre_ParVector
    /* multivector code not written yet >>> */
    hypre_assert( hypre_ParVectorNumVectors(par_vector) == 1 );
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return par_vector;
 }
 
@@ -277,6 +330,9 @@ HYPRE_Int
 hypre_ParVectorPrint( hypre_ParVector  *vector, 
                       const char       *file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    char          new_file_name[80];
    hypre_Vector *local_vector;
    MPI_Comm      comm;
@@ -287,6 +343,9 @@ hypre_ParVectorPrint( hypre_ParVector  *vector,
    if (!vector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    local_vector = hypre_ParVectorLocalVector(vector); 
@@ -310,6 +369,9 @@ hypre_ParVectorPrint( hypre_ParVector  *vector,
 #endif
 
    fclose (fp);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -321,8 +383,14 @@ HYPRE_Int
 hypre_ParVectorSetConstantValues( hypre_ParVector *v,
                                   HYPRE_Complex    value )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_Vector *v_local = hypre_ParVectorLocalVector(v);
            
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_SeqVectorSetConstantValues(v_local,value);
 }
 
@@ -334,6 +402,9 @@ HYPRE_Int
 hypre_ParVectorSetRandomValues( hypre_ParVector *v,
                                 HYPRE_Int        seed )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int     my_id;
    hypre_Vector *v_local = hypre_ParVectorLocalVector(v);
 
@@ -342,6 +413,9 @@ hypre_ParVectorSetRandomValues( hypre_ParVector *v,
 
    seed *= (my_id+1);
            
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_SeqVectorSetRandomValues(v_local,seed);
 }
 
@@ -353,8 +427,14 @@ HYPRE_Int
 hypre_ParVectorCopy( hypre_ParVector *x,
                      hypre_ParVector *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_Vector *x_local = hypre_ParVectorLocalVector(x);
    hypre_Vector *y_local = hypre_ParVectorLocalVector(y);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_SeqVectorCopy(x_local, y_local);
 }
 
@@ -367,6 +447,9 @@ hypre_ParVectorCopy( hypre_ParVector *x,
 hypre_ParVector *
 hypre_ParVectorCloneShallow( hypre_ParVector *x )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParVector * y =
       hypre_ParVectorCreate(hypre_ParVectorComm(x), hypre_ParVectorGlobalSize(x),
                             hypre_ParVectorPartitioning(x));
@@ -380,6 +463,9 @@ hypre_ParVectorCloneShallow( hypre_ParVector *x )
       hypre_ParVectorLocalVector(x) );
    hypre_ParVectorFirstIndex(y) = hypre_ParVectorFirstIndex(x);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return y;
 }
 
@@ -391,8 +477,14 @@ HYPRE_Int
 hypre_ParVectorScale( HYPRE_Complex    alpha,
                       hypre_ParVector *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_Vector *y_local = hypre_ParVectorLocalVector(y);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_SeqVectorScale( alpha, y_local);
 }
 
@@ -405,9 +497,15 @@ hypre_ParVectorAxpy( HYPRE_Complex    alpha,
                      hypre_ParVector *x,
                      hypre_ParVector *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_Vector *x_local = hypre_ParVectorLocalVector(x);
    hypre_Vector *y_local = hypre_ParVectorLocalVector(y);
            
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_SeqVectorAxpy( alpha, x_local, y_local);
 }
 
@@ -419,6 +517,9 @@ HYPRE_Real
 hypre_ParVectorInnerProd( hypre_ParVector *x,
                           hypre_ParVector *y )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm      comm    = hypre_ParVectorComm(x);
    hypre_Vector *x_local = hypre_ParVectorLocalVector(x);
    hypre_Vector *y_local = hypre_ParVectorLocalVector(y);
@@ -435,6 +536,9 @@ hypre_ParVectorInnerProd( hypre_ParVector *x,
    hypre_profile_times[HYPRE_TIMER_ID_ALL_REDUCE] += hypre_MPI_Wtime();
 #endif
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return result;
 }
 
@@ -451,6 +555,9 @@ hypre_VectorToParVector ( MPI_Comm      comm,
                           hypre_Vector *v,
                           HYPRE_Int    *vec_starts )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int           global_size;
    HYPRE_Int           local_size;
    HYPRE_Int           num_vectors;
@@ -530,6 +637,9 @@ hypre_VectorToParVector ( MPI_Comm      comm,
                          0, 0, comm,&status0 );
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return par_vector;
 }
    
@@ -543,6 +653,9 @@ hypre_VectorToParVector ( MPI_Comm      comm,
 hypre_Vector *
 hypre_ParVectorToVectorAll( hypre_ParVector *par_v )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm             comm = hypre_ParVectorComm(par_v);
    HYPRE_Int            global_size = hypre_ParVectorGlobalSize(par_v);
 #ifndef HYPRE_NO_GLOBAL_PARTITION
@@ -671,6 +784,9 @@ hypre_ParVectorToVectorAll( hypre_ParVector *par_v )
          hypre_TFree(send_proc_obj.elements);
          if(response_recv_buf)        hypre_TFree(response_recv_buf);
          if(response_recv_buf_starts) hypre_TFree(response_recv_buf_starts);
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
          return NULL;
       }
    }
@@ -734,6 +850,9 @@ hypre_ParVectorToVectorAll( hypre_ParVector *par_v )
    if (!local_size) {
       hypre_TFree(used_procs);
       hypre_TFree(new_vec_starts);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
    }
    
@@ -787,6 +906,9 @@ hypre_ParVectorToVectorAll( hypre_ParVector *par_v )
    /* if my_id contains no data, return NULL  */
 
    if (!local_size)
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return NULL;
  
    local_data = hypre_VectorData(local_vector);
@@ -842,6 +964,9 @@ hypre_ParVectorToVectorAll( hypre_ParVector *par_v )
 
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return vector;
 }
 
@@ -854,6 +979,9 @@ hypre_ParVectorPrintIJ( hypre_ParVector *vector,
                         HYPRE_Int        base_j,
                         const char      *filename )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm          comm;
    HYPRE_Int         global_size;
    HYPRE_Int        *partitioning;
@@ -864,6 +992,9 @@ hypre_ParVectorPrintIJ( hypre_ParVector *vector,
    if (!vector)
    {
       hypre_error_in_arg(1);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
    comm         = hypre_ParVectorComm(vector);
@@ -882,6 +1013,9 @@ hypre_ParVectorPrintIJ( hypre_ParVector *vector,
    if ((file = fopen(new_filename, "w")) == NULL)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC,"Error: can't open output file %s\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -915,7 +1049,10 @@ hypre_ParVectorPrintIJ( hypre_ParVector *vector,
 #endif
 
    fclose(file);
-
+   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -929,6 +1066,9 @@ hypre_ParVectorReadIJ( MPI_Comm          comm,
                        HYPRE_Int        *base_j_ptr,
                        hypre_ParVector **vector_ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int         global_size;
    hypre_ParVector  *vector;
    hypre_Vector     *local_vector;
@@ -948,6 +1088,9 @@ hypre_ParVectorReadIJ( MPI_Comm          comm,
    if ((file = fopen(new_filename, "r")) == NULL)
    {
       hypre_error_w_msg(HYPRE_ERROR_GENERIC,"Error: can't open output file %s\n");
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -1004,6 +1147,9 @@ hypre_ParVectorReadIJ( MPI_Comm          comm,
    hypre_assert( hypre_ParVectorNumVectors(vector) == 1 );
    if ( hypre_ParVectorNumVectors(vector) != 1 ) hypre_error(HYPRE_ERROR_GENERIC);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1022,6 +1168,9 @@ hypre_FillResponseParToVectorAll( void       *p_recv_contact_buf,
                                   void      **p_send_response_buf, 
                                   HYPRE_Int  *response_message_size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int     myid;
    HYPRE_Int     i, index, count, elength;
 
@@ -1070,6 +1219,9 @@ hypre_FillResponseParToVectorAll( void       *p_recv_contact_buf,
    /*output - no message to return (confirmation) */
    *response_message_size = 0; 
   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1079,5 +1231,9 @@ hypre_FillResponseParToVectorAll( void       *p_recv_contact_buf,
 
 HYPRE_Complex hypre_ParVectorLocalSumElts( hypre_ParVector * vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_VectorSumElts( hypre_ParVectorLocalVector(vector) );
 }

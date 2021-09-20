@@ -27,7 +27,9 @@
 
 #include "_hypre_parcsr_ls.h"
 
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_BoomerAMGRelax
  *--------------------------------------------------------------------------*/
@@ -45,6 +47,9 @@ HYPRE_Int  hypre_BoomerAMGRelaxIF( hypre_ParCSRMatrix *A,
                              hypre_ParVector    *Vtemp,
                              hypre_ParVector    *Ztemp )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, Solve_err_flag = 0;
    HYPRE_Int relax_points[2];
    if (relax_order == 1 && cycle_type < 3)
@@ -89,6 +94,9 @@ HYPRE_Int  hypre_BoomerAMGRelaxIF( hypre_ParCSRMatrix *A,
                                             Ztemp); 
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return Solve_err_flag;
 }
 

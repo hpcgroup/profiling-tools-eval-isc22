@@ -22,6 +22,11 @@
 #include "_hypre_parcsr_ls.h"
 #include "par_amg.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
+
 /*****************************************************************************
  *
  * Routine for getting matrix statistics from setup
@@ -36,6 +41,9 @@ HYPRE_Int
 hypre_BoomerAMGSetupStats( void               *amg_vdata,
                         hypre_ParCSRMatrix *A         )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm 	      comm = hypre_ParCSRMatrixComm(A);   
 
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
@@ -918,6 +926,9 @@ hypre_BoomerAMGSetupStats( void               *amg_vdata,
    hypre_TFree(send_buff);
    hypre_TFree(gather_buff);
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(0);
 }  
 
@@ -931,6 +942,9 @@ hypre_BoomerAMGSetupStats( void               *amg_vdata,
 
 HYPRE_Int    hypre_BoomerAMGWriteSolverParams(void* data)
 { 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData  *amg_data = (hypre_ParAMGData*) data;
  
    /* amg solve params */
@@ -1044,5 +1058,8 @@ HYPRE_Int    hypre_BoomerAMGWriteSolverParams(void* data)
       hypre_printf( " Output flag (print_level): %d \n", amg_print_level);
    }
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }

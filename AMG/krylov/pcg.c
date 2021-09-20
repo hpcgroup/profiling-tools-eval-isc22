@@ -32,7 +32,9 @@
 
 #include "krylov.h"
 #include "_hypre_utilities.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_PCGFunctionsCreate
  *--------------------------------------------------------------------------*/
@@ -58,6 +60,9 @@ hypre_PCGFunctionsCreate(
    HYPRE_Int    (*Precond)       ( void *vdata, void *A, void *b, void *x )
    )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGFunctions * pcg_functions;
    pcg_functions = (hypre_PCGFunctions *)
       CAlloc( 1, sizeof(hypre_PCGFunctions) );
@@ -79,6 +84,9 @@ hypre_PCGFunctionsCreate(
    pcg_functions->precond_setup = PrecondSetup;
    pcg_functions->precond       = Precond;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return pcg_functions;
 }
 
@@ -89,6 +97,9 @@ hypre_PCGFunctionsCreate(
 void *
 hypre_PCGCreate( hypre_PCGFunctions *pcg_functions )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data;
 
    pcg_data = hypre_CTAllocF(hypre_PCGData, 1, pcg_functions);
@@ -119,6 +130,9 @@ hypre_PCGCreate( hypre_PCGFunctions *pcg_functions )
    (pcg_data -> s)            = NULL;
    (pcg_data -> r)            = NULL;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (void *) pcg_data;
 }
 
@@ -129,6 +143,9 @@ hypre_PCGCreate( hypre_PCGFunctions *pcg_functions )
 HYPRE_Int
 hypre_PCGDestroy( void *pcg_vdata )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 	hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    if (pcg_data)
@@ -168,6 +185,9 @@ hypre_PCGDestroy( void *pcg_vdata )
       hypre_TFreeF( pcg_functions, pcg_functions );
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(hypre_error_flag);
 }
 
@@ -177,10 +197,16 @@ hypre_PCGDestroy( void *pcg_vdata )
 
 HYPRE_Int hypre_PCGGetResidual( void *pcg_vdata, void **residual )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    /* returns a pointer to the residual vector */
 
    hypre_PCGData  *pcg_data     =  (hypre_PCGData *)pcg_vdata;
    *residual = pcg_data->r;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -194,6 +220,9 @@ hypre_PCGSetup( void *pcg_vdata,
                 void *b,
                 void *x         )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data =  (hypre_PCGData *)pcg_vdata;
    hypre_PCGFunctions *pcg_functions = pcg_data->functions;
    HYPRE_Int            max_iter         = (pcg_data -> max_iter);
@@ -244,6 +273,9 @@ hypre_PCGSetup( void *pcg_vdata,
                                                 pcg_functions );
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -271,6 +303,9 @@ hypre_PCGSolve( void *pcg_vdata,
                 void *b,
                 void *x         )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData  *pcg_data     =  (hypre_PCGData *)pcg_vdata;
    hypre_PCGFunctions *pcg_functions = pcg_data->functions;
 
@@ -373,6 +408,9 @@ hypre_PCGSolve( void *pcg_vdata,
         hypre_printf("ERROR detected by Hypre ...  END\n\n\n");
       }
       hypre_error(HYPRE_ERROR_GENERIC);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -407,6 +445,9 @@ hypre_PCGSolve( void *pcg_vdata,
          rel_norms[i] = 0.0;
       }
 
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
       /* In this case, for the original parcsr pcg, the code would take special
          action to force iterations even though the exact value was known. */
@@ -442,6 +483,9 @@ hypre_PCGSolve( void *pcg_vdata,
         hypre_printf("ERROR detected by Hypre ...  END\n\n\n");
       }
       hypre_error(HYPRE_ERROR_GENERIC);
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -725,6 +769,9 @@ hypre_PCGSolve( void *pcg_vdata,
    else /* actually, we'll never get here... */
       (pcg_data -> rel_residual_norm) = 0.0;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -736,10 +783,16 @@ HYPRE_Int
 hypre_PCGSetTol( void   *pcg_vdata,
                  HYPRE_Real  tol       )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    (pcg_data -> tol) = tol;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -747,10 +800,16 @@ HYPRE_Int
 hypre_PCGGetTol( void   *pcg_vdata,
                  HYPRE_Real * tol       )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    *tol = (pcg_data -> tol);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -761,10 +820,16 @@ HYPRE_Int
 hypre_PCGSetAbsoluteTol( void   *pcg_vdata,
                  HYPRE_Real  a_tol       )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    (pcg_data -> a_tol) = a_tol;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -772,10 +837,16 @@ HYPRE_Int
 hypre_PCGGetAbsoluteTol( void   *pcg_vdata,
                  HYPRE_Real * a_tol       )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    *a_tol = (pcg_data -> a_tol);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -787,10 +858,16 @@ HYPRE_Int
 hypre_PCGSetAbsoluteTolFactor( void   *pcg_vdata,
                                HYPRE_Real  atolf   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    (pcg_data -> atolf) = atolf;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -798,10 +875,16 @@ HYPRE_Int
 hypre_PCGGetAbsoluteTolFactor( void   *pcg_vdata,
                                HYPRE_Real  * atolf   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    *atolf = (pcg_data -> atolf);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -813,10 +896,16 @@ HYPRE_Int
 hypre_PCGSetResidualTol( void   *pcg_vdata,
                          HYPRE_Real  rtol   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    (pcg_data -> rtol) = rtol;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -824,10 +913,16 @@ HYPRE_Int
 hypre_PCGGetResidualTol( void   *pcg_vdata,
                          HYPRE_Real  * rtol   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    *rtol = (pcg_data -> rtol);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -839,10 +934,16 @@ HYPRE_Int
 hypre_PCGSetConvergenceFactorTol( void   *pcg_vdata,
                                   HYPRE_Real  cf_tol   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    (pcg_data -> cf_tol) = cf_tol;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -850,10 +951,16 @@ HYPRE_Int
 hypre_PCGGetConvergenceFactorTol( void   *pcg_vdata,
                                   HYPRE_Real * cf_tol   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    *cf_tol = (pcg_data -> cf_tol);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -865,10 +972,16 @@ HYPRE_Int
 hypre_PCGSetMaxIter( void *pcg_vdata,
                      HYPRE_Int   max_iter  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    (pcg_data -> max_iter) = max_iter;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -876,11 +989,17 @@ HYPRE_Int
 hypre_PCGGetMaxIter( void *pcg_vdata,
                      HYPRE_Int * max_iter  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    *max_iter = (pcg_data -> max_iter);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -892,11 +1011,17 @@ HYPRE_Int
 hypre_PCGSetTwoNorm( void *pcg_vdata,
                      HYPRE_Int   two_norm  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    (pcg_data -> two_norm) = two_norm;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -904,11 +1029,17 @@ HYPRE_Int
 hypre_PCGGetTwoNorm( void *pcg_vdata,
                      HYPRE_Int * two_norm  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    *two_norm = (pcg_data -> two_norm);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -920,11 +1051,17 @@ HYPRE_Int
 hypre_PCGSetRelChange( void *pcg_vdata,
                        HYPRE_Int   rel_change  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    (pcg_data -> rel_change) = rel_change;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -932,11 +1069,17 @@ HYPRE_Int
 hypre_PCGGetRelChange( void *pcg_vdata,
                        HYPRE_Int * rel_change  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    *rel_change = (pcg_data -> rel_change);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -948,11 +1091,17 @@ HYPRE_Int
 hypre_PCGSetRecomputeResidual( void *pcg_vdata,
                        HYPRE_Int   recompute_residual  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    (pcg_data -> recompute_residual) = recompute_residual;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -960,11 +1109,17 @@ HYPRE_Int
 hypre_PCGGetRecomputeResidual( void *pcg_vdata,
                        HYPRE_Int * recompute_residual  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    *recompute_residual = (pcg_data -> recompute_residual);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -976,10 +1131,16 @@ HYPRE_Int
 hypre_PCGSetRecomputeResidualP( void *pcg_vdata,
                        HYPRE_Int   recompute_residual_p  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    (pcg_data -> recompute_residual_p) = recompute_residual_p;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -987,10 +1148,16 @@ HYPRE_Int
 hypre_PCGGetRecomputeResidualP( void *pcg_vdata,
                        HYPRE_Int * recompute_residual_p  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    *recompute_residual_p = (pcg_data -> recompute_residual_p);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1002,11 +1169,17 @@ HYPRE_Int
 hypre_PCGSetStopCrit( void *pcg_vdata,
                        HYPRE_Int   stop_crit  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    (pcg_data -> stop_crit) = stop_crit;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1014,11 +1187,17 @@ HYPRE_Int
 hypre_PCGGetStopCrit( void *pcg_vdata,
                        HYPRE_Int * stop_crit  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    *stop_crit = (pcg_data -> stop_crit);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1030,11 +1209,17 @@ HYPRE_Int
 hypre_PCGGetPrecond( void         *pcg_vdata,
                      HYPRE_Solver *precond_data_ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
 
    *precond_data_ptr = (HYPRE_Solver)(pcg_data -> precond_data);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1048,6 +1233,9 @@ hypre_PCGSetPrecond( void  *pcg_vdata,
                      HYPRE_Int  (*precond_setup)(void*,void*,void*,void*),
                      void  *precond_data )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
    hypre_PCGFunctions *pcg_functions = pcg_data->functions;
 
@@ -1056,6 +1244,9 @@ hypre_PCGSetPrecond( void  *pcg_vdata,
    (pcg_functions -> precond_setup) = precond_setup;
    (pcg_data -> precond_data)  = precond_data;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1067,11 +1258,17 @@ HYPRE_Int
 hypre_PCGSetPrintLevel( void *pcg_vdata,
                         HYPRE_Int   level)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    (pcg_data -> print_level) = level;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1079,11 +1276,17 @@ HYPRE_Int
 hypre_PCGGetPrintLevel( void *pcg_vdata,
                         HYPRE_Int * level)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
  
    *level = (pcg_data -> print_level);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1095,10 +1298,16 @@ HYPRE_Int
 hypre_PCGSetLogging( void *pcg_vdata,
                       HYPRE_Int   level)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    (pcg_data -> logging) = level;
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1106,10 +1315,16 @@ HYPRE_Int
 hypre_PCGGetLogging( void *pcg_vdata,
                       HYPRE_Int * level)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
  
    *level = (pcg_data -> logging);
  
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1121,10 +1336,16 @@ HYPRE_Int
 hypre_PCGGetNumIterations( void *pcg_vdata,
                            HYPRE_Int  *num_iterations )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    *num_iterations = (pcg_data -> num_iterations);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1136,10 +1357,16 @@ HYPRE_Int
 hypre_PCGGetConverged( void *pcg_vdata,
                        HYPRE_Int  *converged)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    *converged = (pcg_data -> converged);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1151,6 +1378,9 @@ HYPRE_Int
 hypre_PCGPrintLogging( void *pcg_vdata,
                        HYPRE_Int   myid)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    HYPRE_Int            num_iterations  = (pcg_data -> num_iterations);
@@ -1172,6 +1402,9 @@ hypre_PCGPrintLogging( void *pcg_vdata,
       }
    }
   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -1183,12 +1416,18 @@ HYPRE_Int
 hypre_PCGGetFinalRelativeResidualNorm( void   *pcg_vdata,
                                        HYPRE_Real *relative_residual_norm )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_PCGData *pcg_data = (hypre_PCGData *)pcg_vdata;
 
    HYPRE_Real     rel_residual_norm = (pcg_data -> rel_residual_norm);
 
   *relative_residual_norm = rel_residual_norm;
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

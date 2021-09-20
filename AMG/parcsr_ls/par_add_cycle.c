@@ -28,6 +28,9 @@
 #include "_hypre_parcsr_ls.h"
 #include "par_amg.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_BoomerAMGCycle
  *--------------------------------------------------------------------------*/
@@ -35,6 +38,9 @@
 HYPRE_Int
 hypre_BoomerAMGAdditiveCycle( void              *amg_vdata)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
 
    /* Data Structure variables */
@@ -311,13 +317,18 @@ hypre_BoomerAMGAdditiveCycle( void              *amg_vdata)
                                      beta, U_array[fine_grid]);            
       }
    }
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(Solve_err_flag);
 }
 
 
 HYPRE_Int hypre_CreateLambda(void *amg_vdata)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
 
    /* Data Structure variables */
@@ -990,11 +1001,17 @@ HYPRE_Int hypre_CreateLambda(void *amg_vdata)
    hypre_TFree(buf_data);
    hypre_TFree(level_start);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return Solve_err_flag;
 }
 
 HYPRE_Int hypre_CreateDinv(void *amg_vdata)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
 
    /* Data Structure variables */
@@ -1120,5 +1137,8 @@ HYPRE_Int hypre_CreateDinv(void *amg_vdata)
    hypre_ParAMGDataRtilde(amg_data) = Rtilde;
    hypre_ParAMGDataXtilde(amg_data) = Xtilde;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return Solve_err_flag;
 }

@@ -26,6 +26,9 @@
 
 #include "seq_mv.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_VectorCreate
  *--------------------------------------------------------------------------*/
@@ -33,6 +36,10 @@
 HYPRE_Vector
 HYPRE_VectorCreate( HYPRE_Int size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( (HYPRE_Vector) hypre_SeqVectorCreate(size) );
 }
 
@@ -43,6 +50,10 @@ HYPRE_VectorCreate( HYPRE_Int size )
 HYPRE_Int 
 HYPRE_VectorDestroy( HYPRE_Vector vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( hypre_SeqVectorDestroy( (hypre_Vector *) vector ) );
 }
 
@@ -53,6 +64,10 @@ HYPRE_VectorDestroy( HYPRE_Vector vector )
 HYPRE_Int 
 HYPRE_VectorInitialize( HYPRE_Vector vector )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( hypre_SeqVectorInitialize( (hypre_Vector *) vector ) );
 }
 
@@ -64,6 +79,10 @@ HYPRE_Int
 HYPRE_VectorPrint( HYPRE_Vector  vector,
                    char         *file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( hypre_SeqVectorPrint( (hypre_Vector *) vector,
                       file_name ) );
 }
@@ -75,5 +94,9 @@ HYPRE_VectorPrint( HYPRE_Vector  vector,
 HYPRE_Vector
 HYPRE_VectorRead( char         *file_name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ( (HYPRE_Vector) hypre_SeqVectorRead( file_name ) );
 }

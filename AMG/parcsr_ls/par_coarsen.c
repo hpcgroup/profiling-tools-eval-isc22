@@ -27,6 +27,9 @@
 
 
 #include "_hypre_parcsr_ls.h"
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 
 /*==========================================================================*/
@@ -111,6 +114,9 @@ hypre_BoomerAMGCoarsen( hypre_ParCSRMatrix    *S,
                         HYPRE_Int                    debug_flag,
                         HYPRE_Int                  **CF_marker_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm 	       comm            = hypre_ParCSRMatrixComm(S);
    hypre_ParCSRCommPkg      *comm_pkg        = hypre_ParCSRMatrixCommPkg(S);
    hypre_ParCSRCommHandle   *comm_handle;
@@ -844,6 +850,9 @@ hypre_BoomerAMGCoarsen( hypre_ParCSRMatrix    *S,
 
    *CF_marker_ptr   = CF_marker;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (ierr);
 }
 
@@ -872,6 +881,9 @@ hypre_BoomerAMGCoarsenRuge( hypre_ParCSRMatrix    *S,
                             HYPRE_Int                    debug_flag,
                             HYPRE_Int                  **CF_marker_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm         comm          = hypre_ParCSRMatrixComm(S);
    hypre_ParCSRCommPkg   *comm_pkg      = hypre_ParCSRMatrixCommPkg(S);
    hypre_ParCSRCommHandle *comm_handle;
@@ -1273,6 +1285,9 @@ hypre_BoomerAMGCoarsenRuge( hypre_ParCSRMatrix    *S,
       *CF_marker_ptr = CF_marker;
       if (meas_type && num_procs > 1)
    	hypre_CSRMatrixDestroy(S_ext); 
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return 0;
    }
 
@@ -1907,6 +1922,9 @@ hypre_BoomerAMGCoarsenRuge( hypre_ParCSRMatrix    *S,
    
    *CF_marker_ptr   = CF_marker;
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (ierr);
 }
 
@@ -1918,6 +1936,9 @@ hypre_BoomerAMGCoarsenFalgout( hypre_ParCSRMatrix    *S,
                                HYPRE_Int                    debug_flag,
                                HYPRE_Int                  **CF_marker_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int              ierr = 0;
 
    /*-------------------------------------------------------
@@ -1930,6 +1951,9 @@ hypre_BoomerAMGCoarsenFalgout( hypre_ParCSRMatrix    *S,
    ierr += hypre_BoomerAMGCoarsen (S, A, 1, debug_flag, 
 				CF_marker_ptr);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (ierr);
 }
 
@@ -1940,6 +1964,9 @@ hypre_BoomerAMGCoarsenHMIS( hypre_ParCSRMatrix    *S,
                             HYPRE_Int                    debug_flag,
                             HYPRE_Int                  **CF_marker_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int              ierr = 0;
 
    /*-------------------------------------------------------
@@ -1952,6 +1979,9 @@ hypre_BoomerAMGCoarsenHMIS( hypre_ParCSRMatrix    *S,
    ierr += hypre_BoomerAMGCoarsenPMIS (S, A, 1, debug_flag,
                                 CF_marker_ptr);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (ierr);
 }
 
@@ -1978,6 +2008,9 @@ hypre_BoomerAMGCoarsenPMIS( hypre_ParCSRMatrix    *S,
                         HYPRE_Int                    debug_flag,
                         HYPRE_Int                  **CF_marker_ptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_PMIS] -= hypre_MPI_Wtime();
 #endif
@@ -2621,5 +2654,8 @@ hypre_BoomerAMGCoarsenPMIS( hypre_ParCSRMatrix    *S,
    hypre_profile_times[HYPRE_TIMER_ID_PMIS] += hypre_MPI_Wtime();
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (ierr);
 }

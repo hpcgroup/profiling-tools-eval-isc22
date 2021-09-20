@@ -1,6 +1,9 @@
 #include "_hypre_parcsr_ls.h"
 #include "par_amg.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 #define USE_ALLTOALL 0
 
@@ -13,7 +16,9 @@ HYPRE_Int hypre_seqAMGSetup( hypre_ParAMGData *amg_data,
 
 
 {
-
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    /* Par Data Structure variables */
    hypre_ParCSRMatrix **Par_A_array = hypre_ParAMGDataAArray(amg_data);
 
@@ -311,6 +316,9 @@ HYPRE_Int hypre_seqAMGSetup( hypre_ParAMGData *amg_data,
          hypre_ParAMGDataNewComm(amg_data) = new_comm;
       }
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
@@ -326,6 +334,9 @@ hypre_seqAMGCycle( hypre_ParAMGData *amg_data,
                    hypre_ParVector  **Par_F_array,
                    hypre_ParVector  **Par_U_array   )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    
    hypre_ParVector    *Aux_U;
    hypre_ParVector    *Aux_F;
@@ -467,6 +478,9 @@ hypre_seqAMGCycle( hypre_ParAMGData *amg_data,
       }
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(Solve_err_flag);
 }
 
@@ -474,6 +488,9 @@ hypre_seqAMGCycle( hypre_ParAMGData *amg_data,
 
 HYPRE_Int hypre_GenerateSubComm(MPI_Comm comm, HYPRE_Int participate, MPI_Comm *new_comm_ptr) 
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm new_comm;
    hypre_MPI_Group orig_group, new_group; 
    hypre_MPI_Op hypre_MPI_MERGE;
@@ -493,6 +510,9 @@ HYPRE_Int hypre_GenerateSubComm(MPI_Comm comm, HYPRE_Int participate, MPI_Comm *
    {
       new_comm = hypre_MPI_COMM_NULL;
       *new_comm_ptr = new_comm;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return 0;
    }
    ranks = hypre_CTAlloc(HYPRE_Int, new_num_procs+2);
@@ -537,17 +557,25 @@ HYPRE_Int hypre_GenerateSubComm(MPI_Comm comm, HYPRE_Int participate, MPI_Comm *
    hypre_TFree(ranks);
    
    *new_comm_ptr = new_comm;
-   
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
 
 void hypre_merge_lists (HYPRE_Int *list1, HYPRE_Int* list2, hypre_int *np1, hypre_MPI_Datatype *dptr)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int i, len1, len2, indx1, indx2;
 
    if (list1[0] == 0 || (list2[0] == 0 && list1[0] == 0))
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    else
@@ -578,5 +606,8 @@ void hypre_merge_lists (HYPRE_Int *list1, HYPRE_Int* list2, hypre_int *np1, hypr
          }
       }
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 

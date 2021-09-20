@@ -18,7 +18,9 @@
 #include "_hypre_parcsr_ls.h"
 #include "_hypre_utilities.h"
 #include "hypre_hopscotch_hash.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * OLD NOTES:
  * Sketch of John's code to build RAP
@@ -65,6 +67,9 @@ hypre_CSRMatrix *
 hypre_ExchangeRAPData( hypre_CSRMatrix *RAP_int,
                        hypre_ParCSRCommPkg *comm_pkg_RT)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int     *RAP_int_i;
    HYPRE_Int     *RAP_int_j = NULL;
    HYPRE_Real  *RAP_int_data = NULL;
@@ -196,6 +201,9 @@ hypre_ExchangeRAPData( hypre_CSRMatrix *RAP_int,
    hypre_TFree(jdata_send_map_starts);
    hypre_TFree(tmp_comm_pkg);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return RAP_ext;
 }
 
@@ -209,7 +217,13 @@ hypre_BoomerAMGBuildCoarseOperator( hypre_ParCSRMatrix  *RT,
                                     hypre_ParCSRMatrix  *P,
                                     hypre_ParCSRMatrix **RAP_ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_BoomerAMGBuildCoarseOperatorKT( RT, A, P, 0, RAP_ptr);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -221,6 +235,9 @@ hypre_BoomerAMGBuildCoarseOperatorKT( hypre_ParCSRMatrix  *RT,
                                     hypre_ParCSRMatrix **RAP_ptr )
 
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_RAP] -= hypre_MPI_Wtime();
 #endif
@@ -2193,6 +2210,9 @@ hypre_BoomerAMGBuildCoarseOperatorKT( hypre_ParCSRMatrix  *RT,
    hypre_profile_times[HYPRE_TIMER_ID_RAP] += hypre_MPI_Wtime();
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(0);
    
 }            
