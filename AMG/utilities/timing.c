@@ -26,6 +26,9 @@
 #include "_hypre_utilities.h"
 #include "timing.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*-------------------------------------------------------
  * Timing macros
  *-------------------------------------------------------*/
@@ -47,6 +50,9 @@ hypre_TimingCPUCount += time_getCPUSeconds()
 HYPRE_Int
 hypre_InitializeTiming( const char *name )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int      time_index;
 
    HYPRE_Real  *old_wall_time;
@@ -153,6 +159,9 @@ hypre_InitializeTiming( const char *name )
       (hypre_global_timing_ref(threadid, num_names)) ++;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return time_index;
 }
 
@@ -163,11 +172,18 @@ hypre_InitializeTiming( const char *name )
 HYPRE_Int
 hypre_FinalizeTiming( HYPRE_Int time_index )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int  ierr = 0;
    HYPRE_Int  i;
 
-   if (hypre_global_timing == NULL)
+   if (hypre_global_timing == NULL) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return ierr;
+   }
 
    if (time_index < (hypre_global_timing_ref(threadid, size)))
    {
@@ -199,6 +215,9 @@ hypre_FinalizeTiming( HYPRE_Int time_index )
       hypre_global_timing = NULL;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -209,13 +228,23 @@ hypre_FinalizeTiming( HYPRE_Int time_index )
 HYPRE_Int
 hypre_IncFLOPCount( HYPRE_Int inc )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int  ierr = 0;
 
-   if (hypre_global_timing == NULL)
+   if (hypre_global_timing == NULL) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return ierr;
+   }
 
    hypre_TimingFLOPCount += (HYPRE_Real) (inc);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -226,10 +255,17 @@ hypre_IncFLOPCount( HYPRE_Int inc )
 HYPRE_Int
 hypre_BeginTiming( HYPRE_Int time_index )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int  ierr = 0;
 
-   if (hypre_global_timing == NULL)
+   if (hypre_global_timing == NULL) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return ierr;
+   }
 
    if (hypre_TimingState(time_index) == 0)
    {
@@ -242,6 +278,9 @@ hypre_BeginTiming( HYPRE_Int time_index )
    }
    hypre_TimingState(time_index) ++;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -252,10 +291,17 @@ hypre_BeginTiming( HYPRE_Int time_index )
 HYPRE_Int
 hypre_EndTiming( HYPRE_Int time_index )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int  ierr = 0;
 
-   if (hypre_global_timing == NULL)
+   if (hypre_global_timing == NULL) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return ierr;
+   }
 
    hypre_TimingState(time_index) --;
    if (hypre_TimingState(time_index) == 0)
@@ -267,6 +313,9 @@ hypre_EndTiming( HYPRE_Int time_index )
       hypre_StartTiming();
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -277,11 +326,18 @@ hypre_EndTiming( HYPRE_Int time_index )
 HYPRE_Int
 hypre_ClearTiming( )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int  ierr = 0;
    HYPRE_Int  i;
 
-   if (hypre_global_timing == NULL)
+   if (hypre_global_timing == NULL) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return ierr;
+   }
 
    for (i = 0; i < (hypre_global_timing_ref(threadid,size)); i++)
    {
@@ -290,6 +346,9 @@ hypre_ClearTiming( )
       hypre_TimingFLOPS(i)    = 0.0;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -302,6 +361,9 @@ hypre_PrintTiming( const char     *heading,
                    HYPRE_Real     *wall_time_ptr,
                    MPI_Comm        comm  )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int  ierr = 0;
 
    HYPRE_Real  local_wall_time;
@@ -314,8 +376,12 @@ hypre_PrintTiming( const char     *heading,
    HYPRE_Int     i;
    HYPRE_Int     myrank;
 
-   if (hypre_global_timing == NULL)
+   if (hypre_global_timing == NULL) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return ierr;
+   }
 
    hypre_MPI_Comm_rank(comm, &myrank );
 
@@ -362,5 +428,8 @@ hypre_PrintTiming( const char     *heading,
       }
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }

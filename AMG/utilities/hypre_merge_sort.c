@@ -25,10 +25,17 @@
 #include <unordered_map>
 #endif
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 #define SWAP(T, a, b) do { T tmp = a; a = b; b = tmp; } while (0)
 
 static void hypre_merge(HYPRE_Int *first1, HYPRE_Int *last1, HYPRE_Int *first2, HYPRE_Int *last2, HYPRE_Int *out)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    for ( ; first1 != last1; ++out)
    {
       if (first2 == last2)
@@ -37,6 +44,9 @@ static void hypre_merge(HYPRE_Int *first1, HYPRE_Int *last1, HYPRE_Int *first2, 
          {
             *out = *first1;
          }
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
          return;
       }
       if (*first2 < *first1)
@@ -54,6 +64,9 @@ static void hypre_merge(HYPRE_Int *first1, HYPRE_Int *last1, HYPRE_Int *first2, 
    {
       *out = *first2;
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 static void kth_element_(
@@ -61,6 +74,9 @@ static void kth_element_(
    HYPRE_Int *a1, HYPRE_Int *a2,
    HYPRE_Int left, HYPRE_Int right, HYPRE_Int n1, HYPRE_Int n2, HYPRE_Int k)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    while (1)
    {
       HYPRE_Int i = (left + right)/2; // right < k -> i < k
@@ -74,11 +90,17 @@ static void kth_element_(
       if ((j == -1 || a1[i] >= a2[j]) && (j == n2 - 1 || a1[i] <= a2[j + 1]))
       {
          *out1 = i; *out2 = j + 1;
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
          return;
       }
       else if (j >= 0 && a2[j] >= a1[i] && (i == n1 - 1 || a2[j] <= a1[i + 1]))
       {
          *out1 = i + 1; *out2 = j;
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
          return;
       }
       else if (a1[i] > a2[j] && j != n2 - 1 && a1[i] > a2[j+1])
@@ -92,6 +114,9 @@ static void kth_element_(
          left = i + 1;
       }
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /**
@@ -102,20 +127,32 @@ static void kth_element(
    HYPRE_Int *out1, HYPRE_Int *out2,
    HYPRE_Int *a1, HYPRE_Int *a2, HYPRE_Int n1, HYPRE_Int n2, HYPRE_Int k)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    // either of the inputs is empty
    if (n1 == 0)
    {
       *out1 = 0; *out2 = k;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    if (n2 == 0)
    {
       *out1 = k; *out2 = 0;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    if (k >= n1 + n2)
    {
       *out1 = n1; *out2 = n2;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
 
@@ -123,21 +160,33 @@ static void kth_element(
    if (k < n1 && a1[k] <= a2[0])
    {
       *out1 = k; *out2 = 0;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    if (k - n1 >= 0 && a2[k - n1] >= a1[n1 - 1])
    {
       *out1 = n1; *out2 = k - n1;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    if (k < n2 && a2[k] <= a1[0])
    {
       *out1 = 0; *out2 = k;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    if (k - n2 >= 0 && a1[k - n2] >= a2[n2 - 1])
    {
       *out1 = k - n2; *out2 = n2;
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
    // now k > 0
@@ -170,6 +219,9 @@ static void kth_element(
 #ifdef DBG_MERGE_SORT
    assert(*out1 + *out2 == k);
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 /**
@@ -181,6 +233,9 @@ static void hypre_parallel_merge(
    HYPRE_Int *out,
    HYPRE_Int num_threads, HYPRE_Int my_thread_num)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int n1 = last1 - first1;
    HYPRE_Int n2 = last2 - first2;
    HYPRE_Int n = n1 + n2;
@@ -225,11 +280,22 @@ static void hypre_parallel_merge(
 #ifdef DBG_MERGE_SORT
    assert(std::is_sorted(out + begin1 + begin2, out + end1 + end2));
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 void hypre_merge_sort(HYPRE_Int *in, HYPRE_Int *temp, HYPRE_Int len, HYPRE_Int **out)
 {
-   if (0 == len) return;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   if (0 == len) {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
+      return;
+   }
 
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_MERGE] -= hypre_MPI_Wtime();
@@ -306,14 +372,23 @@ void hypre_merge_sort(HYPRE_Int *in, HYPRE_Int *temp, HYPRE_Int len, HYPRE_Int *
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_MERGE] += hypre_MPI_Wtime();
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 #ifdef HYPRE_CONCURRENT_HOPSCOTCH
 void hypre_sort_and_create_inverse_map(
   HYPRE_Int *in, HYPRE_Int len, HYPRE_Int **out, hypre_UnorderedIntMap *inverse_map)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (len == 0)
    {
+      #ifdef caliper
+      CALI_MARK_FUNCTION_END;
+      #endif
       return;
    }
 
@@ -364,6 +439,9 @@ void hypre_sort_and_create_inverse_map(
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_MERGE] += hypre_MPI_Wtime();
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 #endif
 

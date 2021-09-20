@@ -19,10 +19,15 @@
 
 #ifdef HYPRE_USE_UMALLOC
 #include "umalloc_local.h"
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 void *_uget_fn(Heap_t usrheap, size_t *length, HYPRE_Int *clean)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    void *p;
  
    *length = ((*length) / INITIAL_HEAP_SIZE) * INITIAL_HEAP_SIZE
@@ -30,12 +35,21 @@ void *_uget_fn(Heap_t usrheap, size_t *length, HYPRE_Int *clean)
  
    *clean = _BLOCK_CLEAN;
    p = (void *) calloc(*length, 1);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return p;
 }
  
 void _urelease_fn(Heap_t usrheap, void *p, size_t size)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    free (p);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return;
 }
 #else

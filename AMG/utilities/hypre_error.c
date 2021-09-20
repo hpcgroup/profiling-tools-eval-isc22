@@ -18,6 +18,9 @@
 
 
 #include "_hypre_utilities.h"
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 HYPRE_Int hypre__global_error = 0;
 
@@ -25,6 +28,9 @@ HYPRE_Int hypre__global_error = 0;
    given source file. */
 void hypre_error_handler(const char *filename, HYPRE_Int line, HYPRE_Int ierr, const char *msg)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_error_flag |= ierr;
 
 #ifdef HYPRE_PRINT_ERRORS
@@ -41,20 +47,34 @@ void hypre_error_handler(const char *filename, HYPRE_Int line, HYPRE_Int ierr, c
          filename, line, ierr);
    }
 #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 HYPRE_Int HYPRE_GetError()
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
 HYPRE_Int HYPRE_CheckError(HYPRE_Int ierr, HYPRE_Int hypre_error_code)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr & hypre_error_code;
 }
 
 void HYPRE_DescribeError(HYPRE_Int ierr, char *msg)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (ierr == 0)
       hypre_sprintf(msg,"[No error] ");
 
@@ -69,21 +89,40 @@ void HYPRE_DescribeError(HYPRE_Int ierr, char *msg)
 
    if (ierr & HYPRE_ERROR_CONV)
       hypre_sprintf(msg,"[Method did not converge] ");
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
 
 HYPRE_Int HYPRE_GetErrorArg()
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_error_flag>>3 & 31);
 }
 
 HYPRE_Int HYPRE_ClearAllErrors()
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_error_flag = 0;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_error_flag != 0);
 }
 
 HYPRE_Int HYPRE_ClearError(HYPRE_Int hypre_error_code)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_error_flag &= ~hypre_error_code;
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (hypre_error_flag & hypre_error_code);
 }

@@ -19,6 +19,10 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 // #ifdef HYPRE_BIGINT
 
 /* these prototypes are missing by default for some compilers */
@@ -30,6 +34,9 @@ HYPRE_Int
 new_format( const char *format,
             char **newformat_ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    const char *fp;
    char       *newformat, *nfp;
    HYPRE_Int   newformatlen;
@@ -96,14 +103,23 @@ new_format( const char *format,
 
 /*   printf("\nNEWFORMAT: %s\n", *newformat_ptr);*/
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
 HYPRE_Int
 free_format( char *newformat )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_TFree(newformat);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
@@ -112,6 +128,9 @@ free_format( char *newformat )
 HYPRE_Int
 hypre_printf( const char *format, ...)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    va_list   ap;
    char     *newformat;
    HYPRE_Int ierr = 0;
@@ -122,12 +141,18 @@ hypre_printf( const char *format, ...)
    free_format(newformat);
    va_end(ap);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_fprintf( FILE *stream, const char *format, ...)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    va_list   ap;
    char     *newformat;
    HYPRE_Int ierr = 0;
@@ -138,12 +163,18 @@ hypre_fprintf( FILE *stream, const char *format, ...)
    free_format(newformat);
    va_end(ap);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_sprintf( char *s, const char *format, ...)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    va_list   ap;
    char     *newformat;
    HYPRE_Int ierr = 0;
@@ -154,6 +185,9 @@ hypre_sprintf( char *s, const char *format, ...)
    free_format(newformat);
    va_end(ap);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
@@ -162,6 +196,9 @@ hypre_sprintf( char *s, const char *format, ...)
 HYPRE_Int
 hypre_scanf( const char *format, ...)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    va_list   ap;
    char     *newformat;
    HYPRE_Int ierr = 0;
@@ -172,12 +209,18 @@ hypre_scanf( const char *format, ...)
    free_format(newformat);
    va_end(ap);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_fscanf( FILE *stream, const char *format, ...)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    va_list   ap;
    char     *newformat;
    HYPRE_Int ierr = 0;
@@ -188,12 +231,18 @@ hypre_fscanf( FILE *stream, const char *format, ...)
    free_format(newformat);
    va_end(ap);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_sscanf( char *s, const char *format, ...)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    va_list   ap;
    char     *newformat;
    HYPRE_Int ierr = 0;
@@ -204,6 +253,9 @@ hypre_sscanf( char *s, const char *format, ...)
    free_format(newformat);
    va_end(ap);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ierr;
 }
 

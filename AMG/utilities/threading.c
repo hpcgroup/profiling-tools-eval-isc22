@@ -19,15 +19,25 @@
 #include <stdio.h>
 #include "_hypre_utilities.h"
 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
+
 #ifdef HYPRE_USING_OPENMP
 
 HYPRE_Int
 hypre_NumThreads( )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int num_threads;
 
    num_threads = omp_get_max_threads();
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return num_threads;
 }
 
@@ -36,10 +46,16 @@ hypre_NumThreads( )
 HYPRE_Int
 hypre_NumActiveThreads( )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int num_threads;
 
    num_threads = omp_get_num_threads();
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return num_threads;
 }
 
@@ -48,10 +64,16 @@ hypre_NumActiveThreads( )
 HYPRE_Int
 hypre_GetThreadNum( )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int my_thread_num;
 
    my_thread_num = omp_get_thread_num();
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return my_thread_num;
 }
 
@@ -62,6 +84,12 @@ hypre_GetThreadNum( )
 void
 hypre_GetSimpleThreadPartition( HYPRE_Int *begin, HYPRE_Int *end, HYPRE_Int n )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int num_threads = hypre_NumActiveThreads();
    HYPRE_Int my_thread_num = hypre_GetThreadNum();
 
@@ -69,4 +97,7 @@ hypre_GetSimpleThreadPartition( HYPRE_Int *begin, HYPRE_Int *end, HYPRE_Int n )
 
    *begin = hypre_min(n_per_thread*my_thread_num, n);
    *end = hypre_min(*begin + n_per_thread, n);
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }

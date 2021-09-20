@@ -18,7 +18,9 @@
 
  
 #include "_hypre_utilities.h"
- 
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_BinarySearch
  * to contain ordered nonnegative numbers
@@ -27,6 +29,9 @@
  
 HYPRE_Int hypre_BinarySearch(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int list_length)
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int low, high, m;
    HYPRE_Int not_found = 1;
 
@@ -46,9 +51,15 @@ HYPRE_Int hypre_BinarySearch(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int list_le
       else
       {
         not_found = 0;
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
         return m;
       }
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return -1;
 }
 
@@ -65,6 +76,9 @@ HYPRE_Int hypre_BinarySearch(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int list_le
 HYPRE_Int hypre_BinarySearch2(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int low, HYPRE_Int high, HYPRE_Int *spot) 
 {
    
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int m;
    
    while (low <= high) 
@@ -78,12 +92,18 @@ HYPRE_Int hypre_BinarySearch2(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int low, H
       else
       {
          *spot = m;
+         #ifdef caliper
+         CALI_MARK_FUNCTION_END;
+         #endif
          return m;
       }
    }
    /* not found (high = low-1) - so insert at low */
       *spot = low;
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return -1;
 }
 
@@ -93,6 +113,9 @@ HYPRE_Int hypre_BinarySearch2(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int low, H
  
 HYPRE_Int *hypre_LowerBound( HYPRE_Int *first, HYPRE_Int *last, HYPRE_Int value )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int *it;
    size_t count = last - first, step;
 
@@ -104,5 +127,8 @@ HYPRE_Int *hypre_LowerBound( HYPRE_Int *first, HYPRE_Int *last, HYPRE_Int value 
       }
       else count = step;
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return first;
 }

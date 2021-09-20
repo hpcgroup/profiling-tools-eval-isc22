@@ -20,28 +20,47 @@
 #ifdef HYPRE_COMPLEX
 
 #include <complex.h>
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 
 HYPRE_Complex
 hypre_conj( HYPRE_Complex value )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return conj(value);
 }
 
 HYPRE_Real
 hypre_cabs( HYPRE_Complex value )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return cabs(value);
 }
 
 HYPRE_Real
 hypre_creal( HYPRE_Complex value )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return creal(value);
 }
 
 HYPRE_Real
 hypre_cimag( HYPRE_Complex value )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return cimag(value);
 }
 

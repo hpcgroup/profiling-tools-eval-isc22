@@ -26,7 +26,9 @@
 #ifdef HYPRE_USE_UMALLOC
 #undef HYPRE_USE_UMALLOC
 #endif
-
+#ifdef caliper
+#include <caliper/cali.h>
+#endif
 /******************************************************************************
  *
  * Standard routines
@@ -40,11 +42,17 @@
 HYPRE_Int
 hypre_OutOfMemory( size_t size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_printf("Out of memory trying to allocate %d bytes\n", (HYPRE_Int) size);
    fflush(stdout);
 
    hypre_error(HYPRE_ERROR_MEMORY);
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return 0;
 }
 
@@ -55,6 +63,9 @@ hypre_OutOfMemory( size_t size )
 char *
 hypre_MAlloc( size_t size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    void *ptr;
 
    if (size > 0)
@@ -78,6 +89,9 @@ hypre_MAlloc( size_t size )
       ptr = NULL;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (char*)ptr;
 }
 
@@ -89,6 +103,9 @@ char *
 hypre_CAlloc( size_t count,
               size_t elt_size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    void   *ptr;
    size_t  size = count*elt_size;
 
@@ -114,6 +131,9 @@ hypre_CAlloc( size_t count,
       ptr = NULL;
    }
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(char*) ptr;
 }
 
@@ -125,6 +145,9 @@ char *
 hypre_ReAlloc( char   *ptr,
                size_t  size )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
 #ifdef HYPRE_USE_UMALLOC
    if (ptr == NULL)
    {
@@ -157,6 +180,9 @@ hypre_ReAlloc( char   *ptr,
    }
 #endif
 
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
    return ptr;
 }
 
@@ -168,6 +194,9 @@ hypre_ReAlloc( char   *ptr,
 void
 hypre_Free( char *ptr )
 {
+   #ifdef caliper
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (ptr)
    {
 #ifdef HYPRE_USE_UMALLOC
@@ -178,4 +207,7 @@ hypre_Free( char *ptr )
       free(ptr);
 #endif
    }
+   #ifdef caliper
+   CALI_MARK_FUNCTION_END;
+   #endif
 }
