@@ -168,6 +168,7 @@ Additional BSD Notice
    #endif
 #endif
 
+#include <sys/resource.h>
 /*
 TODO: Use to turn on/off profiling 
 #ifdef WITH_HPCTOOLKIT
@@ -2943,7 +2944,7 @@ int main(int argc, char *argv[])
    long int max_getrusage;
    MPI_Reduce(&usage.ru_maxrss, &max_getrusage, 1, MPI_LONG, MPI_MAX, 0, MPI_COMM_WORLD);
 
-   if (myid == 0) {
+   if (myRank == 0) {
       printf("getrusage ru_maxrss (kB):%ld\n", max_getrusage);
    }
    /*FILE* file = fopen("/proc/self/status", "r");

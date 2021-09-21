@@ -10,12 +10,16 @@ option(WITH_SILO   "Build LULESH with silo support" FALSE)
 option(WITH_CALIPER   "Build LULESH with Caliper support" FALSE)
 option(WITH_HPCTOOLKIT   "Build LULESH with HPCToolkit support" FALSE)
 option(WITH_SCOREP   "Build LULESH with Score-P support" FALSE)
-option(WITH_TAU   "Build LULESH with TAU support" FALSE)
+option(WITH_TAU   "Build LULESH with TAU sampling support" FALSE)
+option(WITH_TAU_SOURCE   "Build LULESH with TAU source instrumentation support" FALSE)
+option(WITH_TAU_COMPILER   "Build LULESH with TAU compiler instrumentation support" FALSE)
 
 set(LULESH_USE_CALIPER FALSE)
 set(LULESH_USE_HPCTOOLKIT FALSE)
 set(LULESH_USE_SCOREP FALSE)
 set(LULESH_USE_TAU FALSE)
+set(LULESH_USE_TAU_SOURCE FALSE)
+set(LULESH_USE_TAU_COMPILER FALSE)
 
 # add Caliper Support
 if (WITH_CALIPER)
@@ -52,7 +56,19 @@ if (WITH_TAU)
   # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
   set(LULESH_USE_TAU TRUE)
 endif()
-message(STATUS "TAU support is ${LULESH_USE_TAU}")
+message(STATUS "TAU sampling support is ${LULESH_USE_TAU}")
+
+if (WITH_TAU_SOURCE)
+  # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
+  set(LULESH_USE_TAU_SOURCE TRUE)
+endif()
+message(STATUS "TAU source instrumentation support is ${LULESH_USE_TAU_SOURCE}")
+
+if (WITH_TAU_COMPILER)
+  # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
+  set(LULESH_USE_TAU_COMPILER TRUE)
+endif()
+message(STATUS "TAU compiler instrumentation support is ${LULESH_USE_TAU_COMPILER}")
 
 if (WITH_MPI)
   find_package(MPI REQUIRED)
@@ -109,6 +125,10 @@ elseif (WITH_SCOREP)
   set(LULESH_EXEC lulesh-scorep2.0)
 elseif (WITH_TAU)
   set(LULESH_EXEC lulesh-tau2.0)
+elseif (WITH_TAU_SOURCE)
+  set(LULESH_EXEC lulesh-tau-source2.0)
+elseif (WITH_TAU_COMPILER)
+  set(LULESH_EXEC lulesh-tau-compiler2.0)
 else ()
   set(LULESH_EXEC lulesh2.0)
 endif ()
@@ -133,5 +153,8 @@ target_link_libraries(${LULESH_EXEC} ${LULESH_EXTERNAL_LIBS})
 # cmake -DCMAKE_CXX_COMPILER=`which scorep-mpicxx` -DMPI_CXX_COMPILER=`which scorep-mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dscorep_INCLUDE_DIR=$SCOREP_DIR/include -DWITH_SCOREP=1 ..
 
 # With TAU
-# cmake -DCMAKE_CXX_FLAGS="-g -O3" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU=1 .. 
+# export TAU_LIB_DIR=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
+# sampling      -> cmake -DCMAKE_CXX_FLAGS="-g -O3" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU=1 .. 
+# source inst   -> cmake -DCMAKE_CXX_FLAGS="-g -O3 -tau_makefile=$TAU_LIB_DIR/Makefile.tau-papi-mpi-pthread-pdt" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU_SOURCE=1 -DCMAKE_CXX_COMPILER=tau_cxx.sh ..
+# compiler inst -> cmake -DCMAKE_CXX_FLAGS="-g -O3 -tau_makefile=$TAU_LIB_DIR/Makefile.tau-papi-mpi-pthread-pdt -optCompInst" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU_COMPILER=1 -DCMAKE_CXX_COMPILER=tau_cxx.sh .. 
 # add -DCMAKE_CXX_COMPILER=tau_cxx.sh to instrument
