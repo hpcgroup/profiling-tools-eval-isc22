@@ -168,6 +168,20 @@ ifeq ($(TOOL), tau)
     CXXFLAGS = $(OPTFLAGS)
     CPPFLAGS = $(MPI_FLAGS)
 endif
+ifeq ($(TOOL), tau-source)
+    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
+    CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt
+#    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
+    CXXFLAGS = $(OPTFLAGS)
+    CPPFLAGS = $(MPI_FLAGS)
+endif
+ifeq ($(TOOL), tau-compiler)
+    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
+    CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optCompInst
+#    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
+    CXXFLAGS = $(OPTFLAGS)
+    CPPFLAGS = $(MPI_FLAGS)
+endif
 ifeq ($(TOOL),)
     CXX=mpicxx
     CXXFLAGS = $(OPTFLAGS) 

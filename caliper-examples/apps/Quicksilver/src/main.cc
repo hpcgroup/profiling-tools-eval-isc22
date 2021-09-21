@@ -41,6 +41,8 @@
 #include <scorep/SCOREP_User_Types.h>
 #endif
 
+#include <sys/resource.h>
+
 void gameOver();
 void cycleInit( bool loadBalance );
 void cycleTracking(MonteCarlo* monteCarlo);
@@ -118,7 +120,7 @@ int main(int argc, char** argv)
     long int max_getrusage;
     MPI_Reduce(&usage.ru_maxrss, &max_getrusage, 1, MPI_LONG, MPI_MAX, 0, MPI_COMM_WORLD);
 
-    if (myid == 0) {
+    if (myRank == 0) {
         printf("getrusage ru_maxrss (kB):%ld\n", max_getrusage);
     }
 
