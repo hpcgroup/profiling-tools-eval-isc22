@@ -28,10 +28,6 @@
 #include "_hypre_parcsr_ls.h"
 #include "par_amg.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /*--------------------------------------------------------------------------
  * hypre_BoomerAMGCycle
  *--------------------------------------------------------------------------*/
@@ -42,9 +38,6 @@ hypre_BoomerAMGCGRelaxWt( void              *amg_vdata,
 		   	  HYPRE_Int 		     num_cg_sweeps,
 			  HYPRE_Real 	    *rlx_wt_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
 
    MPI_Comm comm;
@@ -224,9 +217,6 @@ hypre_BoomerAMGCGRelaxWt( void              *amg_vdata,
             hypre_ParVectorDestroy(Ptemp);
             hypre_TFree(tridiag);
             hypre_TFree(trioffd);
-            #ifdef caliper
-            CALI_MARK_FUNCTION_END;
-            #endif
             return(Solve_err_flag);
          }
       }
@@ -320,9 +310,6 @@ hypre_BoomerAMGCGRelaxWt( void              *amg_vdata,
 
    *rlx_wt_ptr = rlx_wt;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(Solve_err_flag);
 }
 
@@ -335,9 +322,6 @@ hypre_Bisection(HYPRE_Int n, HYPRE_Real *diag, HYPRE_Real *offd,
 		HYPRE_Real y, HYPRE_Real z,
 		HYPRE_Real tol, HYPRE_Int k, HYPRE_Real *ev_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Real x;
    HYPRE_Real eigen_value;
    HYPRE_Int ierr = 0;
@@ -370,8 +354,5 @@ hypre_Bisection(HYPRE_Int n, HYPRE_Real *diag, HYPRE_Real *offd,
    eigen_value = (y+z)/2;
    *ev_ptr = eigen_value;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 } 

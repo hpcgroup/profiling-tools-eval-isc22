@@ -27,9 +27,7 @@
 #include "./_hypre_IJ_mv.h"
 
 #include "../HYPRE.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * hypre_IJVectorDistribute
  *--------------------------------------------------------------------------*/
@@ -37,9 +35,6 @@
 HYPRE_Int 
 hypre_IJVectorDistribute( HYPRE_IJVector vector, const HYPRE_Int *vec_starts )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (vec == NULL)
@@ -50,9 +45,6 @@ hypre_IJVectorDistribute( HYPRE_IJVector vector, const HYPRE_Int *vec_starts )
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return( hypre_IJVectorDistributePar(vec, vec_starts) );
 
    else
@@ -61,9 +53,6 @@ hypre_IJVectorDistribute( HYPRE_IJVector vector, const HYPRE_Int *vec_starts )
       exit(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return -99;
 }
 
@@ -74,9 +63,6 @@ hypre_IJVectorDistribute( HYPRE_IJVector vector, const HYPRE_Int *vec_starts )
 HYPRE_Int 
 hypre_IJVectorZeroValues( HYPRE_IJVector vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
    if (vec == NULL)
@@ -97,9 +83,6 @@ hypre_IJVectorZeroValues( HYPRE_IJVector vector )
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return( hypre_IJVectorZeroValuesPar(vec) );
 
    else
@@ -108,8 +91,5 @@ hypre_IJVectorZeroValues( HYPRE_IJVector vector )
       exit(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return -99;
 }

@@ -27,9 +27,7 @@
 
 #include "_hypre_parcsr_ls.h"
 #include "hypre_hopscotch_hash.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 
 /*==========================================================================*/
 /*==========================================================================*/
@@ -99,9 +97,6 @@ hypre_BoomerAMGCreateS(hypre_ParCSRMatrix    *A,
                        HYPRE_Int                   *dof_func,
                        hypre_ParCSRMatrix   **S_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_CREATES] -= hypre_MPI_Wtime();
 #endif
@@ -540,9 +535,6 @@ hypre_BoomerAMGCreateS(hypre_ParCSRMatrix    *A,
    hypre_profile_times[HYPRE_TIMER_ID_CREATES] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (ierr);
 }
 
@@ -615,9 +607,6 @@ hypre_BoomerAMGCreateSabs(hypre_ParCSRMatrix    *A,
                        HYPRE_Int                   *dof_func,
                        hypre_ParCSRMatrix   **S_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm 	       comm            = hypre_ParCSRMatrixComm(A);
    hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
    hypre_ParCSRCommHandle  *comm_handle;
@@ -889,9 +878,6 @@ hypre_BoomerAMGCreateSabs(hypre_ParCSRMatrix    *A,
 
    hypre_TFree(dof_func_offd);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (ierr);
 }
 
@@ -902,9 +888,6 @@ hypre_BoomerAMGCreateSCommPkg(hypre_ParCSRMatrix *A,
 			      hypre_ParCSRMatrix *S,
 			      HYPRE_Int		 **col_offd_S_to_A_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm 	       comm            = hypre_ParCSRMatrixComm(A);
    hypre_MPI_Status	      *status;
    hypre_MPI_Request	      *requests;
@@ -1131,9 +1114,6 @@ hypre_BoomerAMGCreateSCommPkg(hypre_ParCSRMatrix *A,
 
    *col_offd_S_to_A_ptr = col_offd_S_to_A;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 } 
 
@@ -1145,9 +1125,6 @@ hypre_BoomerAMGCreateSCommPkg(hypre_ParCSRMatrix *A,
 HYPRE_Int hypre_BoomerAMGCreate2ndS( hypre_ParCSRMatrix *S, HYPRE_Int *CF_marker, 
 	HYPRE_Int num_paths, HYPRE_Int *coarse_row_starts, hypre_ParCSRMatrix **C_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_CREATE_2NDS] -= hypre_MPI_Wtime();
 #endif
@@ -2318,9 +2295,6 @@ HYPRE_Int hypre_BoomerAMGCreate2ndS( hypre_ParCSRMatrix *S, HYPRE_Int *CF_marker
    hypre_TFree(prefix_sum_workspace);
    hypre_TFree(num_coarse_prefix_sum);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
    
 }            
@@ -2331,9 +2305,6 @@ HYPRE_Int hypre_BoomerAMGCreate2ndS( hypre_ParCSRMatrix *S, HYPRE_Int *CF_marker
 HYPRE_Int
 hypre_BoomerAMGCorrectCFMarker(HYPRE_Int *CF_marker, HYPRE_Int num_var, HYPRE_Int *new_CF_marker)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, cnt;
 
    cnt = 0;
@@ -2346,9 +2317,6 @@ hypre_BoomerAMGCorrectCFMarker(HYPRE_Int *CF_marker, HYPRE_Int num_var, HYPRE_In
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 /*--------------------------------------------------------------------------
@@ -2358,9 +2326,6 @@ hypre_BoomerAMGCorrectCFMarker(HYPRE_Int *CF_marker, HYPRE_Int num_var, HYPRE_In
 HYPRE_Int
 hypre_BoomerAMGCorrectCFMarker2(HYPRE_Int *CF_marker, HYPRE_Int num_var, HYPRE_Int *new_CF_marker)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, cnt;
 
    cnt = 0;
@@ -2374,8 +2339,5 @@ hypre_BoomerAMGCorrectCFMarker2(HYPRE_Int *CF_marker, HYPRE_Int num_var, HYPRE_I
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }

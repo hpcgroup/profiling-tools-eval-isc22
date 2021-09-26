@@ -20,10 +20,6 @@
 #include "_hypre_parcsr_ls.h"
 #include "aux_interp.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 #define MAX_C_CONNECTIONS 100
 #define HAVE_COMMON_C 1
 
@@ -42,9 +38,6 @@ hypre_BoomerAMGBuildStdInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 			      HYPRE_Int sep_weight, HYPRE_Int *col_offd_S_to_A, 
 			      hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -988,9 +981,7 @@ hypre_BoomerAMGBuildStdInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 
    }
    
-  #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+ 
    return hypre_error_flag;  
 }
 
@@ -1006,9 +997,6 @@ hypre_BoomerAMGBuildExtPIInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
                   HYPRE_Int *col_offd_S_to_A,
                   hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
   hypre_profile_times[HYPRE_TIMER_ID_EXTENDED_I_INTERP] -= hypre_MPI_Wtime();
 #endif
@@ -1866,10 +1854,7 @@ hypre_BoomerAMGBuildExtPIInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_EXTENDED_I_INTERP] += hypre_MPI_Wtime();
 #endif
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif   
+   
    return hypre_error_flag;  
 }
 
@@ -1885,9 +1870,6 @@ hypre_BoomerAMGBuildExtPICCInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 			     HYPRE_Int *col_offd_S_to_A,
 			     hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -2828,9 +2810,6 @@ hypre_BoomerAMGBuildExtPICCInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
      hypre_MatvecCommPkgDestroy(extend_comm_pkg);
    }
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }
 /*---------------------------------------------------------------------------
@@ -2845,9 +2824,6 @@ hypre_BoomerAMGBuildFFInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 			     HYPRE_Int *col_offd_S_to_A,
 			     hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -3721,9 +3697,6 @@ hypre_BoomerAMGBuildFFInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
  
    }
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }
 /*---------------------------------------------------------------------------
@@ -3738,9 +3711,6 @@ hypre_BoomerAMGBuildFF1Interp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 			     HYPRE_Int *col_offd_S_to_A,
 			     hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -4627,9 +4597,6 @@ hypre_BoomerAMGBuildFF1Interp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 
    }
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }
 
@@ -4645,9 +4612,6 @@ hypre_BoomerAMGBuildExtInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 			      HYPRE_Int *col_offd_S_to_A,
 			      hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -5350,8 +5314,5 @@ hypre_BoomerAMGBuildExtInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker,
 
    }
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }

@@ -16,9 +16,7 @@
  ***********************************************************************EHEADER*/
 
 #include "_hypre_parcsr_ls.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * HYPRE_ParCSRPCGCreate
  *--------------------------------------------------------------------------*/
@@ -26,17 +24,11 @@
 HYPRE_Int
 HYPRE_ParCSRPCGCreate( MPI_Comm comm, HYPRE_Solver *solver )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_PCGFunctions * pcg_functions;
 
    if (!solver)
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    pcg_functions =
@@ -51,10 +43,6 @@ HYPRE_ParCSRPCGCreate( MPI_Comm comm, HYPRE_Solver *solver )
          hypre_ParKrylovIdentitySetup, hypre_ParKrylovIdentity );
    *solver = ( (HYPRE_Solver) hypre_PCGCreate( pcg_functions ) );
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -65,10 +53,6 @@ HYPRE_ParCSRPCGCreate( MPI_Comm comm, HYPRE_Solver *solver )
 HYPRE_Int 
 HYPRE_ParCSRPCGDestroy( HYPRE_Solver solver )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_PCGDestroy( (void *) solver ) );
 }
 
@@ -82,10 +66,6 @@ HYPRE_ParCSRPCGSetup( HYPRE_Solver solver,
                       HYPRE_ParVector b,
                       HYPRE_ParVector x      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetup( solver,
                            (HYPRE_Matrix) A,
                            (HYPRE_Vector) b,
@@ -102,10 +82,6 @@ HYPRE_ParCSRPCGSolve( HYPRE_Solver solver,
                       HYPRE_ParVector b,
                       HYPRE_ParVector x      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSolve( solver,
                            (HYPRE_Matrix) A,
                            (HYPRE_Vector) b,
@@ -120,10 +96,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetTol( HYPRE_Solver solver,
                        HYPRE_Real   tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetTol( solver, tol ) );
 }
 /*--------------------------------------------------------------------------
@@ -134,10 +106,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetAbsoluteTol( HYPRE_Solver solver,
                                HYPRE_Real   a_tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetAbsoluteTol( solver, a_tol ) );
 }
 
@@ -149,10 +117,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetMaxIter( HYPRE_Solver solver,
                            HYPRE_Int    max_iter )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetMaxIter( solver, max_iter ) );
 }
 
@@ -164,10 +128,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetStopCrit( HYPRE_Solver solver,
                             HYPRE_Int    stop_crit )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetStopCrit( solver, stop_crit ) );
 }
 
@@ -179,10 +139,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetTwoNorm( HYPRE_Solver solver,
                            HYPRE_Int    two_norm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetTwoNorm( solver, two_norm ) );
 }
 
@@ -194,10 +150,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetRelChange( HYPRE_Solver solver,
                              HYPRE_Int    rel_change )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetRelChange( solver, rel_change ) );
 }
 
@@ -211,10 +163,6 @@ HYPRE_ParCSRPCGSetPrecond( HYPRE_Solver         solver,
                            HYPRE_PtrToParSolverFcn precond_setup,
                            HYPRE_Solver         precond_solver )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetPrecond( solver,
                                 (HYPRE_PtrToSolverFcn) precond,
                                 (HYPRE_PtrToSolverFcn) precond_setup,
@@ -229,10 +177,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGGetPrecond( HYPRE_Solver  solver,
                            HYPRE_Solver *precond_data_ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGGetPrecond( solver, precond_data_ptr ) );
 }
 
@@ -245,10 +189,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetPrintLevel( HYPRE_Solver solver,
                               HYPRE_Int level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetPrintLevel( solver, level ) );
 }
 
@@ -261,10 +201,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGSetLogging( HYPRE_Solver solver,
                            HYPRE_Int level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGSetLogging( solver, level ) );
 }
 
@@ -276,10 +212,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGGetNumIterations( HYPRE_Solver  solver,
                                  HYPRE_Int    *num_iterations )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGGetNumIterations( solver, num_iterations ) );
 }
 
@@ -291,10 +223,6 @@ HYPRE_Int
 HYPRE_ParCSRPCGGetFinalRelativeResidualNorm( HYPRE_Solver  solver,
                                              HYPRE_Real   *norm   )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( HYPRE_PCGGetFinalRelativeResidualNorm( solver, norm ) );
 }
 
@@ -308,10 +236,6 @@ HYPRE_ParCSRDiagScaleSetup( HYPRE_Solver solver,
                             HYPRE_ParVector y,
                             HYPRE_ParVector x      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
  
@@ -325,9 +249,6 @@ HYPRE_ParCSRDiagScale( HYPRE_Solver solver,
                        HYPRE_ParVector Hy,
                        HYPRE_ParVector Hx      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *A = (hypre_ParCSRMatrix *) HA;
    hypre_ParVector    *y = (hypre_ParVector *) Hy;
    hypre_ParVector    *x = (hypre_ParVector *) Hx;
@@ -343,9 +264,6 @@ HYPRE_ParCSRDiagScale( HYPRE_Solver solver,
       x_data[i] = y_data[i]/A_data[A_i[i]];
    } 
  
-    #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 

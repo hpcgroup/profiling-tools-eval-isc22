@@ -20,18 +20,12 @@
 
 
 #include "_hypre_parcsr_ls.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 
 HYPRE_Int
 hypre_GetCommPkgRTFromCommPkgA( hypre_ParCSRMatrix *RT,
 			       	hypre_ParCSRMatrix *A,
 			       	HYPRE_Int *fine_to_coarse_offd)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_ParCSRMatrixComm(RT);
    hypre_ParCSRCommPkg *comm_pkg_A = hypre_ParCSRMatrixCommPkg(A);
    HYPRE_Int num_recvs_A = hypre_ParCSRCommPkgNumRecvs(comm_pkg_A);
@@ -207,9 +201,6 @@ hypre_GetCommPkgRTFromCommPkgA( hypre_ParCSRMatrix *RT,
    hypre_ParCSRMatrixCommPkg(RT) = comm_pkg;
    hypre_TFree(change_array);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -218,10 +209,6 @@ hypre_GenerateSendMapAndCommPkg(MPI_Comm comm, HYPRE_Int num_sends, HYPRE_Int nu
 				HYPRE_Int *recv_procs, HYPRE_Int *send_procs,
 				HYPRE_Int *recv_vec_starts, hypre_ParCSRMatrix *A)
 {
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int *send_map_starts;
    HYPRE_Int *send_map_elmts;
    HYPRE_Int i, j;
@@ -295,8 +282,5 @@ hypre_GenerateSendMapAndCommPkg(MPI_Comm comm, HYPRE_Int num_sends, HYPRE_Int nu
    hypre_TFree(requests);
 
    hypre_ParCSRMatrixCommPkg(A) = comm_pkg;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }

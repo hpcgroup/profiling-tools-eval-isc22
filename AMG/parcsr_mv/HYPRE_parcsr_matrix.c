@@ -23,10 +23,6 @@
 
 #include "_hypre_parcsr_mv.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /*--------------------------------------------------------------------------
  * HYPRE_ParCSRMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -42,15 +38,9 @@ HYPRE_ParCSRMatrixCreate( MPI_Comm            comm,
                           HYPRE_Int           num_nonzeros_offd,
                           HYPRE_ParCSRMatrix *matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix)
    {
       hypre_error_in_arg(9);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -59,9 +49,6 @@ HYPRE_ParCSRMatrixCreate( MPI_Comm            comm,
                                row_starts, col_starts, num_cols_offd,
                                num_nonzeros_diag, num_nonzeros_offd);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -72,10 +59,6 @@ HYPRE_ParCSRMatrixCreate( MPI_Comm            comm,
 HYPRE_Int 
 HYPRE_ParCSRMatrixDestroy( HYPRE_ParCSRMatrix matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_ParCSRMatrixDestroy( (hypre_ParCSRMatrix *) matrix ) );
 }
 
@@ -86,10 +69,6 @@ HYPRE_ParCSRMatrixDestroy( HYPRE_ParCSRMatrix matrix )
 HYPRE_Int
 HYPRE_ParCSRMatrixInitialize( HYPRE_ParCSRMatrix matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParCSRMatrixInitialize( (hypre_ParCSRMatrix *) matrix ) );
 }
 
@@ -102,22 +81,12 @@ HYPRE_ParCSRMatrixRead( MPI_Comm            comm,
                         const char         *file_name, 
                         HYPRE_ParCSRMatrix *matrix)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    if (!matrix)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *matrix = (HYPRE_ParCSRMatrix) hypre_ParCSRMatrixRead( comm, file_name );
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -129,15 +98,8 @@ HYPRE_Int
 HYPRE_ParCSRMatrixPrint( HYPRE_ParCSRMatrix  matrix,
                          const char         *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrixPrint( (hypre_ParCSRMatrix *) matrix,
                             file_name );
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -149,22 +111,13 @@ HYPRE_Int
 HYPRE_ParCSRMatrixGetComm( HYPRE_ParCSRMatrix  matrix,
                            MPI_Comm           *comm )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *comm = hypre_ParCSRMatrixComm((hypre_ParCSRMatrix *) matrix);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -176,23 +129,14 @@ HYPRE_ParCSRMatrixGetDims( HYPRE_ParCSRMatrix  matrix,
                            HYPRE_Int          *M,
                            HYPRE_Int          *N )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix)
    {
       hypre_error_in_arg(1);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
       return hypre_error_flag;
    }
    *M = hypre_ParCSRMatrixGlobalNumRows((hypre_ParCSRMatrix *) matrix);
    *N = hypre_ParCSRMatrixGlobalNumCols((hypre_ParCSRMatrix *) matrix);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -204,38 +148,24 @@ HYPRE_Int
 HYPRE_ParCSRMatrixGetRowPartitioning( HYPRE_ParCSRMatrix   matrix,
                                       HYPRE_Int          **row_partitioning_ptr )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int *row_partitioning, *row_starts;
    HYPRE_Int num_procs, i;
 
    if (!matrix) 
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    hypre_MPI_Comm_size(hypre_ParCSRMatrixComm((hypre_ParCSRMatrix *) matrix), 
                        &num_procs);
    row_starts = hypre_ParCSRMatrixRowStarts((hypre_ParCSRMatrix *) matrix);
-   if (!row_starts){ 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return -1;
-   }
+   if (!row_starts) return -1;
    row_partitioning = hypre_CTAlloc(HYPRE_Int, num_procs+1);
    for (i=0; i < num_procs + 1; i++)
       row_partitioning[i] = row_starts[i];
 
    *row_partitioning_ptr = row_partitioning;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -247,18 +177,12 @@ HYPRE_Int
 HYPRE_ParCSRMatrixGetColPartitioning( HYPRE_ParCSRMatrix   matrix,
                                       HYPRE_Int          **col_partitioning_ptr )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int *col_partitioning, *col_starts;
    HYPRE_Int num_procs, i;
 
    if (!matrix) 
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -271,9 +195,6 @@ HYPRE_ParCSRMatrixGetColPartitioning( HYPRE_ParCSRMatrix   matrix,
       col_partitioning[i] = col_starts[i];
 
    *col_partitioning_ptr = col_partitioning;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -304,23 +225,14 @@ HYPRE_ParCSRMatrixGetLocalRange( HYPRE_ParCSRMatrix  matrix,
                                  HYPRE_Int          *col_start,
                                  HYPRE_Int          *col_end )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix) 
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    hypre_ParCSRMatrixGetLocalRange( (hypre_ParCSRMatrix *) matrix,
                                     row_start, row_end, col_start, col_end );
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -335,23 +247,14 @@ HYPRE_ParCSRMatrixGetRow( HYPRE_ParCSRMatrix  matrix,
                           HYPRE_Int         **col_ind,
                           HYPRE_Complex     **values )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix) 
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    
    hypre_ParCSRMatrixGetRow( (hypre_ParCSRMatrix *) matrix,
                              row, size, col_ind, values );
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif   
    return hypre_error_flag;
 }
 
@@ -366,23 +269,14 @@ HYPRE_ParCSRMatrixRestoreRow( HYPRE_ParCSRMatrix  matrix,
                               HYPRE_Int         **col_ind,
                               HYPRE_Complex     **values )
 {  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix) 
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    hypre_ParCSRMatrixRestoreRow( (hypre_ParCSRMatrix *) matrix,
                                  row, size, col_ind, values );
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif   
    return hypre_error_flag;
 }
 
@@ -403,23 +297,14 @@ HYPRE_CSRMatrixToParCSRMatrix( MPI_Comm            comm,
                                HYPRE_Int          *col_partitioning,
                                HYPRE_ParCSRMatrix *matrix)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix)
    {
       hypre_error_in_arg(5);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *matrix = (HYPRE_ParCSRMatrix)
       hypre_CSRMatrixToParCSRMatrix( comm, (hypre_CSRMatrix *) A_CSR,
                                      row_partitioning, col_partitioning) ;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif   
    return hypre_error_flag;
 }
 
@@ -436,23 +321,13 @@ HYPRE_CSRMatrixToParCSRMatrix_WithNewPartitioning(
    HYPRE_CSRMatrix     A_CSR,
    HYPRE_ParCSRMatrix *matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!matrix)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *matrix = (HYPRE_ParCSRMatrix)
       hypre_CSRMatrixToParCSRMatrix( comm, (hypre_CSRMatrix *) A_CSR, NULL, NULL ) ;
-   
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -467,10 +342,6 @@ HYPRE_ParCSRMatrixMatvec( HYPRE_Complex      alpha,
                           HYPRE_Complex      beta,
                           HYPRE_ParVector    y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif   
    return ( hypre_ParCSRMatrixMatvec(
                alpha, (hypre_ParCSRMatrix *) A,
                (hypre_ParVector *) x, beta, (hypre_ParVector *) y) );
@@ -487,10 +358,6 @@ HYPRE_ParCSRMatrixMatvecT( HYPRE_Complex      alpha,
                            HYPRE_Complex      beta,
                            HYPRE_ParVector    y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParCSRMatrixMatvecT(
                alpha, (hypre_ParCSRMatrix *) A,
                (hypre_ParVector *) x, beta, (hypre_ParVector *) y) );

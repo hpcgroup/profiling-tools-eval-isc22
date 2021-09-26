@@ -24,9 +24,7 @@
 #include "./_hypre_IJ_mv.h"
 
 #include "../HYPRE.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * HYPRE_IJMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -39,9 +37,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
                       HYPRE_Int       jupper,
                       HYPRE_IJMatrix *matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int *row_partitioning;
    HYPRE_Int *col_partitioning;
    HYPRE_Int *info;
@@ -76,9 +71,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
    {
       hypre_error_in_arg(2);
       hypre_TFree(ijmatrix);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -86,9 +78,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
    {
       hypre_error_in_arg(3);
       hypre_TFree(ijmatrix);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -96,9 +85,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
    {
       hypre_error_in_arg(4);
       hypre_TFree(ijmatrix);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -106,9 +92,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
    {
       hypre_error_in_arg(5);
       hypre_TFree(ijmatrix);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -187,9 +170,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
          hypre_TFree(info);
          hypre_TFree(recv_buf);
          hypre_TFree(row_partitioning);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    	 return hypre_error_flag;
       }
       else
@@ -224,9 +204,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
            hypre_TFree(recv_buf);
            hypre_TFree(row_partitioning);
            hypre_TFree(col_partitioning);
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
    	   return hypre_error_flag;
          }
          else
@@ -252,9 +229,6 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
 
    *matrix = (HYPRE_IJMatrix) ijmatrix;
   
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -265,17 +239,11 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
 HYPRE_Int 
 HYPRE_IJMatrixDestroy( HYPRE_IJMatrix matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -296,18 +264,12 @@ HYPRE_IJMatrixDestroy( HYPRE_IJMatrix matrix )
       else if ( hypre_IJMatrixObjectType(ijmatrix) != -1 )
       {
          hypre_error_in_arg(1);
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
          return hypre_error_flag;
       }
    }
 
    hypre_TFree(ijmatrix); 
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -318,17 +280,11 @@ HYPRE_IJMatrixDestroy( HYPRE_IJMatrix matrix )
 HYPRE_Int 
 HYPRE_IJMatrixInitialize( HYPRE_IJMatrix matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -339,9 +295,6 @@ HYPRE_IJMatrixInitialize( HYPRE_IJMatrix matrix )
       hypre_error_in_arg(1);
    }
   
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 
 }
@@ -354,24 +307,15 @@ HYPRE_Int
 HYPRE_IJMatrixSetPrintLevel( HYPRE_IJMatrix matrix,
                              HYPRE_Int print_level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    hypre_IJMatrixPrintLevel(ijmatrix) = 1;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -387,101 +331,61 @@ HYPRE_IJMatrixSetValues( HYPRE_IJMatrix       matrix,
                          const HYPRE_Int     *cols,
                          const HYPRE_Complex *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
-   if (nrows == 0){
-    
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (nrows == 0)
       return hypre_error_flag;
-   }
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (nrows < 0)
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!ncols)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!rows)
    {
       hypre_error_in_arg(4);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!cols)
    {
       hypre_error_in_arg(5);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!values)
    {
       hypre_error_in_arg(6);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if ( hypre_IJMatrixObjectType(ijmatrix) == HYPRE_PARCSR )
    {
-      if (hypre_IJMatrixOMPFlag(ijmatrix)){
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      if (hypre_IJMatrixOMPFlag(ijmatrix))
 	 return( hypre_IJMatrixSetValuesOMPParCSR( ijmatrix, nrows, ncols,
                                              rows, cols, values ) );
-      }
-      else{
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      else
          return( hypre_IJMatrixSetValuesParCSR( ijmatrix, nrows, ncols,
                                              rows, cols, values ) );
-      }
    }
    else
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       hypre_error_in_arg(1);
    }
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 
 }
@@ -498,96 +402,61 @@ HYPRE_IJMatrixAddToValues( HYPRE_IJMatrix       matrix,
                            const HYPRE_Int     *cols,
                            const HYPRE_Complex *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (nrows == 0)
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (nrows < 0)
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!ncols)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!rows)
    {
       hypre_error_in_arg(4);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!cols)
    {
       hypre_error_in_arg(5);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!values)
    {
       hypre_error_in_arg(6);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if ( hypre_IJMatrixObjectType(ijmatrix) == HYPRE_PARCSR )
    {
-      if (hypre_IJMatrixOMPFlag(ijmatrix)){
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      if (hypre_IJMatrixOMPFlag(ijmatrix))
 	 return( hypre_IJMatrixAddToValuesOMPParCSR( ijmatrix, nrows, ncols,
                                              rows, cols, values ) );
-                                             }
-      else {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      else
          return( hypre_IJMatrixAddToValuesParCSR( ijmatrix, nrows, ncols,
                                              rows, cols, values ) );
-                                             }
    }
    else
    {
       hypre_error_in_arg(1);
    }
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -598,25 +467,16 @@ HYPRE_IJMatrixAddToValues( HYPRE_IJMatrix       matrix,
 HYPRE_Int 
 HYPRE_IJMatrixAssemble( HYPRE_IJMatrix matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if ( hypre_IJMatrixObjectType(ijmatrix) == HYPRE_PARCSR )
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return( hypre_IJMatrixAssembleParCSR( ijmatrix ) );
    }
    else
@@ -624,9 +484,6 @@ HYPRE_IJMatrixAssemble( HYPRE_IJMatrix matrix )
       hypre_error_in_arg(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -640,51 +497,31 @@ HYPRE_IJMatrixGetRowCounts( HYPRE_IJMatrix matrix,
                             HYPRE_Int     *rows,
                             HYPRE_Int     *ncols )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
-   if (nrows == 0) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return hypre_error_flag;
-   }
+   if (nrows == 0) return hypre_error_flag;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (nrows < 0)
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!rows)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!ncols)
    {
       hypre_error_in_arg(4);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -697,9 +534,6 @@ HYPRE_IJMatrixGetRowCounts( HYPRE_IJMatrix matrix,
       hypre_error_in_arg(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return hypre_error_flag;
 }
 
@@ -715,69 +549,43 @@ HYPRE_IJMatrixGetValues( HYPRE_IJMatrix matrix,
                          HYPRE_Int     *cols,
                          HYPRE_Complex *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
-   if (nrows == 0) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return hypre_error_flag;
-   }
+   if (nrows == 0) return hypre_error_flag;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (nrows < 0)
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!ncols)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!rows)
    {
       hypre_error_in_arg(4);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!cols)
    {
       hypre_error_in_arg(5);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!values)
    {
       hypre_error_in_arg(6);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -791,9 +599,6 @@ HYPRE_IJMatrixGetValues( HYPRE_IJMatrix matrix,
       hypre_error_in_arg(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 
 }
@@ -806,25 +611,16 @@ HYPRE_Int
 HYPRE_IJMatrixSetObjectType( HYPRE_IJMatrix matrix,
                              HYPRE_Int      type )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    hypre_IJMatrixObjectType(ijmatrix) = type;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -836,24 +632,15 @@ HYPRE_Int
 HYPRE_IJMatrixGetObjectType( HYPRE_IJMatrix  matrix,
                              HYPRE_Int      *type )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    *type = hypre_IJMatrixObjectType(ijmatrix);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -868,9 +655,6 @@ HYPRE_IJMatrixGetLocalRange( HYPRE_IJMatrix  matrix,
                              HYPRE_Int      *jlower,
                              HYPRE_Int      *jupper )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
    MPI_Comm comm;
    HYPRE_Int *row_partitioning;
@@ -880,9 +664,6 @@ HYPRE_IJMatrixGetLocalRange( HYPRE_IJMatrix  matrix,
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -904,9 +685,6 @@ HYPRE_IJMatrixGetLocalRange( HYPRE_IJMatrix  matrix,
    *jupper = col_partitioning[my_id+1]-1;
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -928,25 +706,16 @@ HYPRE_Int
 HYPRE_IJMatrixGetObject( HYPRE_IJMatrix   matrix,
                          void           **object )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    *object = hypre_IJMatrixObject( ijmatrix );
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -958,25 +727,16 @@ HYPRE_Int
 HYPRE_IJMatrixSetRowSizes( HYPRE_IJMatrix   matrix,
                            const HYPRE_Int *sizes )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if ( hypre_IJMatrixObjectType(ijmatrix) == HYPRE_PARCSR )
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return( hypre_IJMatrixSetRowSizesParCSR( ijmatrix , sizes ) );
    }
    else
@@ -984,9 +744,6 @@ HYPRE_IJMatrixSetRowSizes( HYPRE_IJMatrix   matrix,
       hypre_error_in_arg(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1000,17 +757,11 @@ HYPRE_IJMatrixSetDiagOffdSizes( HYPRE_IJMatrix   matrix,
 				const HYPRE_Int *diag_sizes,
 				const HYPRE_Int *offdiag_sizes )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -1022,9 +773,6 @@ HYPRE_IJMatrixSetDiagOffdSizes( HYPRE_IJMatrix   matrix,
    {
       hypre_error_in_arg(1);
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 
 }
@@ -1037,25 +785,16 @@ HYPRE_Int
 HYPRE_IJMatrixSetMaxOffProcElmts( HYPRE_IJMatrix matrix, 
 				  HYPRE_Int      max_off_proc_elmts)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if ( hypre_IJMatrixObjectType(ijmatrix) == HYPRE_PARCSR )
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return( hypre_IJMatrixSetMaxOffProcElmtsParCSR(ijmatrix,
                                                      max_off_proc_elmts) );
    }
@@ -1064,9 +803,6 @@ HYPRE_IJMatrixSetMaxOffProcElmts( HYPRE_IJMatrix matrix,
       hypre_error_in_arg(1);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1080,9 +816,6 @@ HYPRE_IJMatrixRead( const char     *filename,
                     HYPRE_Int       type,
 		    HYPRE_IJMatrix *matrix_ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_IJMatrix  matrix;
    HYPRE_Int       ilower, iupper, jlower, jupper;
    HYPRE_Int       ncols, I, J;
@@ -1098,9 +831,6 @@ HYPRE_IJMatrixRead( const char     *filename,
    if ((file = fopen(new_filename, "r")) == NULL)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -1118,9 +848,6 @@ HYPRE_IJMatrixRead( const char     *filename,
       if (ret != 3)
       {
          hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Error in IJ matrix input file.");
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
          return hypre_error_flag;
       }
       if (I < ilower || I > iupper)
@@ -1135,9 +862,6 @@ HYPRE_IJMatrixRead( const char     *filename,
 
    *matrix_ptr = matrix;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1149,9 +873,6 @@ HYPRE_Int
 HYPRE_IJMatrixPrint( HYPRE_IJMatrix  matrix,
                      const char     *filename )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm        comm;
    HYPRE_Int      *row_partitioning;
    HYPRE_Int      *col_partitioning;
@@ -1167,18 +888,12 @@ HYPRE_IJMatrixPrint( HYPRE_IJMatrix  matrix,
    if (!matrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if ( (hypre_IJMatrixObjectType(matrix) != HYPRE_PARCSR) )
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -1190,9 +905,6 @@ HYPRE_IJMatrixPrint( HYPRE_IJMatrix  matrix,
    if ((file = fopen(new_filename, "w")) == NULL)
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -1256,9 +968,6 @@ HYPRE_IJMatrixPrint( HYPRE_IJMatrix  matrix,
 
    fclose(file);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -1269,25 +978,16 @@ HYPRE_Int
 HYPRE_IJMatrixSetOMPFlag( HYPRE_IJMatrix matrix,
                           HYPRE_Int      omp_flag )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    hypre_IJMatrixOMPFlag(ijmatrix) = omp_flag;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 

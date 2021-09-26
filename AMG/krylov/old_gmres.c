@@ -25,9 +25,7 @@
 
 #include "krylov.h"
 #include "utilities.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * hypre_GMRESFunctionsCreate
  *--------------------------------------------------------------------------*/
@@ -53,9 +51,6 @@ hypre_GMRESFunctionsCreate(
    HYPRE_Int    (*Precond)       ( void *vdata, void *A, void *b, void *x )
    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESFunctions * gmres_functions;
    gmres_functions = (hypre_GMRESFunctions *)
       CAlloc( 1, sizeof(hypre_GMRESFunctions) );
@@ -78,9 +73,6 @@ hypre_GMRESFunctionsCreate(
    gmres_functions->precond_setup = PrecondSetup;
    gmres_functions->precond       = Precond;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return gmres_functions;
 }
 
@@ -91,9 +83,6 @@ hypre_GMRESFunctionsCreate(
 void *
 hypre_GMRESCreate( hypre_GMRESFunctions *gmres_functions )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data;
  
    gmres_data = hypre_CTAllocF(hypre_GMRESData, 1, gmres_functions);
@@ -119,9 +108,6 @@ hypre_GMRESCreate( hypre_GMRESFunctions *gmres_functions )
    (gmres_data -> norms)          = NULL;
    (gmres_data -> log_file_name)  = NULL;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (void *) gmres_data;
 }
 
@@ -132,9 +118,6 @@ hypre_GMRESCreate( hypre_GMRESFunctions *gmres_functions )
 HYPRE_Int
 hypre_GMRESDestroy( void *gmres_vdata )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    hypre_GMRESFunctions *gmres_functions = gmres_data->functions;
    HYPRE_Int i, ierr = 0;
@@ -167,9 +150,6 @@ hypre_GMRESDestroy( void *gmres_vdata )
       hypre_TFreeF( gmres_functions, gmres_functions );
    }
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(ierr);
 }
 
@@ -179,16 +159,10 @@ hypre_GMRESDestroy( void *gmres_vdata )
 
 HYPRE_Int hypre_GMRESGetResidual( void *gmres_vdata, void **residual )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    /* returns a poHYPRE_Inter to the residual vector */
    HYPRE_Int ierr = 0;
    hypre_GMRESData  *gmres_data     = gmres_vdata;
    *residual = gmres_data->r;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -202,9 +176,6 @@ hypre_GMRESSetup( void *gmres_vdata,
                   void *b,
                   void *x         )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data     = gmres_vdata;
    hypre_GMRESFunctions *gmres_functions = gmres_data->functions;
 
@@ -248,9 +219,6 @@ hypre_GMRESSetup( void *gmres_vdata,
          (gmres_data -> log_file_name) = "gmres.out.log";
    }
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
  
@@ -264,9 +232,6 @@ hypre_GMRESSolve(void  *gmres_vdata,
                  void  *b,
 		 void  *x)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData  *gmres_data   = gmres_vdata;
    hypre_GMRESFunctions *gmres_functions = gmres_data->functions;
    HYPRE_Int 		     k_dim        = (gmres_data -> k_dim);
@@ -363,9 +328,6 @@ hypre_GMRESSolve(void  *gmres_vdata,
         printf("ERROR detected by Hypre ... END\n\n\n");
       }
       ierr += 101;
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return ierr;
    }
 
@@ -391,9 +353,6 @@ hypre_GMRESSolve(void  *gmres_vdata,
         printf("ERROR detected by Hypre ... END\n\n\n");
       }
       ierr += 101;
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return ierr;
    }
 
@@ -464,9 +423,6 @@ hypre_GMRESSolve(void  *gmres_vdata,
            for (i=0; i < k_dim+1; i++) hypre_TFreeF(hh[i],gmres_functions);
            hypre_TFreeF(hh,gmres_functions); 
 	   ierr = 0;
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
 	   return ierr;
 	}
 
@@ -696,9 +652,6 @@ hypre_GMRESSolve(void  *gmres_vdata,
    }
    hypre_TFreeF(hh,gmres_functions); 
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -710,17 +663,11 @@ HYPRE_Int
 hypre_GMRESSetKDim( void   *gmres_vdata,
                     HYPRE_Int   k_dim )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> k_dim) = k_dim;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -728,17 +675,11 @@ HYPRE_Int
 hypre_GMRESGetKDim( void   *gmres_vdata,
                     HYPRE_Int * k_dim )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *k_dim = (gmres_data -> k_dim);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -750,17 +691,11 @@ HYPRE_Int
 hypre_GMRESSetTol( void   *gmres_vdata,
                    HYPRE_Real  tol       )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> tol) = tol;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -768,17 +703,11 @@ HYPRE_Int
 hypre_GMRESGetTol( void   *gmres_vdata,
                    HYPRE_Real  * tol      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *tol = (gmres_data -> tol);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -790,17 +719,11 @@ HYPRE_Int
 hypre_GMRESSetConvergenceFactorTol( void   *gmres_vdata,
                    HYPRE_Real  cf_tol       )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> cf_tol) = cf_tol;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -808,17 +731,11 @@ HYPRE_Int
 hypre_GMRESGetConvergenceFactorTol( void   *gmres_vdata,
                    HYPRE_Real * cf_tol       )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *cf_tol = (gmres_data -> cf_tol);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -830,17 +747,11 @@ HYPRE_Int
 hypre_GMRESSetMinIter( void *gmres_vdata,
                        HYPRE_Int   min_iter  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    (gmres_data -> min_iter) = min_iter;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -848,17 +759,11 @@ HYPRE_Int
 hypre_GMRESGetMinIter( void *gmres_vdata,
                        HYPRE_Int * min_iter  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    *min_iter = (gmres_data -> min_iter);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -870,17 +775,11 @@ HYPRE_Int
 hypre_GMRESSetMaxIter( void *gmres_vdata,
                        HYPRE_Int   max_iter  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    (gmres_data -> max_iter) = max_iter;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -888,17 +787,11 @@ HYPRE_Int
 hypre_GMRESGetMaxIter( void *gmres_vdata,
                        HYPRE_Int * max_iter  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    *max_iter = (gmres_data -> max_iter);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -910,17 +803,11 @@ HYPRE_Int
 hypre_GMRESSetRelChange( void *gmres_vdata,
                          HYPRE_Int   rel_change  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> rel_change) = rel_change;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -928,17 +815,11 @@ HYPRE_Int
 hypre_GMRESGetRelChange( void *gmres_vdata,
                          HYPRE_Int * rel_change  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *rel_change = (gmres_data -> rel_change);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -950,17 +831,11 @@ HYPRE_Int
 hypre_GMRESSetStopCrit( void   *gmres_vdata,
                         HYPRE_Int  stop_crit       )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> stop_crit) = stop_crit;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -968,17 +843,11 @@ HYPRE_Int
 hypre_GMRESGetStopCrit( void   *gmres_vdata,
                         HYPRE_Int * stop_crit       )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *stop_crit = (gmres_data -> stop_crit);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -992,9 +861,6 @@ hypre_GMRESSetPrecond( void  *gmres_vdata,
                        HYPRE_Int  (*precond_setup)(),
                        void  *precond_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    hypre_GMRESFunctions *gmres_functions = gmres_data->functions;
    HYPRE_Int              ierr = 0;
@@ -1003,9 +869,6 @@ hypre_GMRESSetPrecond( void  *gmres_vdata,
    (gmres_functions -> precond_setup)  = precond_setup;
    (gmres_data -> precond_data)   = precond_data;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
  
@@ -1017,17 +880,11 @@ HYPRE_Int
 hypre_GMRESGetPrecond( void         *gmres_vdata,
                        HYPRE_Solver *precond_data_ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    *precond_data_ptr = (HYPRE_Solver)(gmres_data -> precond_data);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
  
@@ -1039,17 +896,11 @@ HYPRE_Int
 hypre_GMRESSetPrintLevel( void *gmres_vdata,
                         HYPRE_Int   level)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> print_level) = level;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1057,17 +908,11 @@ HYPRE_Int
 hypre_GMRESGetPrintLevel( void *gmres_vdata,
                         HYPRE_Int * level)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *level = (gmres_data -> print_level);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1079,17 +924,11 @@ HYPRE_Int
 hypre_GMRESSetLogging( void *gmres_vdata,
                       HYPRE_Int   level)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    (gmres_data -> logging) = level;
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1097,17 +936,11 @@ HYPRE_Int
 hypre_GMRESGetLogging( void *gmres_vdata,
                       HYPRE_Int * level)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int            ierr = 0;
  
    *level = (gmres_data -> logging);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1119,17 +952,11 @@ HYPRE_Int
 hypre_GMRESGetNumIterations( void *gmres_vdata,
                              HYPRE_Int  *num_iterations )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    *num_iterations = (gmres_data -> num_iterations);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
  
@@ -1141,17 +968,11 @@ HYPRE_Int
 hypre_GMRESGetConverged( void *gmres_vdata,
                              HYPRE_Int  *converged )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int              ierr = 0;
  
    *converged = (gmres_data -> converged);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
  
@@ -1163,16 +984,10 @@ HYPRE_Int
 hypre_GMRESGetFinalRelativeResidualNorm( void   *gmres_vdata,
                                          HYPRE_Real *relative_residual_norm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_GMRESData *gmres_data = gmres_vdata;
    HYPRE_Int 		ierr = 0;
  
    *relative_residual_norm = (gmres_data -> rel_residual_norm);
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 } 

@@ -20,9 +20,7 @@
 
 #include "_hypre_parcsr_ls.h"
 #include "aux_interp.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*---------------------------------------------------------------------------
  * hypre_BoomerAMGBuildPartialExtPIInterp
  *  Comment: 
@@ -36,9 +34,6 @@ hypre_BoomerAMGBuildPartialExtPIInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_mark
 			      HYPRE_Int *col_offd_S_to_A,
 			      hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
   hypre_profile_times[HYPRE_TIMER_ID_PARTIAL_INTERP] -= hypre_MPI_Wtime();
 #endif
@@ -192,10 +187,6 @@ hypre_BoomerAMGBuildPartialExtPIInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_mark
 #ifdef HYPRE_PROFILE
        hypre_profile_times[HYPRE_TIMER_ID_EXTENDED_I_INTERP] += hypre_MPI_Wtime();
 #endif
-
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
        return hypre_error_flag;
      }
 
@@ -869,9 +860,6 @@ hypre_BoomerAMGBuildPartialExtPIInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_mark
    hypre_profile_times[HYPRE_TIMER_ID_PARTIAL_INTERP] += hypre_MPI_Wtime();
 #endif
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }
 
@@ -891,9 +879,6 @@ hypre_BoomerAMGBuildPartialStdInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker
 			      HYPRE_Int sep_weight, HYPRE_Int *col_offd_S_to_A, 
 			      hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -1049,10 +1034,6 @@ hypre_BoomerAMGBuildPartialStdInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker
 #ifdef HYPRE_PROFILE
        hypre_profile_times[HYPRE_TIMER_ID_EXTENDED_I_INTERP] += hypre_MPI_Wtime();
 #endif
-
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
        return hypre_error_flag;
      }
 
@@ -1880,9 +1861,6 @@ hypre_BoomerAMGBuildPartialStdInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker
    }
    
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }
 
@@ -1899,9 +1877,6 @@ hypre_BoomerAMGBuildPartialExtInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker
 			      HYPRE_Int *col_offd_S_to_A,
 			      hypre_ParCSRMatrix  **P_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /* Communication Variables */
   MPI_Comm 	           comm = hypre_ParCSRMatrixComm(A);   
   hypre_ParCSRCommPkg     *comm_pkg = hypre_ParCSRMatrixCommPkg(A);
@@ -2047,10 +2022,6 @@ hypre_BoomerAMGBuildPartialExtInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker
 #ifdef HYPRE_PROFILE
        hypre_profile_times[HYPRE_TIMER_ID_EXTENDED_I_INTERP] += hypre_MPI_Wtime();
 #endif
-
-        #ifdef caliper
-        CALI_MARK_FUNCTION_END;
-        #endif
        return hypre_error_flag;
      }
 
@@ -2644,8 +2615,5 @@ hypre_BoomerAMGBuildPartialExtInterp(hypre_ParCSRMatrix *A, HYPRE_Int *CF_marker
 
    }
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;  
 }

@@ -23,9 +23,7 @@
  *-----------------------------------------------------*/
 
 #include "_hypre_IJ_mv.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*------------------------------------------------------------------
  * hypre_IJMatrixCreateAssumedPartition -
  * Each proc gets it own range. Then 
@@ -38,9 +36,6 @@
 HYPRE_Int
 hypre_IJMatrixCreateAssumedPartition( hypre_IJMatrix *matrix) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 
 
    HYPRE_Int global_num_rows;
@@ -89,9 +84,6 @@ hypre_IJMatrixCreateAssumedPartition( hypre_IJMatrix *matrix)
     /* this partition will be saved in the matrix data structure until the matrix is destroyed */
     hypre_IJMatrixAssumedPart(matrix) = apart;
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return hypre_error_flag;
 
 
@@ -112,9 +104,6 @@ hypre_IJMatrixCreateAssumedPartition( hypre_IJMatrix *matrix)
 HYPRE_Int
 hypre_IJVectorCreateAssumedPartition( hypre_IJVector *vector) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 
 
    HYPRE_Int global_num, global_first_row;
@@ -160,9 +149,6 @@ hypre_IJVectorCreateAssumedPartition( hypre_IJVector *vector)
     /* this partition will be saved in the vector data structure until the vector is destroyed */
     hypre_IJVectorAssumedPart(vector) = apart;
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return hypre_error_flag;
 
 

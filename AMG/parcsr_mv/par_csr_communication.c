@@ -17,18 +17,11 @@
 
 #include "_hypre_parcsr_mv.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /*==========================================================================*/
 
 #ifdef HYPRE_USING_PERSISTENT_COMM
 static CommPkgJobType getJobTypeOf(HYPRE_Int job)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    CommPkgJobType job_type = HYPRE_COMM_PKG_JOB_COMPLEX;
    switch (job)
    {
@@ -46,9 +39,6 @@ static CommPkgJobType getJobTypeOf(HYPRE_Int job)
       break;
    } // switch (job)
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return job_type;
 }
 
@@ -62,9 +52,6 @@ hypre_ParCSRPersistentCommHandleCreate( HYPRE_Int job,
                                         void *send_data,
                                         void *recv_data)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int                  i;
 
    hypre_ParCSRPersistentCommHandle *comm_handle = hypre_CTAlloc(hypre_ParCSRPersistentCommHandle, 1);
@@ -205,9 +192,6 @@ hypre_ParCSRPersistentCommHandleCreate( HYPRE_Int job,
    hypre_ParCSRCommHandleRecvData(comm_handle) = recv_data;
    hypre_ParCSRCommHandleSendData(comm_handle) = send_data;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( comm_handle );
 }
 
@@ -216,9 +200,6 @@ hypre_ParCSRPersistentCommHandle *
 hypre_ParCSRCommPkgGetPersistentCommHandle( HYPRE_Int job,
                                             hypre_ParCSRCommPkg *comm_pkg )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    CommPkgJobType type = getJobTypeOf(job);
    if (!comm_pkg->persistent_comm_handles[type])
    {
@@ -226,18 +207,12 @@ hypre_ParCSRCommPkgGetPersistentCommHandle( HYPRE_Int job,
          hypre_ParCSRPersistentCommHandleCreate(job, comm_pkg, NULL, NULL);
       // data is owned by persistent comm handle
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return comm_pkg->persistent_comm_handles[type];
 }
 
 void
 hypre_ParCSRPersistentCommHandleDestroy( hypre_ParCSRPersistentCommHandle *comm_handle )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (comm_handle->own_send_data)
    {
       hypre_TFree(comm_handle->send_data);
@@ -248,16 +223,10 @@ hypre_ParCSRPersistentCommHandleDestroy( hypre_ParCSRPersistentCommHandle *comm_
    }
    hypre_TFree(comm_handle->requests);
    hypre_TFree(comm_handle);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_ParCSRPersistentCommHandleStart( hypre_ParCSRPersistentCommHandle *comm_handle )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (hypre_ParCSRCommHandleNumRequests(comm_handle) > 0)
    {
       HYPRE_Int ret = hypre_MPI_Startall(hypre_ParCSRCommHandleNumRequests(comm_handle),
@@ -268,16 +237,10 @@ void hypre_ParCSRPersistentCommHandleStart( hypre_ParCSRPersistentCommHandle *co
          /*hypre_printf("MPI error %d in %s (%s, line %u)\n", ret, __FUNCTION__, __FILE__, __LINE__);*/
       }
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_ParCSRPersistentCommHandleWait( hypre_ParCSRPersistentCommHandle *comm_handle )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (hypre_ParCSRCommHandleNumRequests(comm_handle) > 0)
    {
       HYPRE_Int ret = hypre_MPI_Waitall(hypre_ParCSRCommHandleNumRequests(comm_handle),
@@ -289,9 +252,6 @@ void hypre_ParCSRPersistentCommHandleWait( hypre_ParCSRPersistentCommHandle *com
          /*hypre_printf("MPI error %d in %s (%s, line %u)\n", ret, __FUNCTION__, __FILE__, __LINE__);*/
       }
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 #endif // HYPRE_USING_PERSISTENT_COMM
 
@@ -301,9 +261,6 @@ hypre_ParCSRCommHandleCreate ( HYPRE_Int            job,
                                void                *send_data, 
                                void                *recv_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int                  num_sends = hypre_ParCSRCommPkgNumSends(comm_pkg);
    HYPRE_Int                  num_recvs = hypre_ParCSRCommPkgNumRecvs(comm_pkg);
    MPI_Comm                   comm      = hypre_ParCSRCommPkgComm(comm_pkg);
@@ -451,18 +408,12 @@ hypre_ParCSRCommHandleCreate ( HYPRE_Int            job,
    hypre_ParCSRCommHandleNumRequests(comm_handle) = num_requests;
    hypre_ParCSRCommHandleRequests(comm_handle)    = requests;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( comm_handle );
 }
 
 HYPRE_Int
 hypre_ParCSRCommHandleDestroy( hypre_ParCSRCommHandle *comm_handle )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_MPI_Status          *status0;
 
    if ( comm_handle==NULL ) return hypre_error_flag;
@@ -478,9 +429,6 @@ hypre_ParCSRCommHandleDestroy( hypre_ParCSRCommHandle *comm_handle )
    hypre_TFree(hypre_ParCSRCommHandleRequests(comm_handle));
    hypre_TFree(comm_handle);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -514,9 +462,6 @@ hypre_MatvecCommPkgCreate_core(
    HYPRE_Int ** p_send_map_elmts
    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int    i, j;
    HYPRE_Int    num_procs, my_id, proc_num, num_elmts;
    HYPRE_Int    local_info, offd_col;
@@ -715,9 +660,6 @@ hypre_MatvecCommPkgCreate_core(
    *p_send_procs = send_procs;
    *p_send_map_starts = send_map_starts;
    *p_send_map_elmts = send_map_elmts;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /* ----------------------------------------------------------------------
@@ -730,9 +672,6 @@ hypre_MatvecCommPkgCreate_core(
 HYPRE_Int
 hypre_MatvecCommPkgCreate ( hypre_ParCSRMatrix *A )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int            num_sends = 0;
    HYPRE_Int           *send_procs = NULL;
    HYPRE_Int           *send_map_starts = NULL;
@@ -829,9 +768,6 @@ hypre_MatvecCommPkgCreate ( hypre_ParCSRMatrix *A )
 
    hypre_ParCSRMatrixCommPkg(A) = comm_pkg;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -839,9 +775,6 @@ hypre_MatvecCommPkgCreate ( hypre_ParCSRMatrix *A )
 HYPRE_Int
 hypre_MatvecCommPkgDestroy( hypre_ParCSRCommPkg *comm_pkg )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_USING_PERSISTENT_COMM
    HYPRE_Int i;
    for (i = HYPRE_COMM_PKG_JOB_COMPLEX; i < NUM_OF_COMM_PKG_JOB_TYPE; ++i)
@@ -870,9 +803,6 @@ hypre_MatvecCommPkgDestroy( hypre_ParCSRCommPkg *comm_pkg )
       hypre_TFree(hypre_ParCSRCommPkgRecvMPITypes(comm_pkg)); */
    hypre_TFree(comm_pkg);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -884,9 +814,6 @@ hypre_BuildCSRMatrixMPIDataType( HYPRE_Int num_nonzeros,
                                  HYPRE_Int *a_j, 
                                  hypre_MPI_Datatype *csr_matrix_datatype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int            block_lens[3];
    hypre_MPI_Aint       displ[3];
    hypre_MPI_Datatype   types[3];
@@ -905,9 +832,6 @@ hypre_BuildCSRMatrixMPIDataType( HYPRE_Int num_nonzeros,
    hypre_MPI_Type_struct(3,block_lens,displ,types,csr_matrix_datatype);
    hypre_MPI_Type_commit(csr_matrix_datatype);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -917,9 +841,6 @@ hypre_BuildCSRJDataType( HYPRE_Int num_nonzeros,
                          HYPRE_Int *a_j,
                          hypre_MPI_Datatype *csr_jdata_datatype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int          block_lens[2];
    hypre_MPI_Aint     displs[2];
    hypre_MPI_Datatype types[2];
@@ -935,9 +856,6 @@ hypre_BuildCSRJDataType( HYPRE_Int num_nonzeros,
  
    hypre_MPI_Type_struct(2,block_lens,displs,types,csr_jdata_datatype);
    hypre_MPI_Type_commit(csr_jdata_datatype);
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif 
+ 
    return hypre_error_flag;
 }

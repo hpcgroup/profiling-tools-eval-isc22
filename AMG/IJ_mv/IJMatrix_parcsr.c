@@ -41,9 +41,7 @@
 #include "_hypre_parcsr_mv.h"
 
 #include "../HYPRE.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /******************************************************************************
  *
  * hypre_IJMatrixCreateParCSR
@@ -53,9 +51,6 @@
 HYPRE_Int
 hypre_IJMatrixCreateParCSR(hypre_IJMatrix *matrix)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJMatrixComm(matrix);
    HYPRE_Int *row_partitioning = hypre_IJMatrixRowPartitioning(matrix);
    HYPRE_Int *col_partitioning = hypre_IJMatrixColPartitioning(matrix);
@@ -119,9 +114,6 @@ hypre_IJMatrixCreateParCSR(hypre_IJMatrix *matrix)
 
    hypre_IJMatrixObject(matrix) = par_matrix;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -135,9 +127,6 @@ HYPRE_Int
 hypre_IJMatrixSetRowSizesParCSR(hypre_IJMatrix *matrix,
 			      	const HYPRE_Int      *sizes)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int local_num_rows, local_num_cols;
    HYPRE_Int i, my_id;
    HYPRE_Int *row_space;
@@ -170,9 +159,6 @@ hypre_IJMatrixSetRowSizesParCSR(hypre_IJMatrix *matrix,
    }
    hypre_AuxParCSRMatrixRowSpace(aux_matrix) = row_space;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -190,9 +176,6 @@ hypre_IJMatrixSetDiagOffdSizesParCSR(hypre_IJMatrix *matrix,
 			      	     const HYPRE_Int	   *diag_sizes,
 			      	     const HYPRE_Int	   *offdiag_sizes)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int local_num_rows;
    HYPRE_Int i;
    hypre_ParCSRMatrix *par_matrix = (hypre_ParCSRMatrix *)hypre_IJMatrixObject(matrix);
@@ -233,9 +216,6 @@ hypre_IJMatrixSetDiagOffdSizesParCSR(hypre_IJMatrix *matrix,
    }
    hypre_AuxParCSRMatrixNeedAux(aux_matrix) = 0;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 
 }
@@ -250,9 +230,6 @@ HYPRE_Int
 hypre_IJMatrixSetMaxOffProcElmtsParCSR(hypre_IJMatrix *matrix,
 			      	       HYPRE_Int max_off_proc_elmts)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AuxParCSRMatrix *aux_matrix;
    HYPRE_Int local_num_rows, local_num_cols, my_id;
    HYPRE_Int *row_partitioning = hypre_IJMatrixRowPartitioning(matrix);
@@ -276,9 +253,6 @@ hypre_IJMatrixSetMaxOffProcElmtsParCSR(hypre_IJMatrix *matrix,
    }
    hypre_AuxParCSRMatrixMaxOffProcElmts(aux_matrix) = max_off_proc_elmts;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -293,9 +267,6 @@ hypre_IJMatrixSetMaxOffProcElmtsParCSR(hypre_IJMatrix *matrix,
 HYPRE_Int
 hypre_IJMatrixInitializeParCSR(hypre_IJMatrix *matrix)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 	hypre_ParCSRMatrix *par_matrix = (hypre_ParCSRMatrix *) hypre_IJMatrixObject(matrix);
 	hypre_AuxParCSRMatrix *aux_matrix = (hypre_AuxParCSRMatrix *) hypre_IJMatrixTranslator(matrix);
    HYPRE_Int local_num_rows;
@@ -352,9 +323,6 @@ hypre_IJMatrixInitializeParCSR(hypre_IJMatrix *matrix)
       }
 
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -371,9 +339,6 @@ HYPRE_Int hypre_IJMatrixGetRowCountsParCSR( hypre_IJMatrix *matrix,
                                             HYPRE_Int            *rows,
                                             HYPRE_Int	      *ncols)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int row_index;
    MPI_Comm comm = hypre_IJMatrixComm(matrix);
    hypre_ParCSRMatrix *par_matrix = (hypre_ParCSRMatrix *) hypre_IJMatrixObject(matrix);
@@ -420,9 +385,6 @@ HYPRE_Int hypre_IJMatrixGetRowCountsParCSR( hypre_IJMatrix *matrix,
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -442,9 +404,6 @@ hypre_IJMatrixGetValuesParCSR( hypre_IJMatrix *matrix,
                                HYPRE_Int      *cols,
                                HYPRE_Complex  *values)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJMatrixComm(matrix);
    hypre_ParCSRMatrix *par_matrix = (hypre_ParCSRMatrix *) hypre_IJMatrixObject(matrix);
    HYPRE_Int assemble_flag = hypre_IJMatrixAssembleFlag(matrix);
@@ -610,9 +569,6 @@ hypre_IJMatrixGetValuesParCSR( hypre_IJMatrix *matrix,
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
    
 }
@@ -633,9 +589,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
                                const HYPRE_Int      *cols,
                                const HYPRE_Complex  *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *par_matrix;
    hypre_CSRMatrix *diag, *offd;
    hypre_AuxParCSRMatrix *aux_matrix;
@@ -738,9 +691,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
             {
                hypre_error(HYPRE_ERROR_GENERIC);
       	       if (print_level) hypre_printf (" row %d too long! \n", row);
-               #ifdef caliper
-               CALI_MARK_FUNCTION_END;
-               #endif
                return hypre_error_flag;
             }
        
@@ -763,9 +713,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
       	             if (print_level)
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
       	          for (j=pos_offd; j < len_offd; j++)
@@ -783,9 +730,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
       	             if (print_level)
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
       	          not_found = 1;
@@ -800,9 +744,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
       	             /* return -1;*/
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
       	          diag_data[pos_diag] = values[indx];
@@ -825,9 +766,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
       	             /* return -1; */
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
                }
@@ -1027,9 +965,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
                               hypre_printf("Error in row %d ! Too many elements!\n", 
                                            row);
 	    	           /* return 1; */
-                           #ifdef caliper
-                           CALI_MARK_FUNCTION_END;
-                           #endif
                            return hypre_error_flag;
 	 	        }
 	             }  
@@ -1060,9 +995,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
                               hypre_printf("Error in row %d ! Too many elements !\n", 
                                            row);
 	    	           /* return 1; */
-                           #ifdef caliper
-                           CALI_MARK_FUNCTION_END;
-                           #endif
                            return hypre_error_flag;
 	 	        }
 	             } 
@@ -1129,9 +1061,6 @@ hypre_IJMatrixSetValuesParCSR( hypre_IJMatrix       *matrix,
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1151,9 +1080,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
                                  const HYPRE_Int      *cols,
                                  const HYPRE_Complex  *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *par_matrix;
    hypre_CSRMatrix *diag, *offd;
    hypre_AuxParCSRMatrix *aux_matrix;
@@ -1249,9 +1175,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
                hypre_error(HYPRE_ERROR_GENERIC);
       	       if (print_level) hypre_printf (" row %d too long! \n", row);
       	       /* return -1; */
-               #ifdef caliper
-               CALI_MARK_FUNCTION_END;
-               #endif
                return hypre_error_flag;
             }
        
@@ -1274,9 +1197,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
       	             if (print_level)
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	             /* return -1; */
       	          }
@@ -1296,9 +1216,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
       	             /* return -1;*/
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
       	          not_found = 1;
@@ -1313,9 +1230,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
       	             /* return -1; */
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
       	          diag_data[pos_diag] += values[indx];
@@ -1338,9 +1252,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
 			hypre_printf (" Error, element %d %d does not exist\n",
                                       row, cols[indx]);
       	             /* return -1;*/
-                     #ifdef caliper
-                     CALI_MARK_FUNCTION_END;
-                     #endif
                      return hypre_error_flag;
       	          }
                }
@@ -1555,9 +1466,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
                               hypre_printf("Error in row %d ! Too many elements!\n", 
                                            row);
 	    	           /* return 1;*/
-                           #ifdef caliper
-                           CALI_MARK_FUNCTION_END;
-                           #endif
                            return hypre_error_flag;
 	 	        }
 	             }  
@@ -1588,9 +1496,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
                               hypre_printf("Error in row %d ! Too many elements !\n", 
                                            row);
 	    	           /* return 1; */
-                           #ifdef caliper
-                           CALI_MARK_FUNCTION_END;
-                           #endif
                            return hypre_error_flag;
 	 	        }
 	             } 
@@ -1658,9 +1563,6 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1675,15 +1577,9 @@ hypre_IJMatrixAddToValuesParCSR( hypre_IJMatrix       *matrix,
 HYPRE_Int
 hypre_IJMatrixDestroyParCSR(hypre_IJMatrix *matrix)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 	hypre_ParCSRMatrixDestroy((hypre_ParCSRMatrix *)hypre_IJMatrixObject(matrix));
 	hypre_AuxParCSRMatrixDestroy((hypre_AuxParCSRMatrix*)hypre_IJMatrixTranslator(matrix));
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1708,9 +1604,6 @@ hypre_IJMatrixAssembleOffProcValsParCSR( hypre_IJMatrix *matrix,
    					 HYPRE_Int      *off_proc_j,
    					 HYPRE_Complex  *off_proc_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJMatrixComm(matrix);
    hypre_MPI_Request *requests = NULL;
    hypre_MPI_Status *status = NULL;
@@ -1961,9 +1854,6 @@ hypre_IJMatrixAssembleOffProcValsParCSR( hypre_IJMatrix *matrix,
    hypre_TFree(recv_i);
    hypre_TFree(recv_data);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1980,9 +1870,6 @@ hypre_IJMatrixAssembleOffProcValsParCSR( hypre_IJMatrix *matrix,
    					 HYPRE_Int      *off_proc_j,
    					 HYPRE_Complex  *off_proc_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJMatrixComm(matrix);
 
    HYPRE_Int i, j, k, in_i;
@@ -2496,9 +2383,6 @@ hypre_IJMatrixAssembleOffProcValsParCSR( hypre_IJMatrix *matrix,
    if (int_data) hypre_TFree(int_data);
    if (complex_data) hypre_TFree(complex_data);
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -2521,9 +2405,6 @@ hypre_FillResponseIJOffProcVals(void      *p_recv_contact_buf,
 
 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int    myid;
    HYPRE_Int    index, count, elength;
 
@@ -2581,9 +2462,6 @@ hypre_FillResponseIJOffProcVals(void      *p_recv_contact_buf,
    /* output - no message to return (confirmation) */
    *response_message_size = 0; 
   
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -2591,19 +2469,12 @@ hypre_FillResponseIJOffProcVals(void      *p_recv_contact_buf,
 
 HYPRE_Int hypre_FindProc(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int list_length)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int low, high, m;
 
    low = 0;
    high = list_length;
-   if (value >= list[high] || value < list[low]) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (value >= list[high] || value < list[low])
       return -1;
-      }
    else
    {
       while (low+1 < high)
@@ -2618,9 +2489,6 @@ HYPRE_Int hypre_FindProc(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int list_length
             low = m;
          }
       }
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return low;
    }
 }
@@ -2635,9 +2503,6 @@ HYPRE_Int hypre_FindProc(HYPRE_Int *list, HYPRE_Int value, HYPRE_Int list_length
 HYPRE_Int
 hypre_IJMatrixAssembleParCSR(hypre_IJMatrix *matrix)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJMatrixComm(matrix);
    hypre_ParCSRMatrix *par_matrix = (hypre_ParCSRMatrix*) hypre_IJMatrixObject(matrix);
    hypre_AuxParCSRMatrix *aux_matrix = (hypre_AuxParCSRMatrix*) hypre_IJMatrixTranslator(matrix);
@@ -2994,9 +2859,6 @@ hypre_IJMatrixAssembleParCSR(hypre_IJMatrix *matrix)
 
    hypre_AuxParCSRMatrixDestroy(aux_matrix);
    hypre_IJMatrixTranslator(matrix) = NULL;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3031,9 +2893,6 @@ hypre_IJMatrixSetValuesOMPParCSR( hypre_IJMatrix       *matrix,
                                const HYPRE_Int      *cols,
                                const HYPRE_Complex  *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *par_matrix;
    hypre_CSRMatrix *diag, *offd;
    hypre_AuxParCSRMatrix *aux_matrix;
@@ -3093,9 +2952,6 @@ hypre_IJMatrixSetValuesOMPParCSR( hypre_IJMatrix       *matrix,
       hypre_error_in_arg(2);
       if (print_level)
          hypre_printf("Error! nrows negative! HYPRE_IJMatrixSetValues\n");
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -3650,12 +3506,7 @@ hypre_IJMatrixSetValuesOMPParCSR( hypre_IJMatrix       *matrix,
          }
       } /* end parallel region */
    }
-   if (error_flag) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return hypre_error_flag;
-   }
+   if (error_flag) return hypre_error_flag;
    if (aux_matrix)
    {
       for (i1=0; i1 < max_num_threads; i1++)
@@ -3664,9 +3515,6 @@ hypre_IJMatrixSetValuesOMPParCSR( hypre_IJMatrix       *matrix,
    }
    hypre_TFree(value_start);
    hypre_TFree(offproc_cnt);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3686,9 +3534,6 @@ hypre_IJMatrixAddToValuesOMPParCSR( hypre_IJMatrix       *matrix,
                                  const HYPRE_Int      *cols,
                                  const HYPRE_Complex  *values )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *par_matrix;
    hypre_CSRMatrix *diag, *offd;
    hypre_AuxParCSRMatrix *aux_matrix;
@@ -4259,12 +4104,7 @@ hypre_IJMatrixAddToValuesOMPParCSR( hypre_IJMatrix       *matrix,
          }
       } /*end parallel region */
    }
-   if (error_flag) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return hypre_error_flag;
-   }
+   if (error_flag) return hypre_error_flag;
    hypre_TFree(value_start);
    if (!aux_matrix)
    {
@@ -4337,9 +4177,6 @@ hypre_IJMatrixAddToValuesOMPParCSR( hypre_IJMatrix       *matrix,
       }
    }
    hypre_TFree(offproc_cnt);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 

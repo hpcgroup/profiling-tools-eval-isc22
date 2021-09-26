@@ -24,9 +24,6 @@
 #include "seq_mv.h"
 #include <assert.h>
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 /*--------------------------------------------------------------------------
  * hypre_SeqVectorCreate
  *--------------------------------------------------------------------------*/
@@ -34,9 +31,6 @@
 hypre_Vector *
 hypre_SeqVectorCreate( HYPRE_Int size )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_Vector  *vector;
 
    vector = hypre_CTAlloc(hypre_Vector, 1);
@@ -50,9 +44,6 @@ hypre_SeqVectorCreate( HYPRE_Int size )
    /* set defaults */
    hypre_VectorOwnsData(vector) = 1;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return vector;
 }
 
@@ -63,14 +54,8 @@ hypre_SeqVectorCreate( HYPRE_Int size )
 hypre_Vector *
 hypre_SeqMultiVectorCreate( HYPRE_Int size, HYPRE_Int num_vectors )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_Vector *vector = hypre_SeqVectorCreate(size);
    hypre_VectorNumVectors(vector) = num_vectors;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return vector;
 }
 
@@ -81,9 +66,6 @@ hypre_SeqMultiVectorCreate( HYPRE_Int size, HYPRE_Int num_vectors )
 HYPRE_Int 
 hypre_SeqVectorDestroy( hypre_Vector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  ierr=0;
 
    if (vector)
@@ -95,9 +77,6 @@ hypre_SeqVectorDestroy( hypre_Vector *vector )
       hypre_TFree(vector);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -108,9 +87,6 @@ hypre_SeqVectorDestroy( hypre_Vector *vector )
 HYPRE_Int 
 hypre_SeqVectorInitialize( hypre_Vector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  size = hypre_VectorSize(vector);
    HYPRE_Int  ierr = 0;
    HYPRE_Int  num_vectors = hypre_VectorNumVectors(vector);
@@ -132,9 +108,7 @@ hypre_SeqVectorInitialize( hypre_Vector *vector )
    else
       ++ierr;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
    return ierr;
 }
 
@@ -146,16 +120,10 @@ HYPRE_Int
 hypre_SeqVectorSetDataOwner( hypre_Vector *vector,
                              HYPRE_Int     owns_data   )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int    ierr=0;
 
    hypre_VectorOwnsData(vector) = owns_data;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -166,9 +134,6 @@ hypre_SeqVectorSetDataOwner( hypre_Vector *vector,
 hypre_Vector *
 hypre_SeqVectorRead( char *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_Vector  *vector;
 
    FILE    *fp;
@@ -199,10 +164,7 @@ hypre_SeqVectorRead( char *file_name )
 
    /* multivector code not written yet >>> */
    hypre_assert( hypre_VectorNumVectors(vector) == 1 );
-   
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
    return vector;
 }
 
@@ -214,9 +176,6 @@ HYPRE_Int
 hypre_SeqVectorPrint( hypre_Vector *vector,
                       char         *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    FILE    *fp;
 
    HYPRE_Complex *data;
@@ -281,9 +240,6 @@ hypre_SeqVectorPrint( hypre_Vector *vector,
 
    fclose(fp);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -295,9 +251,6 @@ HYPRE_Int
 hypre_SeqVectorSetConstantValues( hypre_Vector *v,
                                   HYPRE_Complex value )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] -= hypre_MPI_Wtime();
 #endif
@@ -321,9 +274,6 @@ hypre_SeqVectorSetConstantValues( hypre_Vector *v,
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -337,9 +287,6 @@ HYPRE_Int
 hypre_SeqVectorSetRandomValues( hypre_Vector *v,
                                 HYPRE_Int           seed )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Complex *vector_data = hypre_VectorData(v);
    HYPRE_Int      size        = hypre_VectorSize(v);
            
@@ -354,9 +301,6 @@ hypre_SeqVectorSetRandomValues( hypre_Vector *v,
    for (i = 0; i < size; i++)
       vector_data[i] = 2.0 * hypre_Rand() - 1.0;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -371,9 +315,6 @@ HYPRE_Int
 hypre_SeqVectorCopy( hypre_Vector *x,
                      hypre_Vector *y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] -= hypre_MPI_Wtime();
 #endif
@@ -399,9 +340,6 @@ hypre_SeqVectorCopy( hypre_Vector *x,
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -413,9 +351,6 @@ hypre_SeqVectorCopy( hypre_Vector *x,
 hypre_Vector *
 hypre_SeqVectorCloneDeep( hypre_Vector *x )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int      size   = hypre_VectorSize(x);
    HYPRE_Int      num_vectors   = hypre_VectorNumVectors(x);
    hypre_Vector * y = hypre_SeqMultiVectorCreate( size, num_vectors );
@@ -427,9 +362,6 @@ hypre_SeqVectorCloneDeep( hypre_Vector *x )
    hypre_SeqVectorInitialize(y);
    hypre_SeqVectorCopy( x, y );
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return y;
 }
 
@@ -441,9 +373,6 @@ hypre_SeqVectorCloneDeep( hypre_Vector *x )
 hypre_Vector *
 hypre_SeqVectorCloneShallow( hypre_Vector *x )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int      size   = hypre_VectorSize(x);
    HYPRE_Int      num_vectors   = hypre_VectorNumVectors(x);
    hypre_Vector * y = hypre_SeqMultiVectorCreate( size, num_vectors );
@@ -456,9 +385,6 @@ hypre_SeqVectorCloneShallow( hypre_Vector *x )
    hypre_SeqVectorSetDataOwner( y, 0 );
    hypre_SeqVectorInitialize(y);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return y;
 }
 
@@ -470,9 +396,6 @@ HYPRE_Int
 hypre_SeqVectorScale( HYPRE_Complex alpha,
                       hypre_Vector *y     )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] -= hypre_MPI_Wtime();
 #endif
@@ -496,9 +419,6 @@ hypre_SeqVectorScale( HYPRE_Complex alpha,
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -511,9 +431,6 @@ hypre_SeqVectorAxpy( HYPRE_Complex alpha,
                      hypre_Vector *x,
                      hypre_Vector *y     )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] -= hypre_MPI_Wtime();
 #endif
@@ -538,9 +455,6 @@ hypre_SeqVectorAxpy( HYPRE_Complex alpha,
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -551,9 +465,6 @@ hypre_SeqVectorAxpy( HYPRE_Complex alpha,
 HYPRE_Real   hypre_SeqVectorInnerProd( hypre_Vector *x,
                                        hypre_Vector *y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] -= hypre_MPI_Wtime();
 #endif
@@ -578,9 +489,6 @@ HYPRE_Real   hypre_SeqVectorInnerProd( hypre_Vector *x,
    hypre_profile_times[HYPRE_TIMER_ID_BLAS1] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return result;
 }
 
@@ -591,9 +499,6 @@ HYPRE_Real   hypre_SeqVectorInnerProd( hypre_Vector *x,
 
 HYPRE_Complex hypre_VectorSumElts( hypre_Vector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Complex  sum = 0;
    HYPRE_Complex *data = hypre_VectorData( vector );
    HYPRE_Int      size = hypre_VectorSize( vector );
@@ -604,9 +509,6 @@ HYPRE_Complex hypre_VectorSumElts( hypre_Vector *vector )
 #endif
    for ( i=0; i<size; ++i ) sum += data[i];
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return sum;
 }
 

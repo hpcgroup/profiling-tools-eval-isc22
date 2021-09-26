@@ -23,9 +23,7 @@
 
 #include "_hypre_IJ_mv.h"
 #include "aux_par_vector.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * hypre_AuxParVectorCreate
  *--------------------------------------------------------------------------*/
@@ -33,9 +31,6 @@
 HYPRE_Int
 hypre_AuxParVectorCreate( hypre_AuxParVector **aux_vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AuxParVector  *vector;
    
    vector = hypre_CTAlloc(hypre_AuxParVector, 1);
@@ -49,9 +44,6 @@ hypre_AuxParVectorCreate( hypre_AuxParVector **aux_vector)
 
 
    *aux_vector = vector;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -62,9 +54,6 @@ hypre_AuxParVectorCreate( hypre_AuxParVector **aux_vector)
 HYPRE_Int 
 hypre_AuxParVectorDestroy( hypre_AuxParVector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int ierr=0;
 
    if (vector)
@@ -76,9 +65,6 @@ hypre_AuxParVectorDestroy( hypre_AuxParVector *vector )
       hypre_TFree(vector);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -89,9 +75,6 @@ hypre_AuxParVectorDestroy( hypre_AuxParVector *vector )
 HYPRE_Int 
 hypre_AuxParVectorInitialize( hypre_AuxParVector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int max_off_proc_elmts = hypre_AuxParVectorMaxOffProcElmts(vector);
 
    /* allocate stash for setting or adding off processor values */
@@ -103,9 +86,6 @@ hypre_AuxParVectorInitialize( hypre_AuxParVector *vector )
                                                             max_off_proc_elmts);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -117,14 +97,8 @@ HYPRE_Int
 hypre_AuxParVectorSetMaxOffPRocElmts( hypre_AuxParVector *vector,
                                       HYPRE_Int max_off_proc_elmts )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int ierr = 0;
    hypre_AuxParVectorMaxOffProcElmts(vector) = max_off_proc_elmts;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 

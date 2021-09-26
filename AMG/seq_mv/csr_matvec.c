@@ -24,9 +24,6 @@
 #include "seq_mv.h"
 #include <assert.h>
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 
 /*--------------------------------------------------------------------------
  * hypre_CSRMatrixMatvec
@@ -42,9 +39,6 @@ hypre_CSRMatrixMatvecOutOfPlace( HYPRE_Complex    alpha,
                                  hypre_Vector    *y,
                                  HYPRE_Int        offset     )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    HYPRE_Real time_begin = hypre_MPI_Wtime();
 #endif
@@ -125,9 +119,6 @@ hypre_CSRMatrixMatvecOutOfPlace( HYPRE_Complex    alpha,
       hypre_profile_times[HYPRE_TIMER_ID_MATVEC] += hypre_MPI_Wtime() - time_begin;
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
       return ierr;
    }
 
@@ -422,9 +413,6 @@ hypre_CSRMatrixMatvecOutOfPlace( HYPRE_Complex    alpha,
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_MATVEC] += hypre_MPI_Wtime() - time_begin;
 #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -435,12 +423,6 @@ hypre_CSRMatrixMatvec( HYPRE_Complex    alpha,
                        HYPRE_Complex    beta,
                        hypre_Vector    *y     )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_CSRMatrixMatvecOutOfPlace(alpha, A, x, beta, y, y, 0);
 }
 
@@ -461,9 +443,6 @@ hypre_CSRMatrixMatvecT( HYPRE_Complex    alpha,
                         HYPRE_Complex    beta,
                         hypre_Vector    *y     )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Complex    *A_data    = hypre_CSRMatrixData(A);
    HYPRE_Int        *A_i       = hypre_CSRMatrixI(A);
    HYPRE_Int        *A_j       = hypre_CSRMatrixJ(A);
@@ -525,9 +504,6 @@ hypre_CSRMatrixMatvecT( HYPRE_Complex    alpha,
       for (i = 0; i < num_cols*num_vectors; i++)
          y_data[i] *= beta;
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return ierr;
    }
 
@@ -668,9 +644,6 @@ hypre_CSRMatrixMatvecT( HYPRE_Complex    alpha,
 
    if (x == y) hypre_SeqVectorDestroy(x_tmp);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -688,9 +661,6 @@ hypre_CSRMatrixMatvec_FF( HYPRE_Complex    alpha,
                           HYPRE_Int       *CF_marker_y,
                           HYPRE_Int        fpt )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Complex    *A_data   = hypre_CSRMatrixData(A);
    HYPRE_Int        *A_i      = hypre_CSRMatrixI(A);
    HYPRE_Int        *A_j      = hypre_CSRMatrixJ(A);
@@ -740,9 +710,6 @@ hypre_CSRMatrixMatvec_FF( HYPRE_Complex    alpha,
       for (i = 0; i < num_rows; i++)
          if (CF_marker_x[i] == fpt) y_data[i] *= beta;
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return ierr;
    }
 
@@ -804,8 +771,5 @@ hypre_CSRMatrixMatvec_FF( HYPRE_Complex    alpha,
          if (CF_marker_x[i] == fpt) y_data[i] *= alpha;
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }

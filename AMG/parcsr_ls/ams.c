@@ -19,9 +19,6 @@
 #include "float.h"
 #include "ams.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 /*--------------------------------------------------------------------------
  * hypre_ParCSRRelax
  *
@@ -64,9 +61,6 @@ HYPRE_Int hypre_ParCSRRelax(/* matrix to relax with */
                             /* temporary vector */
                             hypre_ParVector *z)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int sweep;
 
    HYPRE_Real *u_data = hypre_VectorData(hypre_ParVectorLocalVector(u));
@@ -333,9 +327,6 @@ HYPRE_Int hypre_ParCSRRelax(/* matrix to relax with */
                                  omega, l1_norms, u, v, z);
       }
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -347,9 +338,6 @@ HYPRE_Int hypre_ParCSRRelax(/* matrix to relax with */
 
 hypre_ParVector *hypre_ParVectorInRangeOf(hypre_ParCSRMatrix *A)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParVector *x;
 
    x = hypre_ParVectorCreate(hypre_ParCSRMatrixComm(A),
@@ -359,9 +347,6 @@ hypre_ParVector *hypre_ParVectorInRangeOf(hypre_ParCSRMatrix *A)
    hypre_ParVectorOwnsData(x) = 1;
    hypre_ParVectorOwnsPartitioning(x) = 0;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return x;
 }
 
@@ -373,9 +358,6 @@ hypre_ParVector *hypre_ParVectorInRangeOf(hypre_ParCSRMatrix *A)
 
 hypre_ParVector *hypre_ParVectorInDomainOf(hypre_ParCSRMatrix *A)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParVector *x;
 
    x = hypre_ParVectorCreate(hypre_ParCSRMatrixComm(A),
@@ -385,9 +367,6 @@ hypre_ParVector *hypre_ParVectorInDomainOf(hypre_ParCSRMatrix *A)
    hypre_ParVectorOwnsData(x) = 1;
    hypre_ParVectorOwnsPartitioning(x) = 0;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return x;
 }
 
@@ -402,9 +381,6 @@ HYPRE_Int hypre_ParVectorBlockSplit(hypre_ParVector *x,
                                     hypre_ParVector *x_[3],
                                     HYPRE_Int dim)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, d, size_;
    HYPRE_Real *x_data, *x_data_[3];
 
@@ -418,9 +394,6 @@ HYPRE_Int hypre_ParVectorBlockSplit(hypre_ParVector *x,
       for (d = 0; d < dim; d++)
          x_data_[d][i] = x_data[dim*i+d];
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -435,9 +408,6 @@ HYPRE_Int hypre_ParVectorBlockGather(hypre_ParVector *x,
                                      hypre_ParVector *x_[3],
                                      HYPRE_Int dim)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, d, size_;
    HYPRE_Real *x_data, *x_data_[3];
 
@@ -451,9 +421,6 @@ HYPRE_Int hypre_ParVectorBlockGather(hypre_ParVector *x,
       for (d = 0; d < dim; d++)
          x_data[dim*i+d] = x_data_[d][i];
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -470,9 +437,6 @@ HYPRE_Int hypre_BoomerAMGBlockSolve(void *B,
                                     hypre_ParVector *b,
                                     hypre_ParVector *x)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int d, dim = 1;
 
    hypre_ParVector *b_[3];
@@ -483,9 +447,6 @@ HYPRE_Int hypre_BoomerAMGBlockSolve(void *B,
    if (dim == 1)
    {
       hypre_BoomerAMGSolve(B, A, b, x);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -509,9 +470,6 @@ HYPRE_Int hypre_BoomerAMGBlockSolve(void *B,
       hypre_ParVectorDestroy(x_[d]);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -523,9 +481,6 @@ HYPRE_Int hypre_BoomerAMGBlockSolve(void *B,
 
 HYPRE_Int hypre_ParCSRMatrixFixZeroRows(hypre_ParCSRMatrix *A)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, j;
    HYPRE_Real l1_norm;
    HYPRE_Int num_rows = hypre_ParCSRMatrixNumRows(A);
@@ -565,9 +520,6 @@ HYPRE_Int hypre_ParCSRMatrixFixZeroRows(hypre_ParCSRMatrix *A)
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -593,9 +545,6 @@ HYPRE_Int hypre_ParCSRComputeL1Norms(hypre_ParCSRMatrix *A,
                                      HYPRE_Int *cf_marker,
                                      HYPRE_Real **l1_norm_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, j;
    HYPRE_Int num_rows = hypre_ParCSRMatrixNumRows(A);
 
@@ -764,9 +713,6 @@ HYPRE_Int hypre_ParCSRComputeL1Norms(hypre_ParCSRMatrix *A,
       }
       *l1_norm_ptr = l1_norm;
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -788,9 +734,6 @@ HYPRE_Int hypre_ParCSRComputeL1Norms(hypre_ParCSRMatrix *A,
 
    *l1_norm_ptr = l1_norm;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -802,9 +745,6 @@ HYPRE_Int hypre_ParCSRComputeL1Norms(hypre_ParCSRMatrix *A,
 
 HYPRE_Int hypre_ParCSRMatrixSetDiagRows(hypre_ParCSRMatrix *A, HYPRE_Real d)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, j;
    HYPRE_Int num_rows = hypre_ParCSRMatrixNumRows(A);
 
@@ -827,9 +767,6 @@ HYPRE_Int hypre_ParCSRMatrixSetDiagRows(hypre_ParCSRMatrix *A, HYPRE_Real d)
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -841,9 +778,6 @@ HYPRE_Int hypre_ParCSRMatrixSetDiagRows(hypre_ParCSRMatrix *A, HYPRE_Real d)
 
 void * hypre_AMSCreate()
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data;
 
    ams_data = hypre_CTAlloc(hypre_AMSData, 1);
@@ -927,9 +861,6 @@ void * hypre_AMSCreate()
    ams_data -> owns_A_G  = 0;
    ams_data -> owns_A_Pi = 0;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (void *) ams_data;
 }
 
@@ -942,17 +873,11 @@ void * hypre_AMSCreate()
 
 HYPRE_Int hypre_AMSDestroy(void *solver)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 	hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    if (!ams_data)
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -1020,9 +945,6 @@ HYPRE_Int hypre_AMSDestroy(void *solver)
    if (ams_data)
       hypre_TFree(ams_data);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1035,18 +957,12 @@ HYPRE_Int hypre_AMSDestroy(void *solver)
 HYPRE_Int hypre_AMSSetDimension(void *solver,
                                 HYPRE_Int dim)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    if (dim != 2 && dim != 3)
       hypre_error_in_arg(2);
 
    ams_data -> dim = dim;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1060,14 +976,8 @@ HYPRE_Int hypre_AMSSetDimension(void *solver,
 HYPRE_Int hypre_AMSSetDiscreteGradient(void *solver,
                                        hypre_ParCSRMatrix *G)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> G = G;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1085,16 +995,10 @@ HYPRE_Int hypre_AMSSetCoordinateVectors(void *solver,
                                         hypre_ParVector *y,
                                         hypre_ParVector *z)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> x = x;
    ams_data -> y = y;
    ams_data -> z = z;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1114,16 +1018,10 @@ HYPRE_Int hypre_AMSSetEdgeConstantVectors(void *solver,
                                           hypre_ParVector *Gy,
                                           hypre_ParVector *Gz)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> Gx = Gx;
    ams_data -> Gy = Gy;
    ams_data -> Gz = Gz;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1163,18 +1061,12 @@ HYPRE_Int hypre_AMSSetInterpolations(void *solver,
                                      hypre_ParCSRMatrix *Piy,
                                      hypre_ParCSRMatrix *Piz)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> Pi = Pi;
    ams_data -> Pix = Pix;
    ams_data -> Piy = Piy;
    ams_data -> Piz = Piz;
    ams_data -> owns_Pi = 0;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1193,9 +1085,6 @@ HYPRE_Int hypre_AMSSetInterpolations(void *solver,
 HYPRE_Int hypre_AMSSetAlphaPoissonMatrix(void *solver,
                                          hypre_ParCSRMatrix *A_Pi)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> A_Pi = A_Pi;
 
@@ -1205,9 +1094,6 @@ HYPRE_Int hypre_AMSSetAlphaPoissonMatrix(void *solver,
    /* Make sure that the first entry in each row is the diagonal one. */
    /* hypre_CSRMatrixReorder(hypre_ParCSRMatrixDiag(A_Pi)); */
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1225,9 +1111,6 @@ HYPRE_Int hypre_AMSSetAlphaPoissonMatrix(void *solver,
 HYPRE_Int hypre_AMSSetBetaPoissonMatrix(void *solver,
                                         hypre_ParCSRMatrix *A_G)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> A_G = A_G;
    if (!A_G)
@@ -1240,9 +1123,6 @@ HYPRE_Int hypre_AMSSetBetaPoissonMatrix(void *solver,
       /* Make sure that the first entry in each row is the diagonal one. */
       /* hypre_CSRMatrixReorder(hypre_ParCSRMatrixDiag(A_G)); */
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1258,14 +1138,8 @@ HYPRE_Int hypre_AMSSetBetaPoissonMatrix(void *solver,
 HYPRE_Int hypre_AMSSetInteriorNodes(void *solver,
                                     hypre_ParVector *interior_nodes)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> interior_nodes = interior_nodes;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1281,14 +1155,8 @@ HYPRE_Int hypre_AMSSetInteriorNodes(void *solver,
 HYPRE_Int hypre_AMSSetProjectionFrequency(void *solver,
                                           HYPRE_Int projection_frequency)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> projection_frequency = projection_frequency;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1303,14 +1171,8 @@ HYPRE_Int hypre_AMSSetProjectionFrequency(void *solver,
 HYPRE_Int hypre_AMSSetMaxIter(void *solver,
                               HYPRE_Int maxit)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> maxit = maxit;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1324,14 +1186,8 @@ HYPRE_Int hypre_AMSSetMaxIter(void *solver,
 HYPRE_Int hypre_AMSSetTol(void *solver,
                           HYPRE_Real tol)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> tol = tol;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1363,14 +1219,8 @@ HYPRE_Int hypre_AMSSetTol(void *solver,
 HYPRE_Int hypre_AMSSetCycleType(void *solver,
                                 HYPRE_Int cycle_type)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> cycle_type = cycle_type;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1384,14 +1234,8 @@ HYPRE_Int hypre_AMSSetCycleType(void *solver,
 HYPRE_Int hypre_AMSSetPrintLevel(void *solver,
                                  HYPRE_Int print_level)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> print_level = print_level;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1407,18 +1251,11 @@ HYPRE_Int hypre_AMSSetSmoothingOptions(void *solver,
                                        HYPRE_Real A_relax_weight,
                                        HYPRE_Real A_omega)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> A_relax_type = A_relax_type;
    ams_data -> A_relax_times = A_relax_times;
    ams_data -> A_relax_weight = A_relax_weight;
    ams_data -> A_omega = A_omega;
-   
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -1432,16 +1269,10 @@ HYPRE_Int hypre_AMSSetChebySmoothingOptions(void *solver,
                                             HYPRE_Int A_cheby_order,
                                             HYPRE_Int A_cheby_fraction)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> A_cheby_order =  A_cheby_order;
    ams_data -> A_cheby_fraction =  A_cheby_fraction;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -1458,9 +1289,6 @@ HYPRE_Int hypre_AMSSetAlphaAMGOptions(void *solver,
                                       HYPRE_Int B_Pi_interp_type,
                                       HYPRE_Int B_Pi_Pmax)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> B_Pi_coarsen_type = B_Pi_coarsen_type;
    ams_data -> B_Pi_agg_levels = B_Pi_agg_levels;
@@ -1468,9 +1296,6 @@ HYPRE_Int hypre_AMSSetAlphaAMGOptions(void *solver,
    ams_data -> B_Pi_theta = B_Pi_theta;
    ams_data -> B_Pi_interp_type = B_Pi_interp_type;
    ams_data -> B_Pi_Pmax = B_Pi_Pmax;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1483,14 +1308,8 @@ HYPRE_Int hypre_AMSSetAlphaAMGOptions(void *solver,
 HYPRE_Int hypre_AMSSetAlphaAMGCoarseRelaxType(void *solver,
                                               HYPRE_Int B_Pi_coarse_relax_type)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data =  (hypre_AMSData *)solver;
    ams_data -> B_Pi_coarse_relax_type = B_Pi_coarse_relax_type;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1508,9 +1327,6 @@ HYPRE_Int hypre_AMSSetBetaAMGOptions(void *solver,
                                      HYPRE_Int B_G_interp_type,
                                      HYPRE_Int B_G_Pmax)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> B_G_coarsen_type = B_G_coarsen_type;
    ams_data -> B_G_agg_levels = B_G_agg_levels;
@@ -1518,9 +1334,6 @@ HYPRE_Int hypre_AMSSetBetaAMGOptions(void *solver,
    ams_data -> B_G_theta = B_G_theta;
    ams_data -> B_G_interp_type = B_G_interp_type;
    ams_data -> B_G_Pmax = B_G_Pmax;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1533,14 +1346,8 @@ HYPRE_Int hypre_AMSSetBetaAMGOptions(void *solver,
 HYPRE_Int hypre_AMSSetBetaAMGCoarseRelaxType(void *solver,
                                              HYPRE_Int B_G_coarse_relax_type)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    ams_data -> B_G_coarse_relax_type = B_G_coarse_relax_type;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1563,9 +1370,6 @@ HYPRE_Int hypre_AMSComputePi(hypre_ParCSRMatrix *A,
                              HYPRE_Int dim,
                              hypre_ParCSRMatrix **Pi_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *Pi;
 
    /* Compute Pi = [Pi_x, Pi_y, Pi_z] */
@@ -1691,9 +1495,6 @@ HYPRE_Int hypre_AMSComputePi(hypre_ParCSRMatrix *A,
 
    *Pi_ptr = Pi;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -1719,9 +1520,6 @@ HYPRE_Int hypre_AMSComputePixyz(hypre_ParCSRMatrix *A,
                                 hypre_ParCSRMatrix **Piy_ptr,
                                 hypre_ParCSRMatrix **Piz_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *Pix, *Piy, *Piz;
 
    /* Compute Pix, Piy, Piz  */
@@ -1995,9 +1793,6 @@ HYPRE_Int hypre_AMSComputePixyz(hypre_ParCSRMatrix *A,
    if (dim == 3)
       *Piz_ptr = Piz;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -2017,9 +1812,6 @@ HYPRE_Int hypre_AMSComputeGPi(hypre_ParCSRMatrix *A,
                               HYPRE_Int dim,
                               hypre_ParCSRMatrix **GPi_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *GPi;
 
    /* Take into account G */
@@ -2150,9 +1942,6 @@ HYPRE_Int hypre_AMSComputeGPi(hypre_ParCSRMatrix *A,
 
    *GPi_ptr = GPi;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -2172,9 +1961,6 @@ HYPRE_Int hypre_AMSSetup(void *solver,
                          hypre_ParVector *b,
                          hypre_ParVector *x)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    HYPRE_Int input_info = 0;
@@ -2781,9 +2567,6 @@ HYPRE_Int hypre_AMSSetup(void *solver,
       ams_data -> g2 = hypre_ParVectorInDomainOf(ams_data -> Pi);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -2798,9 +2581,6 @@ HYPRE_Int hypre_AMSSolve(void *solver,
                          hypre_ParVector *b,
                          hypre_ParVector *x)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    HYPRE_Int i, my_id = -1;
@@ -3018,9 +2798,6 @@ HYPRE_Int hypre_AMSSolve(void *solver,
    if (z)
       hypre_ParVectorDestroy(z);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3072,9 +2849,6 @@ HYPRE_Int hypre_ParCSRSubspacePrec(/* fine space matrix */
                                    /* temporary vector */
                                    hypre_ParVector *z)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    char *op;
    HYPRE_Int use_saved_residual = 0;
 
@@ -3145,9 +2919,6 @@ HYPRE_Int hypre_ParCSRSubspacePrec(/* fine space matrix */
       }
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3160,14 +2931,8 @@ HYPRE_Int hypre_ParCSRSubspacePrec(/* fine space matrix */
 HYPRE_Int hypre_AMSGetNumIterations(void *solver,
                                     HYPRE_Int *num_iterations)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    *num_iterations = ams_data -> num_iterations;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3180,14 +2945,8 @@ HYPRE_Int hypre_AMSGetNumIterations(void *solver,
 HYPRE_Int hypre_AMSGetFinalRelativeResidualNorm(void *solver,
                                                 HYPRE_Real *rel_resid_norm)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
    *rel_resid_norm = ams_data -> rel_resid_norm;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3208,9 +2967,6 @@ HYPRE_Int hypre_AMSGetFinalRelativeResidualNorm(void *solver,
 HYPRE_Int hypre_AMSProjectOutGradients(void *solver,
                                        hypre_ParVector *x)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    if (ams_data -> B_G0)
@@ -3222,9 +2978,6 @@ HYPRE_Int hypre_AMSProjectOutGradients(void *solver,
       hypre_ParVectorAxpy(-1.0, ams_data -> g0, x);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3250,9 +3003,6 @@ HYPRE_Int hypre_AMSConstructDiscreteGradient(hypre_ParCSRMatrix *A,
                                              HYPRE_Int edge_orientation,
                                              hypre_ParCSRMatrix **G_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *G;
 
    HYPRE_Int nedges;
@@ -3352,9 +3102,6 @@ HYPRE_Int hypre_AMSConstructDiscreteGradient(hypre_ParCSRMatrix *A,
 
    *G_ptr = G;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3393,9 +3140,6 @@ HYPRE_Int hypre_AMSFEISetup(void *solver,
                             HYPRE_Int num_edges,
                             HYPRE_Int *edge_vertex)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    HYPRE_Int i, j;
@@ -3511,9 +3255,6 @@ HYPRE_Int hypre_AMSFEISetup(void *solver,
    ams_data -> y = y_coord;
    ams_data -> z = z_coord;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3528,9 +3269,6 @@ HYPRE_Int hypre_AMSFEISetup(void *solver,
 
 HYPRE_Int hypre_AMSFEIDestroy(void *solver)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AMSData *ams_data = (hypre_AMSData *) solver;
 
    if (ams_data -> G)
@@ -3543,9 +3281,6 @@ HYPRE_Int hypre_AMSFEIDestroy(void *solver)
    if (ams_data -> z)
       hypre_ParVectorDestroy(ams_data -> z);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 /*--------------------------------------------------------------------------
@@ -3571,9 +3306,6 @@ HYPRE_Int hypre_ParCSRComputeL1NormsThreads(hypre_ParCSRMatrix *A,
                                             HYPRE_Int *cf_marker,
                                             HYPRE_Real **l1_norm_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, j, k;
    HYPRE_Int num_rows = hypre_ParCSRMatrixNumRows(A);
 
@@ -3815,9 +3547,6 @@ HYPRE_Int hypre_ParCSRComputeL1NormsThreads(hypre_ParCSRMatrix *A,
 
    *l1_norm_ptr = l1_norm;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -3838,9 +3567,6 @@ HYPRE_Int  hypre_ParCSRRelaxThreads(hypre_ParCSRMatrix *A,
                                     hypre_ParVector    *Vtemp,
                                     hypre_ParVector    *z)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm         comm         = hypre_ParCSRMatrixComm(A);
    hypre_CSRMatrix *A_diag       = hypre_ParCSRMatrixDiag(A);
    HYPRE_Real      *A_diag_data  = hypre_CSRMatrixData(A_diag);
@@ -4143,8 +3869,5 @@ HYPRE_Int  hypre_ParCSRRelaxThreads(hypre_ParCSRMatrix *A,
       hypre_TFree(v_buf_data);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(relax_error);
 }

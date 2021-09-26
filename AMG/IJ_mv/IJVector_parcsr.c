@@ -23,9 +23,7 @@
  
 #include "_hypre_IJ_mv.h"
 #include "../HYPRE.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /******************************************************************************
  *
  * hypre_IJVectorCreatePar
@@ -39,9 +37,6 @@ HYPRE_Int
 hypre_IJVectorCreatePar(hypre_IJVector *vector,
                         HYPRE_Int      *IJpartitioning)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJVectorComm(vector);
 
    HYPRE_Int num_procs, jmin, global_n, *partitioning, j;
@@ -72,9 +67,6 @@ hypre_IJVectorCreatePar(hypre_IJVector *vector,
    hypre_IJVectorObject(vector) =
       hypre_ParVectorCreate(comm, global_n, (HYPRE_Int *) partitioning); 
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -89,10 +81,6 @@ hypre_IJVectorCreatePar(hypre_IJVector *vector,
 HYPRE_Int
 hypre_IJVectorDestroyPar(hypre_IJVector *vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
 	return hypre_ParVectorDestroy((hypre_ParVector*)hypre_IJVectorObject(vector));
 }
 
@@ -107,9 +95,6 @@ hypre_IJVectorDestroyPar(hypre_IJVector *vector)
 HYPRE_Int
 hypre_IJVectorInitializePar(hypre_IJVector *vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 	hypre_ParVector *par_vector = (hypre_ParVector*) hypre_IJVectorObject(vector);
 	hypre_AuxParVector *aux_vector = (hypre_AuxParVector*) hypre_IJVectorTranslator(vector);
    HYPRE_Int *partitioning = hypre_ParVectorPartitioning(par_vector);
@@ -129,9 +114,6 @@ hypre_IJVectorInitializePar(hypre_IJVector *vector)
          hypre_printf("hypre_IJVectorInitializePar\n"); 
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -150,9 +132,6 @@ hypre_IJVectorInitializePar(hypre_IJVector *vector)
    }
    hypre_AuxParVectorInitialize(aux_vector);
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -166,9 +145,6 @@ HYPRE_Int
 hypre_IJVectorSetMaxOffProcElmtsPar(hypre_IJVector *vector,
                                     HYPRE_Int       max_off_proc_elmts)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_AuxParVector *aux_vector;
 
    aux_vector = (hypre_AuxParVector*) hypre_IJVectorTranslator(vector);
@@ -178,9 +154,6 @@ hypre_IJVectorSetMaxOffProcElmtsPar(hypre_IJVector *vector,
       hypre_IJVectorTranslator(vector) = aux_vector;
    }
    hypre_AuxParVectorMaxOffProcElmts(aux_vector) = max_off_proc_elmts;
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -198,9 +171,6 @@ HYPRE_Int
 hypre_IJVectorDistributePar(hypre_IJVector  *vector,
 			    const HYPRE_Int *vec_starts)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 	hypre_ParVector *old_vector = (hypre_ParVector*) hypre_IJVectorObject(vector);
    hypre_ParVector *par_vector;
    HYPRE_Int print_level = hypre_IJVectorPrintLevel(vector);
@@ -214,9 +184,6 @@ hypre_IJVectorDistributePar(hypre_IJVector  *vector,
          hypre_printf("**** Vector storage is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -238,9 +205,6 @@ hypre_IJVectorDistributePar(hypre_IJVector  *vector,
 
    hypre_IJVectorObject(vector) = par_vector;
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -255,9 +219,6 @@ hypre_IJVectorDistributePar(hypre_IJVector  *vector,
 HYPRE_Int
 hypre_IJVectorZeroValuesPar(hypre_IJVector *vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int my_id;
    HYPRE_Int i, vec_start, vec_stop;
    HYPRE_Complex *data;
@@ -282,9 +243,6 @@ hypre_IJVectorZeroValuesPar(hypre_IJVector *vector)
          hypre_printf("**** Vector storage is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    partitioning = hypre_ParVectorPartitioning(par_vector);
@@ -298,9 +256,6 @@ hypre_IJVectorZeroValuesPar(hypre_IJVector *vector)
          hypre_printf("**** Vector partitioning is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    if (!local_vector)
@@ -312,9 +267,6 @@ hypre_IJVectorZeroValuesPar(hypre_IJVector *vector)
          hypre_printf("**** Vector local data is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -335,9 +287,6 @@ hypre_IJVectorZeroValuesPar(hypre_IJVector *vector)
          hypre_printf("**** This vector partitioning should not occur ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -348,9 +297,6 @@ hypre_IJVectorZeroValuesPar(hypre_IJVector *vector)
    for (i = 0; i < vec_stop - vec_start; i++)
       data[i] = 0.;
   
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -368,9 +314,6 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
                            const HYPRE_Int      *indices,
                            const HYPRE_Complex  *values)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int my_id;
    HYPRE_Int i, j, vec_start, vec_stop;
    HYPRE_Complex *data;
@@ -383,12 +326,7 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
    hypre_Vector *local_vector;
 
    /* If no components are to be set, perform no checking and return */
-   if (num_values < 1) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return 0;
-   }
+   if (num_values < 1) return 0;
 
    hypre_MPI_Comm_rank(comm, &my_id);
 
@@ -404,9 +342,6 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** Vector storage is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    local_vector = hypre_ParVectorLocalVector(par_vector);
@@ -419,9 +354,6 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** IJVector partitioning is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    if (!local_vector)
@@ -433,9 +365,6 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** Vector local data is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -456,9 +385,6 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** This vector partitioning should not occur ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -517,9 +443,6 @@ hypre_IJVectorSetValuesPar(hypre_IJVector       *vector,
          data[j] = values[j];
    } 
   
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -537,9 +460,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
                              const HYPRE_Int      *indices,
                              const HYPRE_Complex  *values)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int my_id;
    HYPRE_Int i, j, vec_start, vec_stop;
    HYPRE_Complex *data;
@@ -552,13 +472,7 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
    hypre_Vector *local_vector;
 
    /* If no components are to be retrieved, perform no checking and return */
-   if (num_values < 1) {
-
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return 0;   
-   }
+   if (num_values < 1) return 0;
 
    hypre_MPI_Comm_rank(comm, &my_id);
 
@@ -574,9 +488,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** Vector storage is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    local_vector = hypre_ParVectorLocalVector(par_vector);
@@ -589,9 +500,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** IJVector partitioning is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    if (!local_vector)
@@ -603,9 +511,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** Vector local data is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -626,9 +531,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
          hypre_printf("**** This vector partitioning should not occur ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
@@ -702,9 +604,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
          data[j] += values[j];
    } 
   
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
 
@@ -719,9 +618,6 @@ hypre_IJVectorAddToValuesPar(hypre_IJVector       *vector,
 HYPRE_Int
 hypre_IJVectorAssemblePar(hypre_IJVector *vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int *IJpartitioning = hypre_IJVectorPartitioning(vector);
    hypre_ParVector *par_vector = (hypre_ParVector*) hypre_IJVectorObject(vector);
    hypre_AuxParVector *aux_vector = (hypre_AuxParVector*) hypre_IJVectorTranslator(vector);
@@ -802,9 +698,6 @@ hypre_IJVectorAssemblePar(hypre_IJVector *vector)
       }
    }
 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
    return hypre_error_flag;
 }
                                  
@@ -822,9 +715,6 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
                            const HYPRE_Int *indices,
                            HYPRE_Complex   *values)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int my_id;
    HYPRE_Int i, j, vec_start, vec_stop;
    HYPRE_Complex *data;
@@ -837,12 +727,7 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
    HYPRE_Int print_level = hypre_IJVectorPrintLevel(vector);
 
    /* If no components are to be retrieved, perform no checking and return */
-   if (num_values < 1) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
-      return 0;
-   }
+   if (num_values < 1) return 0;
 
    hypre_MPI_Comm_rank(comm, &my_id);
 
@@ -858,9 +743,6 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
          hypre_printf("**** Vector storage is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    local_vector = hypre_ParVectorLocalVector(par_vector);
@@ -873,9 +755,6 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
          hypre_printf("**** IJVector partitioning is either unallocated or orphaned ****\n");
       }
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    if (!local_vector)
@@ -886,10 +765,7 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
          hypre_printf("hypre_IJVectorGetValuesPar\n");
          hypre_printf("**** Vector local data is either unallocated or orphaned ****\n");
       }
-      hypre_error_in_arg(1); 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      hypre_error_in_arg(1);
       return hypre_error_flag;
    }
 
@@ -909,10 +785,7 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
          hypre_printf("hypre_IJVectorGetValuesPar\n");
          hypre_printf("**** This vector partitioning should not occur ****\n");
       }
-      hypre_error_in_arg(1); 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      hypre_error_in_arg(1);
       return hypre_error_flag;
    }
 
@@ -938,10 +811,7 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
          hypre_printf("hypre_IJVectorGetValuesPar\n");
          hypre_printf("**** Indices specified are unusable ****\n");
       }
-      hypre_error_in_arg(3); 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+      hypre_error_in_arg(3);
       return hypre_error_flag;
    }
     
@@ -962,10 +832,7 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
    {
      if (num_values > (vec_stop-vec_start))
      {
-        hypre_error_in_arg(2); 
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+        hypre_error_in_arg(2);
         return hypre_error_flag;
      }
 #ifdef HYPRE_USING_OPENMP
@@ -974,10 +841,7 @@ hypre_IJVectorGetValuesPar(hypre_IJVector  *vector,
       for (j = 0; j < num_values; j++)
          values[j] = data[j];
    }
- 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
    return hypre_error_flag;
 }
 
@@ -998,9 +862,6 @@ hypre_IJVectorAssembleOffProcValsPar( hypre_IJVector *vector,
    				      HYPRE_Int      *off_proc_i,
    			     	      HYPRE_Complex  *off_proc_data)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm comm = hypre_IJVectorComm(vector);
    hypre_ParVector *par_vector = ( hypre_ParVector *) hypre_IJVectorObject(vector);
    hypre_MPI_Request *requests = NULL;
@@ -1211,10 +1072,7 @@ hypre_IJVectorAssembleOffProcValsPar( hypre_IJVector *vector,
    hypre_TFree(recv_vec_starts);
    hypre_TFree(recv_i);
    hypre_TFree(recv_data);
- 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
    return hypre_error_flag;
 }
 
@@ -1229,9 +1087,6 @@ hypre_IJVectorAssembleOffProcValsPar( hypre_IJVector *vector,
    				      HYPRE_Int      *off_proc_i,
    			     	      HYPRE_Complex  *off_proc_data)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int myid, global_num_rows;
    HYPRE_Int global_first_row;
    HYPRE_Int i, j, in, k;
@@ -1624,9 +1479,6 @@ hypre_IJVectorAssembleOffProcValsPar( hypre_IJVector *vector,
    hypre_TFree(send_proc_obj.v_elements);
    hypre_TFree(send_proc_obj.vec_starts);
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 

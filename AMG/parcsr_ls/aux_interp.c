@@ -21,10 +21,6 @@
 #include "aux_interp.h"
 #include "hypre_hopscotch_hash.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /*---------------------------------------------------------------------------
  * Auxilary routines for the long range interpolation methods.
  *  Implemented: "standard", "extended", "multipass", "FF"
@@ -43,10 +39,7 @@ HYPRE_Int hypre_alt_insert_new_nodes(hypre_ParCSRCommPkg *comm_pkg,
                           HYPRE_Int *IN_marker, 
                           HYPRE_Int full_off_procNodes,
                           HYPRE_Int *OUT_marker)
-{ 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif  
+{   
   hypre_ParCSRCommHandle  *comm_handle;
 
   HYPRE_Int i, index, shift;
@@ -118,9 +111,6 @@ HYPRE_Int hypre_alt_insert_new_nodes(hypre_ParCSRCommPkg *comm_pkg,
   
   hypre_TFree(int_buf_data);
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return hypre_error_flag;
 } 
 
@@ -132,9 +122,6 @@ hypre_ParCSRFindExtendCommPkg(hypre_ParCSRMatrix *A, HYPRE_Int newoff, HYPRE_Int
                               hypre_ParCSRCommPkg **extend_comm_pkg)
 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    
 
    HYPRE_Int			num_sends;
@@ -216,9 +203,6 @@ hypre_ParCSRFindExtendCommPkg(hypre_ParCSRMatrix *A, HYPRE_Int newoff, HYPRE_Int
    *extend_comm_pkg = new_comm_pkg;
    
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
    
 }
@@ -227,9 +211,6 @@ hypre_ParCSRFindExtendCommPkg(hypre_ParCSRMatrix *A, HYPRE_Int newoff, HYPRE_Int
 /* sort for non-ordered arrays */
 HYPRE_Int hypre_ssort(HYPRE_Int *data, HYPRE_Int n)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   HYPRE_Int i,si;               
   HYPRE_Int change = 0;
   
@@ -241,19 +222,13 @@ HYPRE_Int hypre_ssort(HYPRE_Int *data, HYPRE_Int n)
 	hypre_swap_int(data, i, si);
 	change = 1;
       }
-    }     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif                                                                  
+    }                                                                       
   return change;
 }
 
 /* Auxilary function for hypre_ssort */
 HYPRE_Int hypre_index_of_minimum(HYPRE_Int *data, HYPRE_Int n)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   HYPRE_Int answer;
   HYPRE_Int i;
                                                                                
@@ -261,27 +236,18 @@ HYPRE_Int hypre_index_of_minimum(HYPRE_Int *data, HYPRE_Int n)
   for(i = 1; i < n; i++)
     if(data[answer] < data[i])
       answer = i;
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif                                                          
+                                                                               
   return answer;
 }
                                                                                
 void hypre_swap_int(HYPRE_Int *data, HYPRE_Int a, HYPRE_Int b)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   HYPRE_Int temp;
                                                                                
   temp = data[a];
   data[a] = data[b];
   data[b] = temp;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return;
 }
 
@@ -289,9 +255,6 @@ void hypre_swap_int(HYPRE_Int *data, HYPRE_Int a, HYPRE_Int b)
 void hypre_initialize_vecs(HYPRE_Int diag_n, HYPRE_Int offd_n, HYPRE_Int *diag_ftc, HYPRE_Int *offd_ftc, 
 		     HYPRE_Int *diag_pm, HYPRE_Int *offd_pm, HYPRE_Int *tmp_CF)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   HYPRE_Int i;
 
   /* Quicker initialization */
@@ -346,9 +309,6 @@ void hypre_initialize_vecs(HYPRE_Int diag_n, HYPRE_Int offd_n, HYPRE_Int *diag_f
       {  offd_pm[i] = -1;}
     }
   }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return;
 }
 
@@ -359,9 +319,6 @@ static HYPRE_Int hypre_new_offd_nodes(HYPRE_Int **found, HYPRE_Int num_cols_A_of
 		   HYPRE_Int col_n, HYPRE_Int *Sop_i, HYPRE_Int *Sop_j,
 		   HYPRE_Int *CF_marker_offd)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
   hypre_profile_times[HYPRE_TIMER_ID_RENUMBER_COLIDX] -= hypre_MPI_Wtime();
 #endif
@@ -585,9 +542,6 @@ static HYPRE_Int hypre_new_offd_nodes(HYPRE_Int **found, HYPRE_Int num_cols_A_of
   hypre_profile_times[HYPRE_TIMER_ID_RENUMBER_COLIDX] += hypre_MPI_Wtime();
 #endif
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return newoff;
 }
 
@@ -595,9 +549,6 @@ HYPRE_Int hypre_exchange_marker(hypre_ParCSRCommPkg *comm_pkg,
                           HYPRE_Int *IN_marker, 
                           HYPRE_Int *OUT_marker)
 {   
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   HYPRE_Int num_sends = hypre_ParCSRCommPkgNumSends(comm_pkg);
   HYPRE_Int begin = hypre_ParCSRCommPkgSendMapStart(comm_pkg, 0);
   HYPRE_Int end = hypre_ParCSRCommPkgSendMapStart(comm_pkg, num_sends);
@@ -617,9 +568,7 @@ HYPRE_Int hypre_exchange_marker(hypre_ParCSRCommPkg *comm_pkg,
    
   hypre_ParCSRCommHandleDestroy(comm_handle);
   hypre_TFree(int_buf_data);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+    
   return hypre_error_flag;
 } 
 
@@ -637,9 +586,6 @@ HYPRE_Int hypre_exchange_interp_data(
     HYPRE_Int *dof_func,
     HYPRE_Int skip_fine_or_same_sign) // skip_fine_or_same_sign if we want to skip fine points in S and nnz with the same sign as diagonal in A
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
   hypre_profile_times[HYPRE_TIMER_ID_EXCHANGE_INTERP_DATA] -= hypre_MPI_Wtime();
 #endif
@@ -695,9 +641,6 @@ HYPRE_Int hypre_exchange_interp_data(
     *full_off_procNodes = newoff + num_cols_A_offd;
   else
   {
-    #ifdef caliper
-    CALI_MARK_FUNCTION_END;
-    #endif
     return hypre_error_flag;
   }
 
@@ -731,9 +674,6 @@ HYPRE_Int hypre_exchange_interp_data(
   hypre_profile_times[HYPRE_TIMER_ID_EXCHANGE_INTERP_DATA] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return hypre_error_flag;
 }
 
@@ -890,7 +830,4 @@ void hypre_build_interp_colmap(hypre_ParCSRMatrix *P, HYPRE_Int full_off_procNod
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_RENUMBER_COLIDX] += hypre_MPI_Wtime();
 #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }

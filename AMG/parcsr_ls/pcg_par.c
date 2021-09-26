@@ -16,9 +16,7 @@
  ***********************************************************************EHEADER*/
 
 #include "_hypre_parcsr_ls.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * hypre_ParKrylovCAlloc
  *--------------------------------------------------------------------------*/
@@ -27,10 +25,6 @@ char *
 hypre_ParKrylovCAlloc( HYPRE_Int count,
                        HYPRE_Int elt_size )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_CAlloc( count, elt_size ) );
 }
 
@@ -41,16 +35,10 @@ hypre_ParKrylovCAlloc( HYPRE_Int count,
 HYPRE_Int
 hypre_ParKrylovFree( char *ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int ierr = 0;
 
    hypre_Free( ptr );
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -61,9 +49,6 @@ hypre_ParKrylovFree( char *ptr )
 void *
 hypre_ParKrylovCreateVector( void *vvector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 	hypre_ParVector *vector = (hypre_ParVector *) vvector;
    hypre_ParVector *new_vector;
 
@@ -73,9 +58,6 @@ hypre_ParKrylovCreateVector( void *vvector )
    hypre_ParVectorSetPartitioningOwner(new_vector,0);
    hypre_ParVectorInitialize(new_vector);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( (void *) new_vector );
 }
 
@@ -86,9 +68,6 @@ hypre_ParKrylovCreateVector( void *vvector )
 void *
 hypre_ParKrylovCreateVectorArray(HYPRE_Int n, void *vvector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParVector *vector = (hypre_ParVector *) vvector;
    hypre_ParVector **new_vector;
    HYPRE_Int i;
@@ -103,9 +82,6 @@ hypre_ParKrylovCreateVectorArray(HYPRE_Int n, void *vvector )
       hypre_ParVectorInitialize(new_vector[i]);
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( (void *) new_vector );
 }
 
@@ -116,14 +92,8 @@ hypre_ParKrylovCreateVectorArray(HYPRE_Int n, void *vvector )
 HYPRE_Int
 hypre_ParKrylovDestroyVector( void *vvector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParVector *vector = (hypre_ParVector *) vvector;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_ParVectorDestroy( vector ) );
 }
 
@@ -135,16 +105,10 @@ void *
 hypre_ParKrylovMatvecCreate( void   *A,
                              void   *x )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    void *matvec_data;
 
    matvec_data = NULL;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( matvec_data );
 }
 
@@ -160,10 +124,6 @@ hypre_ParKrylovMatvec( void   *matvec_data,
                        HYPRE_Complex  beta,
                        void   *y           )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParCSRMatrixMatvec ( alpha,
                                        (hypre_ParCSRMatrix *) A,
                                        (hypre_ParVector *) x,
@@ -183,10 +143,6 @@ hypre_ParKrylovMatvecT(void   *matvec_data,
                        HYPRE_Complex  beta,
                        void   *y           )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParCSRMatrixMatvecT( alpha,
                                        (hypre_ParCSRMatrix *) A,
                                        (hypre_ParVector *) x,
@@ -201,10 +157,6 @@ hypre_ParKrylovMatvecT(void   *matvec_data,
 HYPRE_Int
 hypre_ParKrylovMatvecDestroy( void *matvec_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -216,10 +168,6 @@ HYPRE_Real
 hypre_ParKrylovInnerProd( void *x, 
                           void *y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorInnerProd( (hypre_ParVector *) x,
                                       (hypre_ParVector *) y ) );
 }
@@ -233,10 +181,6 @@ HYPRE_Int
 hypre_ParKrylovCopyVector( void *x, 
                            void *y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorCopy( (hypre_ParVector *) x,
                                  (hypre_ParVector *) y ) );
 }
@@ -248,10 +192,6 @@ hypre_ParKrylovCopyVector( void *x,
 HYPRE_Int
 hypre_ParKrylovClearVector( void *x )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorSetConstantValues( (hypre_ParVector *) x, 0.0 ) );
 }
 
@@ -263,10 +203,6 @@ HYPRE_Int
 hypre_ParKrylovScaleVector( HYPRE_Complex  alpha,
                             void   *x     )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorScale( alpha, (hypre_ParVector *) x ) );
 }
 
@@ -279,10 +215,6 @@ hypre_ParKrylovAxpy( HYPRE_Complex alpha,
                      void   *x,
                      void   *y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorAxpy( alpha, (hypre_ParVector *) x,
                                  (hypre_ParVector *) y ) );
 }
@@ -294,10 +226,6 @@ hypre_ParKrylovAxpy( HYPRE_Complex alpha,
 HYPRE_Int
 hypre_ParKrylovCommInfo( void   *A, HYPRE_Int *my_id, HYPRE_Int *num_procs)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    MPI_Comm comm = hypre_ParCSRMatrixComm ( (hypre_ParCSRMatrix *) A);
    hypre_MPI_Comm_size(comm,num_procs);
    hypre_MPI_Comm_rank(comm,my_id);
@@ -315,10 +243,6 @@ hypre_ParKrylovIdentitySetup( void *vdata,
                               void *x     )
 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -333,10 +257,6 @@ hypre_ParKrylovIdentity( void *vdata,
                          void *x     )
 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_ParKrylovCopyVector( b, x ) );
 }
 

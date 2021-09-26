@@ -20,10 +20,7 @@
 
  
 #include "_hypre_parcsr_ls.h"
-
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+ 
 /*--------------------------------------------------------------------------
  * hypre_GenerateDifConv
  *--------------------------------------------------------------------------*/
@@ -41,9 +38,6 @@ GenerateDifConv( MPI_Comm comm,
                  HYPRE_Int      r,
                  HYPRE_Real  *value )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_ParCSRMatrix *A;
    hypre_CSRMatrix *diag;
    hypre_CSRMatrix *offd;
@@ -367,9 +361,6 @@ GenerateDifConv( MPI_Comm comm,
    hypre_TFree(ny_part);
    hypre_TFree(nz_part);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_ParCSRMatrix) A;
 }
 

@@ -27,9 +27,7 @@
 
 #include "_hypre_parcsr_ls.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 
 /*==========================================================================*/
 /*==========================================================================*/
@@ -76,9 +74,6 @@ hypre_BoomerAMGCoarseParms(MPI_Comm comm,
                       	   HYPRE_Int    **coarse_dof_func_ptr, 
                       	   HYPRE_Int    **coarse_pnts_global_ptr) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_COARSE_PARAMS] -= hypre_MPI_Wtime();
 #endif
@@ -146,8 +141,6 @@ hypre_BoomerAMGCoarseParms(MPI_Comm comm,
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_COARSE_PARAMS] += hypre_MPI_Wtime();
 #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
    return (ierr);
 }

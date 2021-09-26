@@ -22,9 +22,7 @@
  *****************************************************************************/
 
 #include "_hypre_parcsr_ls.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * hypre_BoomerAMGRelax
  *--------------------------------------------------------------------------*/
@@ -41,9 +39,6 @@ HYPRE_Int  hypre_BoomerAMGRelax( hypre_ParCSRMatrix *A,
                            hypre_ParVector    *Vtemp,
                            hypre_ParVector    *Ztemp )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    MPI_Comm	   comm = hypre_ParCSRMatrixComm(A);
    hypre_CSRMatrix *A_diag = hypre_ParCSRMatrixDiag(A);
    HYPRE_Real     *A_diag_data  = hypre_CSRMatrixData(A_diag);
@@ -4072,9 +4067,6 @@ HYPRE_Int  hypre_BoomerAMGRelax( hypre_ParCSRMatrix *A,
       break;   
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(relax_error); 
 }
 
@@ -4086,9 +4078,6 @@ HYPRE_Int  hypre_BoomerAMGRelax( hypre_ParCSRMatrix *A,
 
 HYPRE_Int hypre_GaussElimSetup (hypre_ParAMGData *amg_data, HYPRE_Int level, HYPRE_Int relax_type)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_GS_ELIM_SETUP] -= hypre_MPI_Wtime();
 #endif
@@ -4180,18 +4169,12 @@ HYPRE_Int hypre_GaussElimSetup (hypre_ParAMGData *amg_data, HYPRE_Int level, HYP
    hypre_profile_times[HYPRE_TIMER_ID_GS_ELIM_SETUP] += hypre_MPI_Wtime();
 #endif
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
 
 HYPRE_Int hypre_GaussElimSolve (hypre_ParAMGData *amg_data, HYPRE_Int level, HYPRE_Int relax_type)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_GS_ELIM_SOLVE] -= hypre_MPI_Wtime();
 #endif
@@ -4244,9 +4227,6 @@ HYPRE_Int hypre_GaussElimSolve (hypre_ParAMGData *amg_data, HYPRE_Int level, HYP
    hypre_profile_times[HYPRE_TIMER_ID_GS_ELIM_SOLVE] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -4254,9 +4234,6 @@ HYPRE_Int gselim(HYPRE_Real *A,
                  HYPRE_Real *x,
                  HYPRE_Int n)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int    err_flag = 0;
    HYPRE_Int    j,k,m;
    HYPRE_Real factor;
@@ -4267,17 +4244,11 @@ HYPRE_Int gselim(HYPRE_Real *A,
       if (A[0] != 0.0)
       {
          x[0] = x[0]/A[0];
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
          return(err_flag);
       }
       else
       {
          err_flag = 1;
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
          return(err_flag);
       }
    }
@@ -4319,9 +4290,6 @@ HYPRE_Int gselim(HYPRE_Real *A,
            }
        }
        if (A[0] != 0.0) x[0] /= A[0];
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
        return(err_flag);
     }
 }

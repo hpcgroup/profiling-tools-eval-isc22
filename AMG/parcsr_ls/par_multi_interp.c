@@ -19,9 +19,7 @@
 
 
 #include "_hypre_parcsr_ls.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * hypre_ParAMGBuildMultipass
  * This routine implements Stuben's direct interpolation with multiple passes. 
@@ -41,9 +39,6 @@ hypre_BoomerAMGBuildMultipass( hypre_ParCSRMatrix  *A,
                    HYPRE_Int                 *col_offd_S_to_A,
                    hypre_ParCSRMatrix **P_ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_PROFILE
    hypre_profile_times[HYPRE_TIMER_ID_MULTIPASS_INTERP] -= hypre_MPI_Wtime();
 #endif
@@ -2062,8 +2057,5 @@ hypre_BoomerAMGBuildMultipass( hypre_ParCSRMatrix  *A,
    hypre_profile_times[HYPRE_TIMER_ID_MULTIPASS_INTERP] += hypre_MPI_Wtime();
 #endif
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }

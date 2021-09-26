@@ -25,9 +25,7 @@
  *
  *****************************************************************************/
 #include "krylov.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * HYPRE_GMRESDestroy
  *--------------------------------------------------------------------------*/
@@ -50,10 +48,6 @@ HYPRE_GMRESSetup( HYPRE_Solver solver,
                         HYPRE_Vector b,
                         HYPRE_Vector x      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetup( solver,
                              A,
                              b,
@@ -70,10 +64,6 @@ HYPRE_GMRESSolve( HYPRE_Solver solver,
                         HYPRE_Vector b,
                         HYPRE_Vector x      )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSolve( solver,
                              A,
                              b,
@@ -88,10 +78,6 @@ HYPRE_Int
 HYPRE_GMRESSetKDim( HYPRE_Solver solver,
                           HYPRE_Int             k_dim    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetKDim( (void *) solver, k_dim ) );
 }
 
@@ -99,10 +85,6 @@ HYPRE_Int
 HYPRE_GMRESGetKDim( HYPRE_Solver solver,
                           HYPRE_Int           * k_dim    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetKDim( (void *) solver, k_dim ) );
 }
 
@@ -114,10 +96,6 @@ HYPRE_Int
 HYPRE_GMRESSetTol( HYPRE_Solver solver,
                          HYPRE_Real         tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetTol( (void *) solver, tol ) );
 }
 
@@ -125,10 +103,6 @@ HYPRE_Int
 HYPRE_GMRESGetTol( HYPRE_Solver solver,
                          HYPRE_Real       * tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetTol( (void *) solver, tol ) );
 }
 /*--------------------------------------------------------------------------
@@ -139,10 +113,6 @@ HYPRE_Int
 HYPRE_GMRESSetAbsoluteTol( HYPRE_Solver solver,
                          HYPRE_Real         a_tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetAbsoluteTol( (void *) solver, a_tol ) );
 }
 
@@ -150,10 +120,6 @@ HYPRE_Int
 HYPRE_GMRESGetAbsoluteTol( HYPRE_Solver solver,
                          HYPRE_Real       * a_tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetAbsoluteTol( (void *) solver, a_tol ) );
 }
 
@@ -165,10 +131,6 @@ HYPRE_Int
 HYPRE_GMRESSetConvergenceFactorTol( HYPRE_Solver solver,
                          HYPRE_Real         cf_tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetConvergenceFactorTol( (void *) solver, cf_tol ) );
 }
 
@@ -176,10 +138,6 @@ HYPRE_Int
 HYPRE_GMRESGetConvergenceFactorTol( HYPRE_Solver solver,
                          HYPRE_Real       * cf_tol    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetConvergenceFactorTol( (void *) solver, cf_tol ) );
 }
 
@@ -191,10 +149,6 @@ HYPRE_Int
 HYPRE_GMRESSetMinIter( HYPRE_Solver solver,
                              HYPRE_Int          min_iter )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetMinIter( (void *) solver, min_iter ) );
 }
 
@@ -202,10 +156,6 @@ HYPRE_Int
 HYPRE_GMRESGetMinIter( HYPRE_Solver solver,
                              HYPRE_Int        * min_iter )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetMinIter( (void *) solver, min_iter ) );
 }
 
@@ -217,10 +167,6 @@ HYPRE_Int
 HYPRE_GMRESSetMaxIter( HYPRE_Solver solver,
                              HYPRE_Int          max_iter )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetMaxIter( (void *) solver, max_iter ) );
 }
 
@@ -228,10 +174,6 @@ HYPRE_Int
 HYPRE_GMRESGetMaxIter( HYPRE_Solver solver,
                              HYPRE_Int        * max_iter )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetMaxIter( (void *) solver, max_iter ) );
 }
 
@@ -243,10 +185,6 @@ HYPRE_Int
 HYPRE_GMRESSetStopCrit( HYPRE_Solver solver,
                               HYPRE_Int          stop_crit )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetStopCrit( (void *) solver, stop_crit ) );
 }
 
@@ -254,10 +192,6 @@ HYPRE_Int
 HYPRE_GMRESGetStopCrit( HYPRE_Solver solver,
                               HYPRE_Int        * stop_crit )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetStopCrit( (void *) solver, stop_crit ) );
 }
 
@@ -269,10 +203,6 @@ HYPRE_Int
 HYPRE_GMRESSetRelChange( HYPRE_Solver solver,
                          HYPRE_Int                rel_change )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetRelChange( (void *) solver, rel_change ) );
 }
 
@@ -280,10 +210,6 @@ HYPRE_Int
 HYPRE_GMRESGetRelChange( HYPRE_Solver solver,
                          HYPRE_Int              * rel_change )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetRelChange( (void *) solver, rel_change ) );
 }
 
@@ -295,10 +221,6 @@ HYPRE_Int
 HYPRE_GMRESSetSkipRealResidualCheck( HYPRE_Solver solver,
                                      HYPRE_Int skip_real_r_check )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetSkipRealResidualCheck( (void *) solver, skip_real_r_check ) );
 }
 
@@ -306,10 +228,6 @@ HYPRE_Int
 HYPRE_GMRESGetSkipRealResidualCheck( HYPRE_Solver solver,
                                      HYPRE_Int *skip_real_r_check )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetSkipRealResidualCheck( (void *) solver, skip_real_r_check ) );
 }
 
@@ -323,10 +241,6 @@ HYPRE_GMRESSetPrecond( HYPRE_Solver          solver,
                              HYPRE_PtrToSolverFcn  precond_setup,
                              HYPRE_Solver          precond_solver )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetPrecond( (void *) solver,
                                   (HYPRE_Int (*)(void*, void*, void*, void*))precond,
 								  (HYPRE_Int (*)(void*, void*, void*, void*))precond_setup,
@@ -341,10 +255,6 @@ HYPRE_Int
 HYPRE_GMRESGetPrecond( HYPRE_Solver  solver,
                              HYPRE_Solver *precond_data_ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetPrecond( (void *)     solver,
                                   (HYPRE_Solver *) precond_data_ptr ) );
 }
@@ -357,10 +267,6 @@ HYPRE_Int
 HYPRE_GMRESSetPrintLevel( HYPRE_Solver solver,
                         HYPRE_Int          level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetPrintLevel( (void *) solver, level ) );
 }
 
@@ -368,10 +274,6 @@ HYPRE_Int
 HYPRE_GMRESGetPrintLevel( HYPRE_Solver solver,
                         HYPRE_Int        * level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetPrintLevel( (void *) solver, level ) );
 }
 
@@ -383,10 +285,6 @@ HYPRE_Int
 HYPRE_GMRESSetLogging( HYPRE_Solver solver,
                      HYPRE_Int          level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESSetLogging( (void *) solver, level ) );
 }
 
@@ -394,10 +292,6 @@ HYPRE_Int
 HYPRE_GMRESGetLogging( HYPRE_Solver solver,
                      HYPRE_Int        * level )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetLogging( (void *) solver, level ) );
 }
 
@@ -409,10 +303,6 @@ HYPRE_Int
 HYPRE_GMRESGetNumIterations( HYPRE_Solver  solver,
                                    HYPRE_Int                *num_iterations )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetNumIterations( (void *) solver, num_iterations ) );
 }
 
@@ -424,10 +314,6 @@ HYPRE_Int
 HYPRE_GMRESGetConverged( HYPRE_Solver  solver,
                          HYPRE_Int                *converged )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetConverged( (void *) solver, converged ) );
 }
 
@@ -439,10 +325,6 @@ HYPRE_Int
 HYPRE_GMRESGetFinalRelativeResidualNorm( HYPRE_Solver  solver,
                                                HYPRE_Real         *norm   )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return( hypre_GMRESGetFinalRelativeResidualNorm( (void *) solver, norm ) );
 }
 
@@ -453,10 +335,6 @@ HYPRE_GMRESGetFinalRelativeResidualNorm( HYPRE_Solver  solver,
 HYPRE_Int HYPRE_GMRESGetResidual( HYPRE_Solver solver, void **residual )
 {
    /* returns a pointer to the residual vector */
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_GMRESGetResidual( (void *) solver, residual );
 }
 

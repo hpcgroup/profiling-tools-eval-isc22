@@ -23,9 +23,6 @@
 
 #include "_hypre_parcsr_mv.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 /*--------------------------------------------------------------------------
  * HYPRE_ParVectorCreate
  *--------------------------------------------------------------------------*/
@@ -36,22 +33,13 @@ HYPRE_ParVectorCreate( MPI_Comm         comm,
                        HYPRE_Int       *partitioning,
                        HYPRE_ParVector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!vector)
    {
       hypre_error_in_arg(4);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *vector = (HYPRE_ParVector)
       hypre_ParVectorCreate(comm, global_size, partitioning) ;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -66,22 +54,13 @@ HYPRE_ParMultiVectorCreate( MPI_Comm         comm,
                             HYPRE_Int        number_vectors,
                             HYPRE_ParVector *vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!vector)
    {
       hypre_error_in_arg(5);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *vector = (HYPRE_ParVector)
       hypre_ParMultiVectorCreate( comm, global_size, partitioning, number_vectors );
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -92,10 +71,6 @@ HYPRE_ParMultiVectorCreate( MPI_Comm         comm,
 HYPRE_Int 
 HYPRE_ParVectorDestroy( HYPRE_ParVector vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorDestroy( (hypre_ParVector *) vector ) );
 }
 
@@ -106,10 +81,6 @@ HYPRE_ParVectorDestroy( HYPRE_ParVector vector )
 HYPRE_Int 
 HYPRE_ParVectorInitialize( HYPRE_ParVector vector )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorInitialize( (hypre_ParVector *) vector ) );
 }
 
@@ -122,21 +93,12 @@ HYPRE_ParVectorRead( MPI_Comm         comm,
                      const char      *file_name, 
                      HYPRE_ParVector *vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!vector)
    {
       hypre_error_in_arg(3);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *vector = (HYPRE_ParVector) hypre_ParVectorRead( comm, file_name ) ;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -148,10 +110,6 @@ HYPRE_Int
 HYPRE_ParVectorPrint( HYPRE_ParVector  vector,
                       const char      *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorPrint( (hypre_ParVector *) vector,
                                   file_name ) );
 }
@@ -164,10 +122,6 @@ HYPRE_Int
 HYPRE_ParVectorSetConstantValues( HYPRE_ParVector  vector,
                                   HYPRE_Complex    value )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorSetConstantValues( (hypre_ParVector *) vector,
                                               value ) );
 }
@@ -180,10 +134,6 @@ HYPRE_Int
 HYPRE_ParVectorSetRandomValues( HYPRE_ParVector  vector,
                                 HYPRE_Int        seed  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorSetRandomValues( (hypre_ParVector *) vector,
                                             seed ) );
 }
@@ -196,10 +146,6 @@ HYPRE_Int
 HYPRE_ParVectorCopy( HYPRE_ParVector x,
                      HYPRE_ParVector y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorCopy( (hypre_ParVector *) x,
                                  (hypre_ParVector *) y ) );
 }
@@ -211,10 +157,6 @@ HYPRE_ParVectorCopy( HYPRE_ParVector x,
 HYPRE_ParVector
 HYPRE_ParVectorCloneShallow( HYPRE_ParVector x )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( (HYPRE_ParVector)
             hypre_ParVectorCloneShallow( (hypre_ParVector *) x ) );
 }
@@ -227,10 +169,6 @@ HYPRE_Int
 HYPRE_ParVectorScale( HYPRE_Complex   value,
                       HYPRE_ParVector x)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_ParVectorScale( value, (hypre_ParVector *) x) );
 }
 
@@ -242,10 +180,6 @@ HYPRE_ParVectorAxpy( HYPRE_Complex   alpha,
                      HYPRE_ParVector x,
                      HYPRE_ParVector y )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_ParVectorAxpy( alpha, (hypre_ParVector *)x, (hypre_ParVector *)y );
 }
 
@@ -258,32 +192,20 @@ HYPRE_ParVectorInnerProd( HYPRE_ParVector x,
                           HYPRE_ParVector y,
                           HYPRE_Real     *prod)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!x) 
    {
       hypre_error_in_arg(1);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    if (!y) 
    {
       hypre_error_in_arg(2);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
 
    *prod = hypre_ParVectorInnerProd( (hypre_ParVector *) x, 
                                      (hypre_ParVector *) y) ;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -297,21 +219,12 @@ HYPRE_VectorToParVector( MPI_Comm         comm,
                          HYPRE_Int       *partitioning,
                          HYPRE_ParVector *vector)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (!vector)
    {
       hypre_error_in_arg(4);
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return hypre_error_flag;
    }
    *vector = (HYPRE_ParVector)
       hypre_VectorToParVector (comm, (hypre_Vector *) b, partitioning);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }

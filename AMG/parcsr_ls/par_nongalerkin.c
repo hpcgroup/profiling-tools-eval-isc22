@@ -17,9 +17,7 @@
 
 #include "_hypre_parcsr_ls.h"
 #include "../HYPRE.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /* This file contains the routines for constructing non-Galerkin coarse grid
  * operators, based on the original Galerkin coarse grid
  */
@@ -37,18 +35,12 @@ hypre_GrabSubArray(HYPRE_Int * indices,
                    HYPRE_Int * array,
                    HYPRE_Int * output)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int i, length;
     length = end - start + 1;
     
     for(i = 0; i < length; i++)
     {   output[i] = array[ indices[start + i] ]; }
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return 0;
 }
 
@@ -58,18 +50,10 @@ void hypre_qsort2_abs( HYPRE_Int *v,
                       HYPRE_Int  left,
                       HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int i, last;
     
-    if (left >= right){
-     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+    if (left >= right)
         return;
-    }
     hypre_swap2( v, w, left, (left+right)/2);
     last = left;
     for (i = left+1; i <= right; i++)
@@ -80,10 +64,6 @@ void hypre_qsort2_abs( HYPRE_Int *v,
     hypre_swap2(v, w, left, last);
     hypre_qsort2_abs(v, w, left, last-1);
     hypre_qsort2_abs(v, w, last+1, right);
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /* Compute the intersection of x and y, placing
@@ -109,10 +89,6 @@ hypre_IntersectTwoArrays(HYPRE_Int  *x,
                          HYPRE_Real *output_x_data,
                          HYPRE_Int  *intersect_length)
 {
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int x_index = 0;
     HYPRE_Int y_index = 0;
     *intersect_length = 0;
@@ -138,10 +114,6 @@ hypre_IntersectTwoArrays(HYPRE_Int  *x,
         }
     }
     
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return 1;
 }
 
@@ -158,10 +130,6 @@ HYPRE_Int
 hypre_SortedCopyParCSRData(hypre_ParCSRMatrix  *A, 
                            hypre_ParCSRMatrix  *B)
 {
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     /* Grab off A and B's data structures */
     hypre_CSRMatrix     *A_diag               = hypre_ParCSRMatrixDiag(A);
     HYPRE_Int           *A_diag_i             = hypre_CSRMatrixI(A_diag);
@@ -239,10 +207,6 @@ hypre_SortedCopyParCSRData(hypre_ParCSRMatrix  *A,
 
     if(temp_int_array)
     {    hypre_TFree(temp_int_array); }
-
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return 1;
 }
 
@@ -258,9 +222,6 @@ hypre_BoomerAMG_MyCreateS(hypre_ParCSRMatrix  *A,
                           HYPRE_Int           *dof_func,
                           hypre_ParCSRMatrix  **S_ptr)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     MPI_Comm                 comm            = hypre_ParCSRMatrixComm(A);
     hypre_ParCSRCommPkg     *comm_pkg        = hypre_ParCSRMatrixCommPkg(A);
     hypre_ParCSRCommHandle  *comm_handle;
@@ -616,9 +577,6 @@ hypre_BoomerAMG_MyCreateS(hypre_ParCSRMatrix  *A,
     
     hypre_TFree(dof_func_offd);
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return (ierr);
 }
 
@@ -630,18 +588,12 @@ hypre_NonGalerkinIJBufferInit( HYPRE_Int     *ijbuf_cnt,           /* See NonGal
                                HYPRE_Int     *ijbuf_rowcounter,
                                HYPRE_Int     *ijbuf_numcols )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int                ierr = 0;
 
     (*ijbuf_cnt)         = 0;
     (*ijbuf_rowcounter)  = 1; /*Always points to the next row*/
     ijbuf_numcols[0]     = 0;
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 
@@ -656,9 +608,6 @@ hypre_NonGalerkinIJBufferNewRow(HYPRE_Int     *ijbuf_rownums, /* See NonGalerkin
                                 HYPRE_Int     *ijbuf_rowcounter, 
                                 HYPRE_Int      new_row)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int                ierr = 0;
     
     /* First check to see if the previous row was empty, and if so, overwrite that row */
@@ -674,9 +623,6 @@ hypre_NonGalerkinIJBufferNewRow(HYPRE_Int     *ijbuf_rownums, /* See NonGalerkin
        (*ijbuf_rowcounter)++;
     }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 
@@ -691,9 +637,6 @@ hypre_NonGalerkinIJBufferCompressRow( HYPRE_Int      *ijbuf_cnt,      /* See Non
                                       HYPRE_Int      *ijbuf_rownums, 
                                       HYPRE_Int      *ijbuf_numcols)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int                ierr = 0;
     HYPRE_Int                nentries, i, nduplicate;
     
@@ -720,9 +663,6 @@ hypre_NonGalerkinIJBufferCompressRow( HYPRE_Int      *ijbuf_cnt,      /* See Non
     (*ijbuf_cnt) -= nduplicate; 
     ijbuf_numcols[ ijbuf_rowcounter-1 ] -= nduplicate;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 
@@ -740,9 +680,6 @@ hypre_NonGalerkinIJBufferCompress( HYPRE_Int      ijbuf_size,
                                    HYPRE_Int      **ijbuf_rownums, 
                                    HYPRE_Int      **ijbuf_numcols)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int                ierr       = 0;
     HYPRE_Int                *indys     = hypre_CTAlloc(HYPRE_Int, (*ijbuf_rowcounter) );
     
@@ -856,9 +793,6 @@ hypre_NonGalerkinIJBufferCompress( HYPRE_Int      ijbuf_size,
 
     hypre_TFree(indys);
    
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 
@@ -885,9 +819,6 @@ hypre_NonGalerkinIJBufferWrite( HYPRE_IJMatrix B,                 /* Unassembled
                                 HYPRE_Int     col_to_write,       /*          Ditto             */
                                 HYPRE_Real    val_to_write )      /*          Ditto             */
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int                ierr = 0;
     
 
@@ -931,9 +862,6 @@ hypre_NonGalerkinIJBufferWrite( HYPRE_IJMatrix B,                 /* Unassembled
        hypre_NonGalerkinIJBufferNewRow((*ijbuf_rownums), (*ijbuf_numcols), ijbuf_rowcounter, row_to_write);
     }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 
@@ -951,9 +879,6 @@ hypre_NonGalerkinIJBufferEmpty(HYPRE_IJMatrix B,             /* See NonGalerkinI
                                HYPRE_Int      **ijbuf_rownums, 
                                HYPRE_Int      **ijbuf_numcols)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     HYPRE_Int                ierr = 0;
 
     if( (*ijbuf_cnt) > 0)
@@ -967,9 +892,6 @@ hypre_NonGalerkinIJBufferEmpty(HYPRE_IJMatrix B,             /* See NonGalerkinI
     }
     (*ijbuf_cnt = 0);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 
@@ -985,9 +907,6 @@ hypre_NonGalerkinSparsityPattern(hypre_ParCSRMatrix *R_IAP,
                                  HYPRE_Int sym_collapse,
                                  HYPRE_Int collapse_beta )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     /* MPI Communicator */
     MPI_Comm            comm                      = hypre_ParCSRMatrixComm(RAP);
     
@@ -1252,9 +1171,6 @@ hypre_NonGalerkinSparsityPattern(hypre_ParCSRMatrix *R_IAP,
         hypre_TFree(ijbuf_sym_numcols);
     }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return Pattern_CSR;
 }
 
@@ -1271,9 +1187,6 @@ hypre_BoomerAMGBuildNonGalerkinCoarseOperator( hypre_ParCSRMatrix **RAP_ptr,
                                                HYPRE_Real droptol, HYPRE_Int sym_collapse, 
                                                HYPRE_Real lump_percent, HYPRE_Int collapse_beta )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     /* Initializations */
     MPI_Comm            comm                  = hypre_ParCSRMatrixComm(*RAP_ptr);
     hypre_ParCSRMatrix  *S                    = NULL;
@@ -2368,9 +2281,6 @@ hypre_BoomerAMGBuildNonGalerkinCoarseOperator( hypre_ParCSRMatrix **RAP_ptr,
       if(my_id == 0)
       {   fprintf(stdout, "NonGalerkin Time:  %1.2e\n", end_time-start_time); } */
     
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
     return ierr;
 }
 

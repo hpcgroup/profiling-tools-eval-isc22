@@ -26,10 +26,6 @@
 HYPRE_Real hypre_profile_times[HYPRE_TIMER_ID_COUNT] = { 0 };
 #endif
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /*--------------------------------------------------------------------------
  * hypre_CSRMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -39,10 +35,6 @@ hypre_CSRMatrixCreate( HYPRE_Int num_rows,
                        HYPRE_Int num_cols,
                        HYPRE_Int num_nonzeros )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
-
    hypre_CSRMatrix  *matrix;
 
    matrix = hypre_CTAlloc(hypre_CSRMatrix, 1);
@@ -59,9 +51,6 @@ hypre_CSRMatrixCreate( HYPRE_Int num_rows,
    hypre_CSRMatrixOwnsData(matrix) = 1;
    hypre_CSRMatrixNumRownnz(matrix) = num_rows;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return matrix;
 }
 /*--------------------------------------------------------------------------
@@ -71,9 +60,6 @@ hypre_CSRMatrixCreate( HYPRE_Int num_rows,
 HYPRE_Int 
 hypre_CSRMatrixDestroy( hypre_CSRMatrix *matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  ierr=0;
 
    if (matrix)
@@ -92,9 +78,7 @@ hypre_CSRMatrixDestroy( hypre_CSRMatrix *matrix )
       hypre_TFree(matrix);
       matrix = NULL;
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
    return ierr;
 }
 
@@ -105,9 +89,6 @@ hypre_CSRMatrixDestroy( hypre_CSRMatrix *matrix )
 HYPRE_Int 
 hypre_CSRMatrixInitialize( hypre_CSRMatrix *matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  num_rows     = hypre_CSRMatrixNumRows(matrix);
    HYPRE_Int  num_nonzeros = hypre_CSRMatrixNumNonzeros(matrix);
 /*   HYPRE_Int  num_rownnz = hypre_CSRMatrixNumRownnz(matrix); */
@@ -123,9 +104,6 @@ hypre_CSRMatrixInitialize( hypre_CSRMatrix *matrix )
    if ( ! hypre_CSRMatrixJ(matrix) && num_nonzeros )
       hypre_CSRMatrixJ(matrix)    = hypre_CTAlloc(HYPRE_Int, num_nonzeros);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -137,16 +115,10 @@ HYPRE_Int
 hypre_CSRMatrixSetDataOwner( hypre_CSRMatrix *matrix,
                              HYPRE_Int              owns_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int    ierr=0;
 
    hypre_CSRMatrixOwnsData(matrix) = owns_data;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -162,9 +134,6 @@ hypre_CSRMatrixSetDataOwner( hypre_CSRMatrix *matrix,
 HYPRE_Int
 hypre_CSRMatrixSetRownnz( hypre_CSRMatrix *matrix )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int    ierr=0;
    HYPRE_Int  num_rows = hypre_CSRMatrixNumRows(matrix);
    HYPRE_Int  *A_i = hypre_CSRMatrixI(matrix);
@@ -196,9 +165,6 @@ hypre_CSRMatrixSetRownnz( hypre_CSRMatrix *matrix )
       }
       hypre_CSRMatrixRownnz(matrix) = Arownnz;
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -209,9 +175,6 @@ hypre_CSRMatrixSetRownnz( hypre_CSRMatrix *matrix )
 hypre_CSRMatrix *
 hypre_CSRMatrixRead( char *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_CSRMatrix  *matrix;
 
    FILE    *fp;
@@ -271,9 +234,6 @@ hypre_CSRMatrixRead( char *file_name )
    hypre_CSRMatrixNumNonzeros(matrix) = num_nonzeros;
    hypre_CSRMatrixNumCols(matrix) = ++max_col;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return matrix;
 }
 
@@ -285,9 +245,6 @@ HYPRE_Int
 hypre_CSRMatrixPrint( hypre_CSRMatrix *matrix,
                       char            *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    FILE    *fp;
 
    HYPRE_Complex *matrix_data;
@@ -343,9 +300,6 @@ hypre_CSRMatrixPrint( hypre_CSRMatrix *matrix,
 
    fclose(fp);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -357,9 +311,6 @@ HYPRE_Int
 hypre_CSRMatrixPrintHB( hypre_CSRMatrix *matrix_input,
                         char            *file_name )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    FILE            *fp;
    hypre_CSRMatrix *matrix;
    HYPRE_Complex   *matrix_data;
@@ -427,9 +378,6 @@ hypre_CSRMatrixPrintHB( hypre_CSRMatrix *matrix_input,
 
    hypre_CSRMatrixDestroy(matrix);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -443,9 +391,6 @@ hypre_CSRMatrixPrintHB( hypre_CSRMatrix *matrix_input,
 HYPRE_Int 
 hypre_CSRMatrixCopy( hypre_CSRMatrix *A, hypre_CSRMatrix *B, HYPRE_Int copy_data )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int      ierr=0;
    HYPRE_Int      num_rows = hypre_CSRMatrixNumRows(A);
    HYPRE_Int     *A_i = hypre_CSRMatrixI(A);
@@ -485,9 +430,6 @@ hypre_CSRMatrixCopy( hypre_CSRMatrix *A, hypre_CSRMatrix *B, HYPRE_Int copy_data
          B_data[j] = A_data[j];
       }
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -501,9 +443,6 @@ hypre_CSRMatrixCopy( hypre_CSRMatrix *A, hypre_CSRMatrix *B, HYPRE_Int copy_data
 
 hypre_CSRMatrix * hypre_CSRMatrixClone( hypre_CSRMatrix * A )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int num_rows = hypre_CSRMatrixNumRows( A );
    HYPRE_Int num_cols = hypre_CSRMatrixNumCols( A );
    HYPRE_Int num_nonzeros = hypre_CSRMatrixNumNonzeros( A );
@@ -526,9 +465,6 @@ hypre_CSRMatrix * hypre_CSRMatrixClone( hypre_CSRMatrix * A )
    hypre_CSRMatrixNumRownnz(B) =  hypre_CSRMatrixNumRownnz(A);
    if ( hypre_CSRMatrixRownnz(A) ) hypre_CSRMatrixSetRownnz( B );
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return B;
 }
 
@@ -553,9 +489,6 @@ hypre_CSRMatrix * hypre_CSRMatrixUnion(
    hypre_CSRMatrix * A, hypre_CSRMatrix * B,
    HYPRE_Int * col_map_offd_A, HYPRE_Int * col_map_offd_B, HYPRE_Int ** col_map_offd_C )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int num_rows = hypre_CSRMatrixNumRows( A );
    HYPRE_Int num_cols_A = hypre_CSRMatrixNumCols( A );
    HYPRE_Int num_cols_B = hypre_CSRMatrixNumCols( B );
@@ -704,17 +637,11 @@ hypre_CSRMatrix * hypre_CSRMatrixUnion(
    hypre_assert( mc == num_nonzeros );
    if (jC) hypre_TFree( jC );
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return C;
 }
 
 static HYPRE_Int hypre_CSRMatrixGetLoadBalancedPartitionBoundary(hypre_CSRMatrix *A, HYPRE_Int idx)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int num_nonzerosA = hypre_CSRMatrixNumNonzeros(A);
    HYPRE_Int num_rowsA = hypre_CSRMatrixNumRows(A);
    HYPRE_Int *A_i = hypre_CSRMatrixI(A);
@@ -725,45 +652,24 @@ static HYPRE_Int hypre_CSRMatrixGetLoadBalancedPartitionBoundary(hypre_CSRMatrix
 
    if (idx <= 0)
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return 0;
    }
    else if (idx >= num_threads)
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return num_rowsA;
    }
    else
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return (HYPRE_Int)(hypre_LowerBound(A_i, A_i + num_rowsA, nonzeros_per_thread*idx) - A_i);
    }
 }
 
 HYPRE_Int hypre_CSRMatrixGetLoadBalancedPartitionBegin(hypre_CSRMatrix *A)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_CSRMatrixGetLoadBalancedPartitionBoundary(A, hypre_GetThreadNum());
 }
 
 HYPRE_Int hypre_CSRMatrixGetLoadBalancedPartitionEnd(hypre_CSRMatrix *A)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_CSRMatrixGetLoadBalancedPartitionBoundary(A, hypre_GetThreadNum() + 1);
 }
