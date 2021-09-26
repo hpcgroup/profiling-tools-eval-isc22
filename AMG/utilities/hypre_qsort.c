@@ -19,10 +19,6 @@
 #include <math.h>
 #include "_hypre_utilities.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /*--------------------------------------------------------------------------
  *--------------------------------------------------------------------------*/
 
@@ -30,17 +26,11 @@ void hypre_swap( HYPRE_Int *v,
            HYPRE_Int  i,
            HYPRE_Int  j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int temp;
 
    temp = v[i];
    v[i] = v[j];
    v[j] = temp;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -51,9 +41,6 @@ void hypre_swap2(HYPRE_Int     *v,
            HYPRE_Int      i,
            HYPRE_Int      j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int temp;
    HYPRE_Real temp2;
 
@@ -63,9 +50,6 @@ void hypre_swap2(HYPRE_Int     *v,
    temp2 = w[i];
    w[i] = w[j];
    w[j] = temp2;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -76,9 +60,6 @@ void hypre_swap2i(HYPRE_Int  *v,
                   HYPRE_Int  i,
                   HYPRE_Int  j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int temp;
 
    temp = v[i];
@@ -87,9 +68,6 @@ void hypre_swap2i(HYPRE_Int  *v,
    temp = w[i];
    w[i] = w[j];
    w[j] = temp;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 
@@ -105,9 +83,6 @@ void hypre_swap3i(HYPRE_Int  *v,
                   HYPRE_Int  i,
                   HYPRE_Int  j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int temp;
 
    temp = v[i];
@@ -119,9 +94,6 @@ void hypre_swap3i(HYPRE_Int  *v,
    temp = z[i];
    z[i] = z[j];
    z[j] = temp;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -133,9 +105,6 @@ void hypre_swap3_d(HYPRE_Real  *v,
                   HYPRE_Int  i,
                   HYPRE_Int  j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int temp;
    HYPRE_Real temp_d;
    
@@ -149,9 +118,6 @@ void hypre_swap3_d(HYPRE_Real  *v,
    temp = z[i];
    z[i] = z[j];
    z[j] = temp;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -164,9 +130,6 @@ void hypre_swap4_d(HYPRE_Real  *v,
                   HYPRE_Int  i,
                   HYPRE_Int  j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int temp;
    HYPRE_Real temp_d;
    
@@ -183,9 +146,6 @@ void hypre_swap4_d(HYPRE_Real  *v,
    temp = y[i];
    y[i] = y[j];
    y[j] = temp;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 
 }
 
@@ -196,17 +156,11 @@ void hypre_swap_d( HYPRE_Real *v,
                    HYPRE_Int  i,
                    HYPRE_Int  j )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Real temp;
 
    temp = v[i];
    v[i] = v[j];
    v[j] = temp;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -216,17 +170,10 @@ void hypre_qsort0( HYPRE_Int *v,
              HYPRE_Int  left,
              HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
 
-   if (left >= right) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (left >= right)
       return;
-   }
    hypre_swap( v, left, (left+right)/2);
    last = left;
    for (i = left+1; i <= right; i++)
@@ -237,9 +184,6 @@ void hypre_qsort0( HYPRE_Int *v,
    hypre_swap(v, left, last);
    hypre_qsort0(v, left, last-1);
    hypre_qsort0(v, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -250,17 +194,10 @@ void hypre_qsort1( HYPRE_Int *v,
              HYPRE_Int  left,
              HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
 
-   if (left >= right) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (left >= right)
       return;
-   }
    hypre_swap2( v, w, left, (left+right)/2);
    last = left;
    for (i = left+1; i <= right; i++)
@@ -271,9 +208,6 @@ void hypre_qsort1( HYPRE_Int *v,
    hypre_swap2(v, w, left, last);
    hypre_qsort1(v, w, left, last-1);
    hypre_qsort1(v, w, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -284,16 +218,10 @@ void hypre_qsort2i( HYPRE_Int *v,
                     HYPRE_Int  left,
                     HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
 
    if (left >= right)
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return;
    }
    hypre_swap2i( v, w, left, (left+right)/2);
@@ -308,9 +236,6 @@ void hypre_qsort2i( HYPRE_Int *v,
    hypre_swap2i(v, w, left, last);
    hypre_qsort2i(v, w, left, last-1);
    hypre_qsort2i(v, w, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -324,17 +249,10 @@ void hypre_qsort2( HYPRE_Int *v,
              HYPRE_Int  left,
              HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
 
-   if (left >= right) {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+   if (left >= right)
       return;
-   }
    hypre_swap2( v, w, left, (left+right)/2);
    last = left;
    for (i = left+1; i <= right; i++)
@@ -345,9 +263,6 @@ void hypre_qsort2( HYPRE_Int *v,
    hypre_swap2(v, w, left, last);
    hypre_qsort2(v, w, left, last-1);
    hypre_qsort2(v, w, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -361,16 +276,10 @@ void hypre_qsort3i( HYPRE_Int *v,
                     HYPRE_Int  left,
                     HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
 
    if (left >= right)
    {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return;
    }
    hypre_swap3i( v, w, z, left, (left+right)/2);
@@ -385,9 +294,6 @@ void hypre_qsort3i( HYPRE_Int *v,
    hypre_swap3i(v, w, z, left, last);
    hypre_qsort3i(v, w, z, left, last-1);
    hypre_qsort3i(v, w, z, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -401,16 +307,9 @@ void hypre_qsort3_abs(HYPRE_Real *v,
                       HYPRE_Int  left,
                       HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
-   if (left >= right) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (left >= right)
       return;
-   }
    hypre_swap3_d( v, w, z, left, (left+right)/2);
    last = left;
    for (i = left+1; i <= right; i++)
@@ -421,9 +320,6 @@ void hypre_qsort3_abs(HYPRE_Real *v,
    hypre_swap3_d(v, w, z, left, last);
    hypre_qsort3_abs(v, w, z, left, last-1);
    hypre_qsort3_abs(v, w, z, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 /*--------------------------------------------------------------------------
@@ -438,16 +334,9 @@ void hypre_qsort4_abs(HYPRE_Real *v,
                       HYPRE_Int  left,
                       HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
-   if (left >= right) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (left >= right)
       return;
-   }
    hypre_swap4_d( v, w, z, y, left, (left+right)/2);
    last = left;
    for (i = left+1; i <= right; i++)
@@ -458,9 +347,6 @@ void hypre_qsort4_abs(HYPRE_Real *v,
    hypre_swap4_d(v, w, z, y, left, last);
    hypre_qsort4_abs(v, w, z, y, left, last-1);
    hypre_qsort4_abs(v, w, z, y, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 
@@ -472,16 +358,9 @@ void hypre_qsort_abs(HYPRE_Real *w,
                      HYPRE_Int  left,
                      HYPRE_Int  right )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i, last;
-   if (left >= right) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
+   if (left >= right)
       return;
-   }
    hypre_swap_d( w, left, (left+right)/2);
    last = left;
    for (i = left+1; i <= right; i++)
@@ -492,9 +371,6 @@ void hypre_qsort_abs(HYPRE_Real *w,
    hypre_swap_d(w, left, last);
    hypre_qsort_abs(w, left, last-1);
    hypre_qsort_abs(w, last+1, right);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 

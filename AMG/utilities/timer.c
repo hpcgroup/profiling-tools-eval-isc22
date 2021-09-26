@@ -36,34 +36,17 @@
 #include "mpi.h"
 #endif
 
-
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 HYPRE_Real time_getWallclockSeconds(void)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef TIMER_USE_MPI
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(hypre_MPI_Wtime());
 #else
 #ifdef WIN32
    clock_t cl=clock();
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(((HYPRE_Real) cl)/((HYPRE_Real) CLOCKS_PER_SEC));
 #else
    struct tms usage;
    hypre_longint wallclock = times(&usage);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(((HYPRE_Real) wallclock)/((HYPRE_Real) sysconf(_SC_CLK_TCK)));
 #endif
 #endif
@@ -71,37 +54,20 @@ HYPRE_Real time_getWallclockSeconds(void)
 
 HYPRE_Real time_getCPUSeconds(void)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifndef TIMER_NO_SYS
    clock_t cpuclock = clock();
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(((HYPRE_Real) (cpuclock))/((HYPRE_Real) CLOCKS_PER_SEC));
 #else
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0.0);
 #endif
 }
 
 HYPRE_Real time_get_wallclock_seconds_(void)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(time_getWallclockSeconds());
 }
 
 HYPRE_Real time_get_cpu_seconds_(void)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(time_getCPUSeconds());
 }

@@ -16,59 +16,32 @@
  ************************************************************************EHEADER*/
 
 #include "hypre_hopscotch_hash.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 
 static HYPRE_Int NearestPowerOfTwo( HYPRE_Int value )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   HYPRE_Int rc = 1;
   while (rc < value) {
     rc <<= 1;
   }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return rc;
 }
 
 static void InitBucket(hypre_HopscotchBucket *b)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   b->hopInfo = 0;
   b->hash = HYPRE_HOPSCOTCH_HASH_EMPTY;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 #ifdef HYPRE_CONCURRENT_HOPSCOTCH
 static void InitSegment(hypre_HopscotchSegment *s)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   s->timestamp = 0;
   omp_init_lock(&s->lock);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 static void DestroySegment(hypre_HopscotchSegment *s)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   omp_destroy_lock(&s->lock);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 #endif
 
@@ -76,9 +49,6 @@ void hypre_UnorderedIntSetCreate( hypre_UnorderedIntSet *s,
                                   HYPRE_Int inCapacity,
                                   HYPRE_Int concurrencyLevel) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   s->segmentMask = NearestPowerOfTwo(concurrencyLevel) - 1;
   if (inCapacity < s->segmentMask + 1)
   {
@@ -113,18 +83,12 @@ void hypre_UnorderedIntSetCreate( hypre_UnorderedIntSet *s,
     s->hopInfo[i] = 0;
     s->hash[i] = HYPRE_HOPSCOTCH_HASH_EMPTY;
   }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_UnorderedIntMapCreate( hypre_UnorderedIntMap *m,
                                   HYPRE_Int inCapacity,
                                   HYPRE_Int concurrencyLevel) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   m->segmentMask = NearestPowerOfTwo(concurrencyLevel) - 1;
   if (inCapacity < m->segmentMask + 1)
   {
@@ -156,16 +120,10 @@ void hypre_UnorderedIntMapCreate( hypre_UnorderedIntMap *m,
   {
     InitBucket(&m->table[i]);
   }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_UnorderedIntSetDestroy( hypre_UnorderedIntSet *s )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   hypre_TFree(s->hopInfo);
   hypre_TFree(s->key);
   hypre_TFree(s->hash);
@@ -178,16 +136,10 @@ void hypre_UnorderedIntSetDestroy( hypre_UnorderedIntSet *s )
   }
   hypre_TFree(s->segments);
 #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_UnorderedIntMapDestroy( hypre_UnorderedIntMap *m)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   hypre_TFree(m->table);
 
 #ifdef HYPRE_CONCURRENT_HOPSCOTCH
@@ -198,16 +150,10 @@ void hypre_UnorderedIntMapDestroy( hypre_UnorderedIntMap *m)
   }
   hypre_TFree(m->segments);
 #endif
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 HYPRE_Int *hypre_UnorderedIntSetCopyToArray( hypre_UnorderedIntSet *s, HYPRE_Int *len )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
   /*HYPRE_Int prefix_sum_workspace[hypre_NumThreads() + 1];*/
   HYPRE_Int *prefix_sum_workspace;
   HYPRE_Int *ret_array = NULL;
@@ -250,8 +196,5 @@ HYPRE_Int *hypre_UnorderedIntSetCopyToArray( hypre_UnorderedIntSet *s, HYPRE_Int
 
   hypre_TFree(prefix_sum_workspace);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
   return ret_array;
 }

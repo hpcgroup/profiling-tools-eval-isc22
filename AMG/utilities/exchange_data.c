@@ -23,9 +23,7 @@
 #include <math.h>
 
 #include "_hypre_utilities.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*---------------------------------------------------
  * hypre_CreateBinaryTree()
  * its children and parent processor ids)
@@ -34,9 +32,6 @@
 HYPRE_Int hypre_CreateBinaryTree(HYPRE_Int myid, HYPRE_Int num_procs,
                                  hypre_BinaryTree *tree)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  i, proc, size=0;
    HYPRE_Int  *tmp_child_id;
    HYPRE_Int  num=0, parent = 0;
@@ -77,9 +72,6 @@ HYPRE_Int hypre_CreateBinaryTree(HYPRE_Int myid, HYPRE_Int num_procs,
    hypre_BinaryTreeNumChild(tree) = num;
    hypre_BinaryTreeChildIds(tree) = tmp_child_id;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -89,15 +81,9 @@ HYPRE_Int hypre_CreateBinaryTree(HYPRE_Int myid, HYPRE_Int num_procs,
  *----------------------------------------------------*/
 HYPRE_Int hypre_DestroyBinaryTree(hypre_BinaryTree *tree) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 
    hypre_TFree(hypre_BinaryTreeChildIds(tree));
  
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }
 
@@ -125,9 +111,6 @@ HYPRE_Int hypre_DataExchangeList(HYPRE_Int num_contacts,
                                  void **p_response_recv_buf, 
                                  HYPRE_Int **p_response_recv_buf_starts)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    /*-------------------------------------------
     *  parameters: 
     *   
@@ -598,8 +581,5 @@ HYPRE_Int hypre_DataExchangeList(HYPRE_Int num_contacts,
    *p_response_recv_buf = response_recv_buf;
    *p_response_recv_buf_starts = response_recv_buf_starts;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return hypre_error_flag;
 }

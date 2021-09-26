@@ -27,9 +27,7 @@
 
 #define hypre_LIST_HEAD -1
 #define hypre_LIST_TAIL -2
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 
 /**************************************************************
  *
@@ -41,10 +39,6 @@
  **************************************************************/
 void hypre_dispose_elt ( hypre_LinkList element_ptr )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    free( element_ptr );
 }
 
@@ -64,9 +58,6 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
              HYPRE_Int                *where)
 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_LinkList   LoL_head = *LoL_head_ptr;
    hypre_LinkList   LoL_tail = *LoL_tail_ptr;
    hypre_LinkList   list_ptr;
@@ -92,9 +83,6 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
 
                *LoL_head_ptr = LoL_head;
                *LoL_tail_ptr = LoL_tail;
-               #ifdef caliper
-               CALI_MARK_FUNCTION_END;
-               #endif
                return;
             }
             else if (LoL_head == list_ptr) /*removing 1st (max_measure) list */
@@ -105,9 +93,6 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
                
                *LoL_head_ptr = LoL_head;
                *LoL_tail_ptr = LoL_tail;
-               #ifdef caliper
-               CALI_MARK_FUNCTION_END;
-               #endif
                return;
             }
             else if (LoL_tail == list_ptr)     /* removing last list */
@@ -118,9 +103,6 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
 
                *LoL_head_ptr = LoL_head;
                *LoL_tail_ptr = LoL_tail;
-               #ifdef caliper
-               CALI_MARK_FUNCTION_END;
-               #endif
                return;
             }
             else
@@ -131,9 +113,6 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
                
                *LoL_head_ptr = LoL_head;
                *LoL_tail_ptr = LoL_tail;
-               #ifdef caliper
-               CALI_MARK_FUNCTION_END;
-               #endif
                return;
             }
          }
@@ -141,36 +120,24 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
          {
             list_ptr->head = lists[index];
             where[lists[index]] = hypre_LIST_HEAD;
-            #ifdef caliper
-            CALI_MARK_FUNCTION_END;
-            #endif
             return;
          }
          else if (list_ptr->tail == index)      /* index is tail of list */
          {
             list_ptr->tail = where[index];
             lists[where[index]] = hypre_LIST_TAIL;
-            #ifdef caliper
-            CALI_MARK_FUNCTION_END;
-            #endif
             return;
          }
          else                              /* index is in middle of list */
          {
             lists[where[index]] = lists[index];
             where[lists[index]] = where[index];
-            #ifdef caliper
-            CALI_MARK_FUNCTION_END;
-            #endif
             return;
          }
       }
       list_ptr = list_ptr -> next_elt;
    } while (list_ptr != NULL);
    hypre_error_w_msg(HYPRE_ERROR_GENERIC,"No such list!\n");
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ;
 }
 
@@ -181,9 +148,6 @@ hypre_remove_point(hypre_LinkList   *LoL_head_ptr,
  *****************************************************************/
 hypre_LinkList hypre_create_elt( HYPRE_Int Item )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
     hypre_LinkList   new_elt_ptr;
  
     /* Allocate memory space for the new node. 
@@ -205,9 +169,7 @@ hypre_LinkList hypre_create_elt( HYPRE_Int Item )
        new_elt_ptr -> head = hypre_LIST_TAIL;
        new_elt_ptr -> tail = hypre_LIST_HEAD;
     }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
+
     return (new_elt_ptr);
 }
 
@@ -224,9 +186,6 @@ hypre_enter_on_lists(hypre_LinkList   *LoL_head_ptr,
                HYPRE_Int                *lists, 
                HYPRE_Int                *where)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_LinkList   LoL_head = *LoL_head_ptr;
    hypre_LinkList   LoL_tail = *LoL_tail_ptr;
 
@@ -249,9 +208,6 @@ hypre_enter_on_lists(hypre_LinkList   *LoL_head_ptr,
 
       *LoL_head_ptr = LoL_head;
       *LoL_tail_ptr = LoL_tail;
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return;
    }
    else
@@ -283,9 +239,6 @@ hypre_enter_on_lists(hypre_LinkList   *LoL_head_ptr,
 
          *LoL_head_ptr = LoL_head;
          *LoL_tail_ptr = LoL_tail; 
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
          return;
       }
       else if (measure == list_ptr->data)
@@ -295,9 +248,6 @@ hypre_enter_on_lists(hypre_LinkList   *LoL_head_ptr,
          where[index] = old_tail;
          lists[index] = hypre_LIST_TAIL;
          list_ptr->tail = index;
-         #ifdef caliper
-         CALI_MARK_FUNCTION_END;
-         #endif
          return;
       }
       
@@ -316,9 +266,6 @@ hypre_enter_on_lists(hypre_LinkList   *LoL_head_ptr,
 
    *LoL_head_ptr = LoL_head;
    *LoL_tail_ptr = LoL_tail;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return;
  }
 }

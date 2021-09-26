@@ -16,15 +16,9 @@
  ***********************************************************************EHEADER*/
 
 #include "_hypre_utilities.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
 
 void hypre_prefix_sum(HYPRE_Int *in_out, HYPRE_Int *sum, HYPRE_Int *workspace)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_USING_OPENMP
    HYPRE_Int my_thread_num = hypre_GetThreadNum();
    HYPRE_Int num_threads = hypre_NumActiveThreads();
@@ -53,16 +47,10 @@ void hypre_prefix_sum(HYPRE_Int *in_out, HYPRE_Int *sum, HYPRE_Int *workspace)
    workspace[0] = 0;
    workspace[1] = *sum;
 #endif /* !HYPRE_USING_OPENMP */
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_prefix_sum_pair(HYPRE_Int *in_out1, HYPRE_Int *sum1, HYPRE_Int *in_out2, HYPRE_Int *sum2, HYPRE_Int *workspace)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_USING_OPENMP
    HYPRE_Int my_thread_num = hypre_GetThreadNum();
    HYPRE_Int num_threads = hypre_NumActiveThreads();
@@ -101,16 +89,10 @@ void hypre_prefix_sum_pair(HYPRE_Int *in_out1, HYPRE_Int *sum1, HYPRE_Int *in_ou
    workspace[2] = *sum1;
    workspace[3] = *sum2;
 #endif /* !HYPRE_USING_OPENMP */
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_prefix_sum_triple(HYPRE_Int *in_out1, HYPRE_Int *sum1, HYPRE_Int *in_out2, HYPRE_Int *sum2, HYPRE_Int *in_out3, HYPRE_Int *sum3, HYPRE_Int *workspace)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_USING_OPENMP
    HYPRE_Int my_thread_num = hypre_GetThreadNum();
    HYPRE_Int num_threads = hypre_NumActiveThreads();
@@ -158,16 +140,10 @@ void hypre_prefix_sum_triple(HYPRE_Int *in_out1, HYPRE_Int *sum1, HYPRE_Int *in_
    workspace[4] = *sum2;
    workspace[5] = *sum3;
 #endif /* !HYPRE_USING_OPENMP */
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 void hypre_prefix_sum_multiple(HYPRE_Int *in_out, HYPRE_Int *sum, HYPRE_Int n, HYPRE_Int *workspace)
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i;
 #ifdef HYPRE_USING_OPENMP
    HYPRE_Int my_thread_num = hypre_GetThreadNum();
@@ -218,7 +194,4 @@ void hypre_prefix_sum_multiple(HYPRE_Int *in_out, HYPRE_Int *sum, HYPRE_Int n, H
       workspace[n + i] = sum[i];
    }
 #endif /* !HYPRE_USING_OPENMP */
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }

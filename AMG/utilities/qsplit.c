@@ -19,9 +19,7 @@
  
 #include "_hypre_utilities.h"
 #include <math.h>
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+ 
 /*--------------------------------------------------------------------------
  * hypre_DoubleQuickSplit
  * C version of the routine "qsplit" from SPARSKIT
@@ -33,9 +31,6 @@
 HYPRE_Int hypre_DoubleQuickSplit(HYPRE_Real *values, HYPRE_Int *indices, 
                            HYPRE_Int list_length, HYPRE_Int NumberKept )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int ierr = 0;
    HYPRE_Real interchange_value;
    HYPRE_Real abskey;
@@ -47,12 +42,8 @@ HYPRE_Int hypre_DoubleQuickSplit(HYPRE_Real *values, HYPRE_Int *indices,
    first = 0;
    last = list_length-1;
 
-   if ( (NumberKept < first+1) || (NumberKept > last+1) ) {
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif    
+   if ( (NumberKept < first+1) || (NumberKept > last+1) )
       return( ierr );
-   }
 
    /* Loop until the "midpoint" is NumberKept */
    done = 0;
@@ -96,9 +87,6 @@ HYPRE_Int hypre_DoubleQuickSplit(HYPRE_Real *values, HYPRE_Int *indices,
          first = mid + 1;
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( ierr );
 }
 

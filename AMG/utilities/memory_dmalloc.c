@@ -30,10 +30,6 @@
 #include "hypre_memory.h"
 #include <dmalloc.h>
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 char dmalloc_logpath_memory[256];
 
 /*--------------------------------------------------------------------------
@@ -43,9 +39,6 @@ char dmalloc_logpath_memory[256];
 HYPRE_Int
 hypre_InitMemoryDebugDML( HYPRE_Int id  )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  *iptr;
 
    /* do this to get the Debug Malloc Library started/initialized */
@@ -55,9 +48,6 @@ hypre_InitMemoryDebugDML( HYPRE_Int id  )
    dmalloc_logpath = dmalloc_logpath_memory;
    hypre_sprintf(dmalloc_logpath, "dmalloc.log.%04d", id);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -68,14 +58,8 @@ hypre_InitMemoryDebugDML( HYPRE_Int id  )
 HYPRE_Int
 hypre_FinalizeMemoryDebugDML( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    dmalloc_verify(NULL);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -88,9 +72,6 @@ hypre_MAllocDML( HYPRE_Int   size,
                  char *file,
                  HYPRE_Int   line )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    char *ptr;
 
    if (size > 0)
@@ -98,9 +79,6 @@ hypre_MAllocDML( HYPRE_Int   size,
    else
       ptr = NULL;
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ptr;
 }
 
@@ -114,9 +92,6 @@ hypre_CAllocDML( HYPRE_Int   count,
                  char *file,
                  HYPRE_Int   line    )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    char *ptr;
    HYPRE_Int   size = count*elt_size;
 
@@ -129,9 +104,6 @@ hypre_CAllocDML( HYPRE_Int   count,
       ptr = NULL;
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ptr;
 }
 
@@ -145,14 +117,8 @@ hypre_ReAllocDML( char *ptr,
                   char *file,
                   HYPRE_Int   line )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    ptr = _realloc_leap(file, line, ptr, size);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ptr;
 }
 
@@ -165,16 +131,10 @@ hypre_FreeDML( char *ptr,
                char *file,
                HYPRE_Int   line )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    if (ptr)
    {
       _free_leap(file, line, ptr);
    }
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
 }
 
 #else

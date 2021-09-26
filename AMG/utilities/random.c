@@ -42,9 +42,7 @@
  *****************************************************************************/
 
 #include "_hypre_utilities.h"
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
+
 /*--------------------------------------------------------------------------
  * Static variables
  *--------------------------------------------------------------------------*/
@@ -62,10 +60,6 @@ static HYPRE_Int Seed = 13579;
  *--------------------------------------------------------------------------*/
 void  hypre_SeedRand( HYPRE_Int seed )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    Seed = seed;
 }
 
@@ -77,9 +71,6 @@ void  hypre_SeedRand( HYPRE_Int seed )
  *--------------------------------------------------------------------------*/
 HYPRE_Int  hypre_RandI()
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int  low, high, test;
 
    high = Seed / q;
@@ -94,9 +85,6 @@ HYPRE_Int  hypre_RandI()
       Seed = test + m;
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return Seed;
 }
 
@@ -109,9 +97,6 @@ HYPRE_Int  hypre_RandI()
  *--------------------------------------------------------------------------*/
 HYPRE_Real  hypre_Rand()
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 /*
    HYPRE_Int  low, high, test;
 
@@ -127,8 +112,5 @@ HYPRE_Real  hypre_Rand()
       Seed = test + m;
    }
 */
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ((HYPRE_Real)(hypre_RandI()) / m);
 }

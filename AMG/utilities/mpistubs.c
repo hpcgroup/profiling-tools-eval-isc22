@@ -17,10 +17,6 @@
 
 #include "_hypre_utilities.h"
 
-#ifdef caliper
-#include <caliper/cali.h>
-#endif
-
 /******************************************************************************
  * This routine is the same in both the sequential and normal cases
  *
@@ -31,18 +27,9 @@
 hypre_MPI_Comm
 hypre_MPI_Comm_f2c( hypre_int comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #ifdef HYPRE_HAVE_MPI_COMM_F2C
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (hypre_MPI_Comm) MPI_Comm_f2c(comm);
 #else
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (hypre_MPI_Comm) (size_t)comm;
 #endif
 }
@@ -57,20 +44,12 @@ HYPRE_Int
 hypre_MPI_Init( hypre_int   *argc,
                 char      ***argv )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Finalize( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -78,40 +57,24 @@ HYPRE_Int
 hypre_MPI_Abort( hypre_MPI_Comm comm,
                  HYPRE_Int      errorcode )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Real
 hypre_MPI_Wtime( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0.0);
 }
 
 HYPRE_Real
 hypre_MPI_Wtick( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0.0);
 }
 
 HYPRE_Int
 hypre_MPI_Barrier( hypre_MPI_Comm comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -120,10 +83,6 @@ hypre_MPI_Comm_create( hypre_MPI_Comm   comm,
                        hypre_MPI_Group  group,
                        hypre_MPI_Comm  *newcomm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -131,10 +90,6 @@ HYPRE_Int
 hypre_MPI_Comm_dup( hypre_MPI_Comm  comm,
                     hypre_MPI_Comm *newcomm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -142,13 +97,7 @@ HYPRE_Int
 hypre_MPI_Comm_size( hypre_MPI_Comm  comm,
                      HYPRE_Int      *size )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    *size = 1;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -156,23 +105,13 @@ HYPRE_Int
 hypre_MPI_Comm_rank( hypre_MPI_Comm  comm,
                      HYPRE_Int      *rank )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    *rank = 0;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Comm_free( hypre_MPI_Comm *comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -180,10 +119,6 @@ HYPRE_Int
 hypre_MPI_Comm_group( hypre_MPI_Comm   comm,
                       hypre_MPI_Group *group )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -193,10 +128,6 @@ hypre_MPI_Comm_split( hypre_MPI_Comm  comm,
                       HYPRE_Int       m,
                       hypre_MPI_Comm *comms )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -206,20 +137,12 @@ hypre_MPI_Group_incl( hypre_MPI_Group  group,
                       HYPRE_Int       *ranks,
                       hypre_MPI_Group *newgroup )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Group_free( hypre_MPI_Group *group )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -227,10 +150,6 @@ HYPRE_Int
 hypre_MPI_Address( void           *location,
                    hypre_MPI_Aint *address )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -239,10 +158,6 @@ hypre_MPI_Get_count( hypre_MPI_Status   *status,
                      hypre_MPI_Datatype  datatype,
                      HYPRE_Int          *count )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -255,10 +170,6 @@ hypre_MPI_Alltoall( void               *sendbuf,
                     hypre_MPI_Datatype  recvtype,
                     hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -271,9 +182,6 @@ hypre_MPI_Allgather( void               *sendbuf,
                      hypre_MPI_Datatype  recvtype,
                      hypre_MPI_Comm      comm ) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i;
 
    switch (sendtype)
@@ -340,9 +248,6 @@ hypre_MPI_Allgather( void               *sendbuf,
       break;
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -356,10 +261,6 @@ hypre_MPI_Allgatherv( void               *sendbuf,
                       hypre_MPI_Datatype  recvtype,
                       hypre_MPI_Comm      comm ) 
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_MPI_Allgather(sendbuf, sendcount, sendtype,
                                 recvbuf, *recvcounts, recvtype, comm) );
 }
@@ -374,10 +275,6 @@ hypre_MPI_Gather( void               *sendbuf,
                   HYPRE_Int           root,
                   hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_MPI_Allgather(sendbuf, sendcount, sendtype,
                                 recvbuf, recvcount, recvtype, comm) );
 }
@@ -393,10 +290,6 @@ hypre_MPI_Gatherv( void              *sendbuf,
                   HYPRE_Int           root,
                   hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_MPI_Allgather(sendbuf, sendcount, sendtype,
                                 recvbuf, *recvcounts, recvtype, comm) );
 }
@@ -411,10 +304,6 @@ hypre_MPI_Scatter( void               *sendbuf,
                    HYPRE_Int           root,
                    hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_MPI_Allgather(sendbuf, sendcount, sendtype,
                                 recvbuf, recvcount, recvtype, comm) );
 }
@@ -430,10 +319,6 @@ hypre_MPI_Scatterv( void               *sendbuf,
                    HYPRE_Int            root,
                    hypre_MPI_Comm       comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ( hypre_MPI_Allgather(sendbuf, *sendcounts, sendtype,
                                 recvbuf, recvcount, recvtype, comm) );
 }
@@ -445,10 +330,6 @@ hypre_MPI_Bcast( void               *buffer,
                  HYPRE_Int           root,
                  hypre_MPI_Comm      comm ) 
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -460,10 +341,6 @@ hypre_MPI_Send( void               *buf,
                 HYPRE_Int           tag,
                 hypre_MPI_Comm      comm ) 
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -476,10 +353,6 @@ hypre_MPI_Recv( void               *buf,
                 hypre_MPI_Comm      comm,
                 hypre_MPI_Status   *status )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -492,10 +365,6 @@ hypre_MPI_Isend( void               *buf,
                  hypre_MPI_Comm      comm,
                  hypre_MPI_Request  *request )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -508,10 +377,6 @@ hypre_MPI_Irecv( void               *buf,
                  hypre_MPI_Comm      comm,
                  hypre_MPI_Request  *request )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -524,10 +389,6 @@ hypre_MPI_Send_init( void               *buf,
                      hypre_MPI_Comm      comm,
                      hypre_MPI_Request  *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -540,10 +401,6 @@ hypre_MPI_Recv_init( void               *buf,
                      hypre_MPI_Comm      comm,
                      hypre_MPI_Request  *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -556,10 +413,6 @@ hypre_MPI_Irsend( void               *buf,
                   hypre_MPI_Comm      comm,
                   hypre_MPI_Request  *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -567,10 +420,6 @@ HYPRE_Int
 hypre_MPI_Startall( HYPRE_Int          count,
                     hypre_MPI_Request *array_of_requests )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -580,10 +429,6 @@ hypre_MPI_Probe( HYPRE_Int         source,
                  hypre_MPI_Comm    comm,
                  hypre_MPI_Status *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -594,10 +439,6 @@ hypre_MPI_Iprobe( HYPRE_Int         source,
                   HYPRE_Int        *flag,
                   hypre_MPI_Status *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -606,13 +447,7 @@ hypre_MPI_Test( hypre_MPI_Request *request,
                 HYPRE_Int         *flag,
                 hypre_MPI_Status  *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    *flag = 1;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -622,13 +457,7 @@ hypre_MPI_Testall( HYPRE_Int          count,
                    HYPRE_Int         *flag,
                    hypre_MPI_Status  *array_of_statuses )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    *flag = 1;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -636,10 +465,6 @@ HYPRE_Int
 hypre_MPI_Wait( hypre_MPI_Request *request,
                 hypre_MPI_Status  *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -648,10 +473,6 @@ hypre_MPI_Waitall( HYPRE_Int          count,
                    hypre_MPI_Request *array_of_requests,
                    hypre_MPI_Status  *array_of_statuses )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -661,10 +482,6 @@ hypre_MPI_Waitany( HYPRE_Int          count,
                    HYPRE_Int         *index,
                    hypre_MPI_Status  *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -676,9 +493,6 @@ hypre_MPI_Allreduce( void              *sendbuf,
                      hypre_MPI_Op       op,
                      hypre_MPI_Comm     comm )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    HYPRE_Int i;
    
    switch (datatype)
@@ -746,9 +560,6 @@ hypre_MPI_Allreduce( void              *sendbuf,
       break;
    }
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -761,13 +572,7 @@ hypre_MPI_Reduce( void               *sendbuf,
                   HYPRE_Int           root,
                   hypre_MPI_Comm      comm )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, comm);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -779,23 +584,13 @@ hypre_MPI_Scan( void               *sendbuf,
                 hypre_MPI_Op        op,
                 hypre_MPI_Comm      comm )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, comm);
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
 HYPRE_Int
 hypre_MPI_Request_free( hypre_MPI_Request *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return 0;
 }
 
@@ -804,10 +599,6 @@ hypre_MPI_Type_contiguous( HYPRE_Int           count,
                            hypre_MPI_Datatype  oldtype,
                            hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -818,10 +609,6 @@ hypre_MPI_Type_vector( HYPRE_Int           count,
                        hypre_MPI_Datatype  oldtype,
                        hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -832,10 +619,6 @@ hypre_MPI_Type_hvector( HYPRE_Int           count,
                         hypre_MPI_Datatype  oldtype,
                         hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
@@ -846,50 +629,30 @@ hypre_MPI_Type_struct( HYPRE_Int           count,
                        hypre_MPI_Datatype *array_of_types,
                        hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Type_commit( hypre_MPI_Datatype *datatype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Type_free( hypre_MPI_Datatype *datatype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Op_create( hypre_MPI_User_function *function, hypre_int commute, hypre_MPI_Op *op )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 
 HYPRE_Int
 hypre_MPI_Op_free( hypre_MPI_Op *op )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return(0);
 }
 /******************************************************************************
@@ -902,20 +665,12 @@ HYPRE_Int
 hypre_MPI_Init( hypre_int   *argc,
                 char      ***argv )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Init(argc, argv);
 }
 
 HYPRE_Int
 hypre_MPI_Finalize( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Finalize();
 }
 
@@ -923,40 +678,24 @@ HYPRE_Int
 hypre_MPI_Abort( hypre_MPI_Comm comm,
                  HYPRE_Int      errorcode )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Abort(comm, (hypre_int)errorcode);
 }
 
 HYPRE_Real
 hypre_MPI_Wtime( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return MPI_Wtime();
 }
 
 HYPRE_Real
 hypre_MPI_Wtick( )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return MPI_Wtick();
 }
 
 HYPRE_Int
 hypre_MPI_Barrier( hypre_MPI_Comm comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Barrier(comm);
 }
 
@@ -965,10 +704,6 @@ hypre_MPI_Comm_create( hypre_MPI_Comm   comm,
                        hypre_MPI_Group  group,
                        hypre_MPI_Comm  *newcomm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Comm_create(comm, group, newcomm);
 }
 
@@ -976,10 +711,6 @@ HYPRE_Int
 hypre_MPI_Comm_dup( hypre_MPI_Comm  comm,
                     hypre_MPI_Comm *newcomm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Comm_dup(comm, newcomm);
 }
 
@@ -987,16 +718,10 @@ HYPRE_Int
 hypre_MPI_Comm_size( hypre_MPI_Comm  comm,
                      HYPRE_Int      *size )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_size;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Comm_size(comm, &mpi_size);
    *size = (HYPRE_Int) mpi_size;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1004,26 +729,16 @@ HYPRE_Int
 hypre_MPI_Comm_rank( hypre_MPI_Comm  comm,
                      HYPRE_Int      *rank )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_rank;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Comm_rank(comm, &mpi_rank);
    *rank = (HYPRE_Int) mpi_rank;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_MPI_Comm_free( hypre_MPI_Comm *comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Comm_free(comm);
 }
 
@@ -1031,10 +746,6 @@ HYPRE_Int
 hypre_MPI_Comm_group( hypre_MPI_Comm   comm,
                       hypre_MPI_Group *group )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Comm_group(comm, group);
 }
 
@@ -1044,10 +755,6 @@ hypre_MPI_Comm_split( hypre_MPI_Comm  comm,
                       HYPRE_Int       m,
                       hypre_MPI_Comm *comms )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Comm_split(comm, (hypre_int)n, (hypre_int)m, comms);
 }
 
@@ -1057,9 +764,6 @@ hypre_MPI_Group_incl( hypre_MPI_Group  group,
                       HYPRE_Int       *ranks,
                       hypre_MPI_Group *newgroup )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int *mpi_ranks;
    HYPRE_Int  i;
    HYPRE_Int  ierr;
@@ -1072,19 +776,12 @@ hypre_MPI_Group_incl( hypre_MPI_Group  group,
    ierr = (HYPRE_Int) MPI_Group_incl(group, (hypre_int)n, mpi_ranks, newgroup);
    hypre_TFree(mpi_ranks);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_MPI_Group_free( hypre_MPI_Group *group )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Group_free(group);
 }
 
@@ -1092,18 +789,9 @@ HYPRE_Int
 hypre_MPI_Address( void           *location,
                    hypre_MPI_Aint *address )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
 #if MPI_VERSION > 1
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Get_address(location, address);
 #else
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Address(location, address);
 #endif
 }
@@ -1113,16 +801,10 @@ hypre_MPI_Get_count( hypre_MPI_Status   *status,
                      hypre_MPI_Datatype  datatype,
                      HYPRE_Int          *count )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_count;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Get_count(status, datatype, &mpi_count);
    *count = (HYPRE_Int) mpi_count;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1135,10 +817,6 @@ hypre_MPI_Alltoall( void               *sendbuf,
                     hypre_MPI_Datatype  recvtype,
                     hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Alltoall(sendbuf, (hypre_int)sendcount, sendtype,
                                    recvbuf, (hypre_int)recvcount, recvtype, comm);
 }
@@ -1152,10 +830,6 @@ hypre_MPI_Allgather( void               *sendbuf,
                      hypre_MPI_Datatype  recvtype,
                      hypre_MPI_Comm      comm ) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Allgather(sendbuf, (hypre_int)sendcount, sendtype,
                                     recvbuf, (hypre_int)recvcount, recvtype, comm);
 }
@@ -1170,9 +844,6 @@ hypre_MPI_Allgatherv( void               *sendbuf,
                       hypre_MPI_Datatype  recvtype,
                       hypre_MPI_Comm      comm ) 
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int *mpi_recvcounts, *mpi_displs, csize;
    HYPRE_Int  i;
    HYPRE_Int  ierr;
@@ -1191,9 +862,6 @@ hypre_MPI_Allgatherv( void               *sendbuf,
    hypre_TFree(mpi_recvcounts);
    hypre_TFree(mpi_displs);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1207,10 +875,6 @@ hypre_MPI_Gather( void               *sendbuf,
                   HYPRE_Int           root,
                   hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Gather(sendbuf, (hypre_int) sendcount, sendtype,
                                  recvbuf, (hypre_int) recvcount, recvtype,
                                  (hypre_int)root, comm);
@@ -1227,9 +891,6 @@ hypre_MPI_Gatherv(void               *sendbuf,
                   HYPRE_Int           root,
                   hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int *mpi_recvcounts = NULL;
    hypre_int *mpi_displs = NULL;
    hypre_int csize, croot;
@@ -1254,9 +915,6 @@ hypre_MPI_Gatherv(void               *sendbuf,
    hypre_TFree(mpi_recvcounts);
    hypre_TFree(mpi_displs);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1270,10 +928,6 @@ hypre_MPI_Scatter( void               *sendbuf,
                    HYPRE_Int           root,
                    hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Scatter(sendbuf, (hypre_int)sendcount, sendtype,
                                   recvbuf, (hypre_int)recvcount, recvtype,
                                   (hypre_int)root, comm);
@@ -1290,9 +944,6 @@ hypre_MPI_Scatterv(void               *sendbuf,
                    HYPRE_Int           root,
                    hypre_MPI_Comm      comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int *mpi_sendcounts = NULL;
    hypre_int *mpi_displs = NULL;
    hypre_int csize, croot;
@@ -1317,9 +968,6 @@ hypre_MPI_Scatterv(void               *sendbuf,
    hypre_TFree(mpi_sendcounts);
    hypre_TFree(mpi_displs);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1330,10 +978,6 @@ hypre_MPI_Bcast( void               *buffer,
                  HYPRE_Int           root,
                  hypre_MPI_Comm      comm ) 
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Bcast(buffer, (hypre_int)count, datatype,
                                 (hypre_int)root, comm);
 }
@@ -1346,10 +990,6 @@ hypre_MPI_Send( void               *buf,
                 HYPRE_Int           tag,
                 hypre_MPI_Comm      comm ) 
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Send(buf, (hypre_int)count, datatype,
                                (hypre_int)dest, (hypre_int)tag, comm);
 }
@@ -1363,10 +1003,6 @@ hypre_MPI_Recv( void               *buf,
                 hypre_MPI_Comm      comm,
                 hypre_MPI_Status   *status )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Recv(buf, (hypre_int)count, datatype,
                                (hypre_int)source, (hypre_int)tag, comm, status);
 }
@@ -1380,10 +1016,6 @@ hypre_MPI_Isend( void               *buf,
                  hypre_MPI_Comm      comm,
                  hypre_MPI_Request  *request )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Isend(buf, (hypre_int)count, datatype,
                                 (hypre_int)dest, (hypre_int)tag, comm, request);
 }
@@ -1397,10 +1029,6 @@ hypre_MPI_Irecv( void               *buf,
                  hypre_MPI_Comm      comm,
                  hypre_MPI_Request  *request )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Irecv(buf, (hypre_int)count, datatype,
                                 (hypre_int)source, (hypre_int)tag, comm, request);
 }
@@ -1414,10 +1042,6 @@ hypre_MPI_Send_init( void               *buf,
                      hypre_MPI_Comm      comm,
                      hypre_MPI_Request  *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Send_init(buf, (hypre_int)count, datatype,
                                     (hypre_int)dest, (hypre_int)tag,
                                     comm, request);
@@ -1432,10 +1056,6 @@ hypre_MPI_Recv_init( void               *buf,
                      hypre_MPI_Comm      comm,
                      hypre_MPI_Request  *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Recv_init(buf, (hypre_int)count, datatype,
                                     (hypre_int)dest, (hypre_int)tag,
                                     comm, request);
@@ -1450,10 +1070,6 @@ hypre_MPI_Irsend( void               *buf,
                   hypre_MPI_Comm      comm,
                   hypre_MPI_Request  *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Irsend(buf, (hypre_int)count, datatype,
                                  (hypre_int)dest, (hypre_int)tag, comm, request);
 }
@@ -1462,10 +1078,6 @@ HYPRE_Int
 hypre_MPI_Startall( HYPRE_Int          count,
                     hypre_MPI_Request *array_of_requests )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Startall((hypre_int)count, array_of_requests);
 }
 
@@ -1475,10 +1087,6 @@ hypre_MPI_Probe( HYPRE_Int         source,
                  hypre_MPI_Comm    comm,
                  hypre_MPI_Status *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Probe((hypre_int)source, (hypre_int)tag, comm, status);
 }
 
@@ -1489,17 +1097,11 @@ hypre_MPI_Iprobe( HYPRE_Int         source,
                   HYPRE_Int        *flag,
                   hypre_MPI_Status *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_flag;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Iprobe((hypre_int)source, (hypre_int)tag, comm,
                                  &mpi_flag, status);
    *flag = (HYPRE_Int) mpi_flag;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1508,16 +1110,10 @@ hypre_MPI_Test( hypre_MPI_Request *request,
                 HYPRE_Int         *flag,
                 hypre_MPI_Status  *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_flag;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Test(request, &mpi_flag, status);
    *flag = (HYPRE_Int) mpi_flag;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1527,17 +1123,11 @@ hypre_MPI_Testall( HYPRE_Int          count,
                    HYPRE_Int         *flag,
                    hypre_MPI_Status  *array_of_statuses )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_flag;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Testall((hypre_int)count, array_of_requests,
                                   &mpi_flag, array_of_statuses);
    *flag = (HYPRE_Int) mpi_flag;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1545,10 +1135,6 @@ HYPRE_Int
 hypre_MPI_Wait( hypre_MPI_Request *request,
                 hypre_MPI_Status  *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Wait(request, status);
 }
 
@@ -1557,10 +1143,6 @@ hypre_MPI_Waitall( HYPRE_Int          count,
                    hypre_MPI_Request *array_of_requests,
                    hypre_MPI_Status  *array_of_statuses )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Waitall((hypre_int)count,
                                   array_of_requests, array_of_statuses);
 }
@@ -1571,17 +1153,11 @@ hypre_MPI_Waitany( HYPRE_Int          count,
                    HYPRE_Int         *index,
                    hypre_MPI_Status  *status )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int mpi_index;
    HYPRE_Int ierr;
    ierr = (HYPRE_Int) MPI_Waitany((hypre_int)count, array_of_requests,
                                   &mpi_index, status);
    *index = (HYPRE_Int) mpi_index;
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
@@ -1593,10 +1169,6 @@ hypre_MPI_Allreduce( void              *sendbuf,
                      hypre_MPI_Op       op,
                      hypre_MPI_Comm     comm )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Allreduce(sendbuf, recvbuf, (hypre_int)count,
                                     datatype, op, comm);
 }
@@ -1610,10 +1182,6 @@ hypre_MPI_Reduce( void               *sendbuf,
                   HYPRE_Int           root,
                   hypre_MPI_Comm      comm )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Reduce(sendbuf, recvbuf, (hypre_int)count,
                                  datatype, op, (hypre_int)root, comm);
 }
@@ -1626,10 +1194,6 @@ hypre_MPI_Scan( void               *sendbuf,
                 hypre_MPI_Op        op,
                 hypre_MPI_Comm      comm )
 { 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Scan(sendbuf, recvbuf, (hypre_int)count,
                                datatype, op, comm);
 }
@@ -1637,10 +1201,6 @@ hypre_MPI_Scan( void               *sendbuf,
 HYPRE_Int
 hypre_MPI_Request_free( hypre_MPI_Request *request )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Request_free(request);
 }
 
@@ -1649,10 +1209,6 @@ hypre_MPI_Type_contiguous( HYPRE_Int           count,
                            hypre_MPI_Datatype  oldtype,
                            hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Type_contiguous((hypre_int)count, oldtype, newtype);
 }
 
@@ -1663,10 +1219,6 @@ hypre_MPI_Type_vector( HYPRE_Int           count,
                        hypre_MPI_Datatype  oldtype,
                        hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Type_vector((hypre_int)count, (hypre_int)blocklength,
                                       (hypre_int)stride, oldtype, newtype);
 }
@@ -1678,20 +1230,10 @@ hypre_MPI_Type_hvector( HYPRE_Int           count,
                         hypre_MPI_Datatype  oldtype,
                         hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
 #if MPI_VERSION > 1
-      #ifdef caliper
-      CALI_MARK_FUNCTION_END;
-      #endif
       return (HYPRE_Int) MPI_Type_create_hvector((hypre_int)count, (hypre_int)blocklength,
                                                  stride, oldtype, newtype);
 #else
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Type_hvector((hypre_int)count, (hypre_int)blocklength,
                                        stride, oldtype, newtype);
 #endif
@@ -1704,9 +1246,6 @@ hypre_MPI_Type_struct( HYPRE_Int           count,
                        hypre_MPI_Datatype *array_of_types,
                        hypre_MPI_Datatype *newtype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   #endif
    hypre_int *mpi_array_of_blocklengths;
    HYPRE_Int  i;
    HYPRE_Int  ierr;
@@ -1729,49 +1268,30 @@ hypre_MPI_Type_struct( HYPRE_Int           count,
 
    hypre_TFree(mpi_array_of_blocklengths);
 
-   #ifdef caliper
-   CALI_MARK_FUNCTION_END;
-   #endif
    return ierr;
 }
 
 HYPRE_Int
 hypre_MPI_Type_commit( hypre_MPI_Datatype *datatype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Type_commit(datatype);
 }
 
 HYPRE_Int
 hypre_MPI_Type_free( hypre_MPI_Datatype *datatype )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Type_free(datatype);
 }
 
 HYPRE_Int
 hypre_MPI_Op_free( hypre_MPI_Op *op )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Op_free(op);
 }
 
 HYPRE_Int
 hypre_MPI_Op_create( hypre_MPI_User_function *function, hypre_int commute, hypre_MPI_Op *op )
 {
-   #ifdef caliper
-   CALI_MARK_FUNCTION_BEGIN;
-   CALI_MARK_FUNCTION_END;
-   #endif
    return (HYPRE_Int) MPI_Op_create(function, commute, op);
 }
 
