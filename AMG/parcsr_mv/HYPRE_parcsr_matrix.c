@@ -23,6 +23,9 @@
 
 #include "_hypre_parcsr_mv.h"
 
+#if WITH_CALIPER
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_ParCSRMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -225,6 +228,9 @@ HYPRE_ParCSRMatrixGetLocalRange( HYPRE_ParCSRMatrix  matrix,
                                  HYPRE_Int          *col_start,
                                  HYPRE_Int          *col_end )
 {  
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    if (!matrix) 
    {
       hypre_error_in_arg(1);
@@ -233,6 +239,9 @@ HYPRE_ParCSRMatrixGetLocalRange( HYPRE_ParCSRMatrix  matrix,
 
    hypre_ParCSRMatrixGetLocalRange( (hypre_ParCSRMatrix *) matrix,
                                     row_start, row_end, col_start, col_end );
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

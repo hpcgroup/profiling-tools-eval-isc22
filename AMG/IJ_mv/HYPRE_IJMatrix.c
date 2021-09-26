@@ -25,6 +25,9 @@
 
 #include "../HYPRE.h"
 
+#if WITH_CALIPER
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_IJMatrixCreate
  *--------------------------------------------------------------------------*/
@@ -239,11 +242,17 @@ HYPRE_IJMatrixCreate( MPI_Comm        comm,
 HYPRE_Int 
 HYPRE_IJMatrixDestroy( HYPRE_IJMatrix matrix )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
 
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -270,6 +279,9 @@ HYPRE_IJMatrixDestroy( HYPRE_IJMatrix matrix )
 
    hypre_TFree(ijmatrix); 
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 
@@ -655,6 +667,9 @@ HYPRE_IJMatrixGetLocalRange( HYPRE_IJMatrix  matrix,
                              HYPRE_Int      *jlower,
                              HYPRE_Int      *jupper )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJMatrix *ijmatrix = (hypre_IJMatrix *) matrix;
    MPI_Comm comm;
    HYPRE_Int *row_partitioning;
@@ -664,6 +679,9 @@ HYPRE_IJMatrixGetLocalRange( HYPRE_IJMatrix  matrix,
    if (!ijmatrix)
    {
       hypre_error_in_arg(1);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -685,6 +703,9 @@ HYPRE_IJMatrixGetLocalRange( HYPRE_IJMatrix  matrix,
    *jupper = col_partitioning[my_id+1]-1;
 #endif
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

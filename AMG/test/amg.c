@@ -38,7 +38,7 @@
 #include <time.h>
 #include <sys/resource.h>
 
-#ifdef caliper
+#if WITH_CALIPER
 #include <caliper/cali.h>
 #endif
 
@@ -71,6 +71,9 @@ hypre_int
 main( hypre_int argc,
       char *argv[] )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int           arg_index;
    HYPRE_Int           print_usage;
    HYPRE_Int           build_rhs_type;
@@ -165,7 +168,7 @@ main( hypre_int argc,
    hypre_MPI_Comm_rank(hypre_MPI_COMM_WORLD, &myid );
    hypre_MPI_Comm_size(comm, &num_procs );
 
-   #ifdef caliper
+   #if WITH_CALIPER
    hypre_printf("CALI_INIT\n");
    cali_init();
    #endif
@@ -521,6 +524,9 @@ main( hypre_int argc,
          if (pcg_precond_gotten != pcg_precond)
          {
             hypre_printf("HYPRE_GMRESGetPrecond got bad precond\n");
+            #if WITH_CALIPER
+            CALI_MARK_FUNCTION_END;
+            #endif
             return(-1);
          }
          else
@@ -683,6 +689,9 @@ main( hypre_int argc,
 
    hypre_MPI_Finalize();
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (0);
 }
 
@@ -697,6 +706,9 @@ BuildIJLaplacian27pt( HYPRE_Int         argc,
                        HYPRE_Real      *system_size_ptr,
                        HYPRE_IJMatrix  *ij_A_ptr     )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    MPI_Comm            comm = hypre_MPI_COMM_WORLD;
    HYPRE_Int                 nx, ny, nz;
    HYPRE_Int                 P, Q, R;
@@ -2369,6 +2381,9 @@ BuildIJLaplacian27pt( HYPRE_Int         argc,
    *system_size_ptr = global_size;
    *ij_A_ptr = ij_A;
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return (0);
 }
 
@@ -2379,6 +2394,9 @@ BuildIJLaplacian27pt( HYPRE_Int         argc,
 HYPRE_Int
 AddOrRestoreAIJ( HYPRE_IJMatrix  ij_A, HYPRE_Real eps, HYPRE_Int action  )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int first_row, last_row, i;
    HYPRE_Int first_col, last_col, local_size;
    HYPRE_Int *num_cols;
@@ -2413,6 +2431,9 @@ AddOrRestoreAIJ( HYPRE_IJMatrix  ij_A, HYPRE_Real eps, HYPRE_Int action  )
 			col_nums, data);
 
    HYPRE_IJMatrixAssemble(ij_A);
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return(0);
 }
 
@@ -2429,7 +2450,13 @@ hypre_map27( HYPRE_Int  ix,
       HYPRE_Int nx,
       HYPRE_Int nxy)
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    HYPRE_Int global_index = pz*Cz + py*Cy +px*Cx + iz*nxy + iy*nx + ix;
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return global_index;
 }

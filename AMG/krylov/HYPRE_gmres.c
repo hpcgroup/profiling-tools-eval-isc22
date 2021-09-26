@@ -26,6 +26,9 @@
  *****************************************************************************/
 #include "krylov.h"
 
+#if WITH_CALIPER
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_GMRESDestroy
  *--------------------------------------------------------------------------*/
@@ -48,6 +51,10 @@ HYPRE_GMRESSetup( HYPRE_Solver solver,
                         HYPRE_Vector b,
                         HYPRE_Vector x      )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_GMRESSetup( solver,
                              A,
                              b,
@@ -64,6 +71,10 @@ HYPRE_GMRESSolve( HYPRE_Solver solver,
                         HYPRE_Vector b,
                         HYPRE_Vector x      )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   CALI_MARK_FUNCTION_END;
+   #endif
    return( hypre_GMRESSolve( solver,
                              A,
                              b,

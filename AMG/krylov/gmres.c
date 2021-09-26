@@ -24,6 +24,9 @@
 #include "krylov.h"
 #include "_hypre_utilities.h"
 
+#if WITH_CALIPER
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * hypre_GMRESFunctionsCreate
  *--------------------------------------------------------------------------*/
@@ -183,6 +186,9 @@ hypre_GMRESSetup( void *gmres_vdata,
                   void *b,
                   void *x         )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_GMRESData *gmres_data     = (hypre_GMRESData *)gmres_vdata;
    hypre_GMRESFunctions *gmres_functions = gmres_data->functions;
 
@@ -236,6 +242,9 @@ hypre_GMRESSetup( void *gmres_vdata,
 		  (gmres_data -> log_file_name) = (char*)"gmres.out.log";
    }
  
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
  
@@ -249,6 +258,9 @@ hypre_GMRESSolve(void  *gmres_vdata,
                  void  *b,
 		 void  *x)
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_GMRESData  *gmres_data   = (hypre_GMRESData *)gmres_vdata;
    hypre_GMRESFunctions *gmres_functions = gmres_data->functions;
    HYPRE_Int 		     k_dim        = (gmres_data -> k_dim);
@@ -357,6 +369,9 @@ hypre_GMRESSolve(void  *gmres_vdata,
         hypre_printf("ERROR detected by Hypre ... END\n\n\n");
       }
       hypre_error(HYPRE_ERROR_GENERIC);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -382,6 +397,9 @@ hypre_GMRESSolve(void  *gmres_vdata,
         hypre_printf("ERROR detected by Hypre ... END\n\n\n");
       }
       hypre_error(HYPRE_ERROR_GENERIC);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    }
 
@@ -457,6 +475,9 @@ hypre_GMRESSolve(void  *gmres_vdata,
            if (rel_change)  hypre_TFreeF(rs_2,gmres_functions);
            for (i=0; i < k_dim+1; i++) hypre_TFreeF(hh[i],gmres_functions);
            hypre_TFreeF(hh,gmres_functions); 
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
 	   return hypre_error_flag;
            
 	}
@@ -850,6 +871,9 @@ hypre_GMRESSolve(void  *gmres_vdata,
    }
    hypre_TFreeF(hh,gmres_functions); 
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

@@ -25,6 +25,9 @@
 
 #include "../HYPRE.h"
 
+#if WITH_CALIPER
+#include <caliper/cali.h>
+#endif
 /*--------------------------------------------------------------------------
  * HYPRE_IJVectorCreate
  *--------------------------------------------------------------------------*/
@@ -252,30 +255,50 @@ HYPRE_IJVectorSetValues( HYPRE_IJVector        vector,
                          const HYPRE_Int      *indices,
                          const HYPRE_Complex  *values   )
 {
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_BEGIN;
+   #endif
    hypre_IJVector *vec = (hypre_IJVector *) vector;
 
-   if (nvalues == 0) return hypre_error_flag;
+   if (nvalues == 0) {
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
+      return hypre_error_flag;
+   }
 
    if (!vec)
    {
       hypre_error_in_arg(1);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (nvalues < 0)
    {
       hypre_error_in_arg(2);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if (!values)
    {
       hypre_error_in_arg(4);
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return hypre_error_flag;
    } 
 
    if ( hypre_IJVectorObjectType(vec) == HYPRE_PARCSR )
    {
+      #if WITH_CALIPER
+      CALI_MARK_FUNCTION_END;
+      #endif
       return( hypre_IJVectorSetValuesPar(vec, nvalues, indices, values) );
    }
    else
@@ -283,6 +306,9 @@ HYPRE_IJVectorSetValues( HYPRE_IJVector        vector,
       hypre_error_in_arg(1);
    }
 
+   #if WITH_CALIPER
+   CALI_MARK_FUNCTION_END;
+   #endif
    return hypre_error_flag;
 }
 

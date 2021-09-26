@@ -86,5 +86,5 @@ endif
 ifeq (${TOOL},)
 	${CC} -o $@ -c ${CFLAGS} $<
 else 
-	${CC} -o $@ -c ${CFLAGS} $< -D${TOOL}
+	${CC} -o $@ -c ${CFLAGS} $<
 endif
