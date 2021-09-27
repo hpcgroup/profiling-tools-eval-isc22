@@ -139,43 +139,52 @@ SCOREP_CXXFLAGS = -I${SCOREP_DIR}/include # include scorep/SCOREP_User_Types.h
 MPI_FLAGS = -DHAVE_MPI
 OPTFLAGS = -g -O3
 
-ifeq ($(TOOL), caliper)
+Quicksilver_EXE=qs.exe
+
+ifeq ($(TOOL), HAVE_CALIPER)
+    Quicksilver_EXE=qscaliper.exe
     CXX=mpicxx
     CXXFLAGS = $(OPTFLAGS) $(CALIPER_CXXFLAGS)
     CPPFLAGS = $(MPI_FLAGS) $(CALIPER_CPPFLAGS)
     LDFLAGS = $(CALIPER_LDFLAGS)
 endif
-ifeq ($(TOOL), hpctoolkit)
+ifeq ($(TOOL), HAVE_HPCTOOLKIT)
+    Quicksilver_EXE=qshpctoolkit.exe
     CXX=mpicxx
     CXXFLAGS = $(OPTFLAGS) $(HPCTOOLKIT_CXXFLAGS)
     CPPFLAGS = $(MPI_FLAGS) $(HPCTOOLKIT_CPPFLAGS)
     LDFLAGS = $(HPCTOOLKIT_LDFLAGS)
 endif
-ifeq ($(TOOL), timemory)
+ifeq ($(TOOL), HAVE_TIMEMORY)
+    Quicksilver_EXE=qstimemory.exe
     CXX=mpicxx
     CXXFLAGS = $(OPTFLAGS) $(TIMEMORY_CXXFLAGS)
     CPPFLAGS = $(MPI_FLAGS) $(TIMEMORY_CPPFLAGS)
     LDFLAGS = $(TIMEMORY_LDFLAGS)
 endif
-ifeq ($(TOOL), scorep)
+ifeq ($(TOOL), HAVE_SCOREP)
+    Quicksilver_EXE=qsscorep.exe
     CXX=scorep-mpicxx
     CXXFLAGS = $(OPTFLAGS) $(SCOREP_CXXFLAGS)
     CPPFLAGS = $(MPI_FLAGS) 
 endif
-ifeq ($(TOOL), tau)
+ifeq ($(TOOL), HAVE_TAU)
+    Quicksilver_EXE=qstau.exe
     CXX=mpicxx
 #    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
     CXXFLAGS = $(OPTFLAGS)
     CPPFLAGS = $(MPI_FLAGS)
 endif
-ifeq ($(TOOL), tau-source)
-    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
-    CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt
+ifeq ($(TOOL), HAVE_TAU_SOURCE)
+    Quicksilver_EXE=qstau-source.exe
+    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/x86_64/lib
+    CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optRevert
 #    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
-    CXXFLAGS = $(OPTFLAGS)
+    CXXFLAGS = -std=c++11 $(OPTFLAGS)
     CPPFLAGS = $(MPI_FLAGS)
 endif
-ifeq ($(TOOL), tau-compiler)
+ifeq ($(TOOL), HAVE_TAU_COMPILER)
+    Quicksilver_EXE=qstau-compiler.exe
     TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
     CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optCompInst
 #    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
@@ -332,8 +341,6 @@ endif
 GITVERS := "$(shell git log -n 1 |  grep Date   | awk -F " " '{print $$6 "-" $$3 "-" $$4 "-" $$5}')"
 GITHASH := "$(shell git log -n 1 |  grep commit | awk -F " " '{print $$2}')"
 
-Quicksilver_EXE=qs${TOOL}.exe
-
 # clear all suffixes
 .SUFFIXES:
 # list only those that we use 
@@ -419,16 +426,16 @@ depend:
 # How to Build
 # Use the following commands or uncomment corresponding variables above (CALIPER_DIR, HPCTOOLKIT_DIR, etc.).
 # With Caliper
-# make TOOL=caliper CALIPER_DIR=$(spack location --install-dir caliper)
+# make TOOL=HAVE_CALIPER CALIPER_DIR=$(spack location --install-dir caliper)
 
 # With HPCToolkit
-# make TOOL=hpctoolkit HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
+# make TOOL=HAVE_HPCTOOLKIT HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
 
 # With Timemory
-# make TOOL=timemory TIMEMORY_DIR=$(spack location --install-dir timemory)
+# make TOOL=HAVE_TIMEMORY TIMEMORY_DIR=$(spack location --install-dir timemory)
 
 # With Score-P
-# make TOOL=scorep SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
+# make TOOL=HAVE_SCOREP SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
 
 # How to Clean
 # make clean or make distclean TOOL=caliper
