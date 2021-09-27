@@ -55,35 +55,52 @@ LFLAGS =\
  -lHYPRE_utilities\
  ${INCLUDE_LFLAGS}
 
+EXEC_NAME=
+ifeq ($(TOOL), WITH_CALIPER)
+	EXEC_NAME=caliper
+else ifeq ($(TOOL), WITH_HPCTOOLKIT) 
+	EXEC_NAME=hpctoolkit
+else ifeq ($(TOOL), WITH_TIMEMORY) 
+	EXEC_NAME=timemory
+else ifeq ($(TOOL), WITH_TAU) 
+	EXEC_NAME=tau
+else ifeq ($(TOOL), WITH_SCOREP) 
+	EXEC_NAME=scorep
+else ifeq ($(TOOL), WITH_TAU_SOURCE) 
+	EXEC_NAME=tau-source
+else ifeq ($(TOOL), WITH_TAU_COMPILER) 
+	EXEC_NAME=tau-compiler
+endif
+
 ##################################################################
 # Targets
 ##################################################################
                                                                                                                                          
-all: amg$(TOOL).exe
+all: amg$(EXEC_NAME).exe
                                                                                                                                          
 clean:
 	@rm -f *.o *.inst.* *.pdb *.a
                                                                                                                                          
 veryclean: clean
-	@rm -f *.o *.inst.* *.pdb *.a amg${TOOL}.exe
+	@rm -f *.o *.inst.* *.pdb *.a amg${EXEC_NAME}.exe
                                                                                                                                          
 ##################################################################
 # Rules
 ##################################################################
                                                                                                                                          
-amg$(TOOL).exe: amg.o
+amg$(EXEC_NAME).exe: amg.o
 	@echo  "Linking" $@ "... "
-ifeq (${TOOL},)
+ifeq (${EXEC_NAME},)
 	${CC} -o amg amg.o ${LFLAGS}
 else 
-	${CC} -o amg$(TOOL).exe amg.o ${LFLAGS}
+	${CC} -o amg$(EXEC_NAME).exe amg.o ${LFLAGS}
 endif
 ##################################################################
 # Generic rules
 ##################################################################
                                                                                                                                          
 .c.o:
-ifeq (${TOOL},)
+ifeq (${EXEC_NAME},)
 	${CC} -o $@ -c ${CFLAGS} $<
 else 
 	${CC} -o $@ -c ${CFLAGS} $<

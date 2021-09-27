@@ -62,28 +62,28 @@ ifeq ($(TOOL), WITH_CALIPER)
     INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${CALIPER_DIR}/include -D${TOOL}
     INCLUDE_LFLAGS = -lm -L${CALIPER_DIR}/lib64 -lcaliper
 endif
-ifeq ($(TOOL), timemory)
+ifeq ($(TOOL), WITH_TIMEMORY)
     INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${TIMEMORY_DIR}/include -D${TOOL}
     INCLUDE_LFLAGS = -lm -L${TIMEMORY_DIR}/lib64 -ltimemory
 endif
-ifeq ($(TOOL), hpctoolkit)
+ifeq ($(TOOL), WITH_HPCTOOLKIT)
     INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${HPCTOOLKIT_DIR}/include -D${TOOL}
     INCLUDE_LFLAGS = -lm -L${HPCTOOLKIT_DIR}/lib/hpctoolkit -lhpctoolkit
 endif
-ifeq ($(TOOL), scorep)
+ifeq ($(TOOL), WITH_SCOREP)
     CC= scorep-mpicc
     INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
 endif
-ifeq ($(TOOL), tau)
+ifeq ($(TOOL), WITH_TAU)
     CC=mpicc
     INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
 endif
-ifeq ($(TOOL), tau-source)
-    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/x86_64/lib
+ifeq ($(TOOL), WITH_TAU_SOURCE)
+    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-b3im3cuy4hfmmj55qmfd643yvm2th5co/x86_64/lib
     CC=tau_cc.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt
     INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
 endif
-ifeq ($(TOOL), tau-compiler)
+ifeq ($(TOOL), WITH_TAU_COMPILER)
     TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
     CC=tau_cc.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optCompInst
     INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
@@ -95,13 +95,13 @@ endif
 # make TOOL=WITH_CALIPER CALIPER_DIR=$(spack location --install-dir caliper)
 
 # With HPCToolkit
-# make TOOL=hpctoolkit HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
+# make TOOL=WITH_HPCTOOLKIT HPCTOOLKIT_DIR=$(spack location --install-dir hpctoolkit)
 
 # With Timemory
-# make TOOL=timemory TIMEMORY_DIR=$(spack location --install-dir timemory@3.2.3-onur)
+# make TOOL=WITH_TIMEMORY TIMEMORY_DIR=$(spack location --install-dir timemory@3.2.3-onur)
 
 # With Score-P
-# make TOOL=scorep  # add scorep path to your env. variable
+# make TOOL=WITH_SCOREP  # add scorep path to your env. variable
 
 # How to Clean
 # make clean or make veryclean TOOL=caliper
