@@ -177,15 +177,15 @@ ifeq ($(TOOL), HAVE_TAU)
 endif
 ifeq ($(TOOL), HAVE_TAU_SOURCE)
     Quicksilver_EXE=qstau-source.exe
-    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/x86_64/lib
+    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-b5a7yxge2rcaxqzblg4qywm7v5oozmlv/lib
     CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optRevert
 #    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
-    CXXFLAGS = -std=c++11 $(OPTFLAGS)
-    CPPFLAGS = $(MPI_FLAGS)
+    CXXFLAGS = $(OPTFLAGS) -std=c++11
+    CPPFLAGS = $(MPI_FLAGS) -std=c++11
 endif
 ifeq ($(TOOL), HAVE_TAU_COMPILER)
     Quicksilver_EXE=qstau-compiler.exe
-    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
+    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-b5a7yxge2rcaxqzblg4qywm7v5oozmlv/lib
     CXX=tau_cxx.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optCompInst
 #    CXX=tau_cxx.sh for instrumentation but might require compiler instrumentation
     CXXFLAGS = $(OPTFLAGS)
@@ -436,6 +436,9 @@ depend:
 
 # With Score-P
 # make TOOL=HAVE_SCOREP SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
+
+# With TAU
+# make TOOL=HAVE_TAU TAU_DIR=$(spack location --install-dir /xdxq3ss)
 
 # How to Clean
 # make clean or make distclean TOOL=caliper

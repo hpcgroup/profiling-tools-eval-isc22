@@ -75,7 +75,7 @@ endif
 ##################################################################
 # Targets
 ##################################################################
-                                                                                                                                         
+                                                                                                           
 all: amg$(EXEC_NAME).exe
                                                                                                                                          
 clean:
@@ -90,11 +90,7 @@ veryclean: clean
                                                                                                                                          
 amg$(EXEC_NAME).exe: amg.o
 	@echo  "Linking" $@ "... "
-ifeq (${EXEC_NAME},)
-	${CC} -o amg amg.o ${LFLAGS}
-else 
 	${CC} -o amg$(EXEC_NAME).exe amg.o ${LFLAGS}
-endif
 ##################################################################
 # Generic rules
 ##################################################################

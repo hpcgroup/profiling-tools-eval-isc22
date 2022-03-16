@@ -150,10 +150,10 @@ target_link_libraries(${LULESH_EXEC} ${LULESH_EXTERNAL_LIBS})
 
 # With Score-P
 # export SCOREP_DIR=$(HOME)/tools/scorep/scorep-7.1/_build_with_gnu
-# cmake -DCMAKE_CXX_COMPILER=`which scorep-mpicxx` -DMPI_CXX_COMPILER=`which scorep-mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dscorep_INCLUDE_DIR=$SCOREP_DIR/include -DWITH_SCOREP=1 ..
+# SCOREP_WRAPPER=off cmake -DCMAKE_CXX_COMPILER=`which scorep-g++` -DMPI_CXX_COMPILER=`which scorep-mpicxx` -DCMAKE_CXX_FLAGS="-g -O3" -DWITH_MPI=On -DWITH_OPENMP=Off -Dscorep_INCLUDE_DIR=$SCOREP_DIR/include -DWITH_SCOREP=1 ..
 
 # With TAU
-# export TAU_LIB_DIR=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
+# export TAU_LIB_DIR=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-b5a7yxge2rcaxqzblg4qywm7v5oozmlv/lib
 # sampling      -> cmake -DCMAKE_CXX_FLAGS="-g -O3" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU=1 .. 
 # source inst   -> cmake -DCMAKE_CXX_FLAGS="-g -O3 -tau_makefile=$TAU_LIB_DIR/Makefile.tau-papi-mpi-pthread-pdt" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU_SOURCE=1 -DCMAKE_CXX_COMPILER=tau_cxx.sh ..
 # compiler inst -> cmake -DCMAKE_CXX_FLAGS="-g -O3 -tau_makefile=$TAU_LIB_DIR/Makefile.tau-papi-mpi-pthread-pdt -optCompInst" -DCMAKE_BUILD_TYPE=Release -DWITH_MPI=On -DWITH_OPENMP=Off -DWITH_TAU_COMPILER=1 -DCMAKE_CXX_COMPILER=tau_cxx.sh .. 

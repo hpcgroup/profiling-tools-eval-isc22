@@ -53,10 +53,11 @@ INCLUDE_CFLAGS = -O3 -g -DTIMER_USE_MPI -DHYPRE_BIGINT
 #INCLUDE_LFLAGS = -lm -fopenmp
 INCLUDE_LFLAGS = -lm 
 
-#CALIPER_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/caliper-2.6.0-x2tz5isw6guoxzjh7tn4fpi2tsir4yxg
-#HPCTOOLKIT_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/hpctoolkit-2021.05.15-rdd42gsx7bni3uuatbimhzw5vvtjeo6u
+CALIPER_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/caliper-2.6.0-x2tz5isw6guoxzjh7tn4fpi2tsir4yxg
+HPCTOOLKIT_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/hpctoolkit-2021.05.15-rdd42gsx7bni3uuatbimhzw5vvtjeo6u
 #SCOREP_DIR = $(HOME)/tools/scorep/scorep-7.1/_build_with_gnu/
-#TIMEMORY_DIR = 
+TIMEMORY_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/timemory-3.2.3-onur-p3ipgt2hzynnsx65j2fww5rpitxuzu4p
+TAU_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-b5a7yxge2rcaxqzblg4qywm7v5oozmlv
 
 ifeq ($(TOOL), WITH_CALIPER)
     INCLUDE_CFLAGS = -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -I${CALIPER_DIR}/include -D${TOOL}
@@ -79,12 +80,12 @@ ifeq ($(TOOL), WITH_TAU)
     INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
 endif
 ifeq ($(TOOL), WITH_TAU_SOURCE)
-    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-b3im3cuy4hfmmj55qmfd643yvm2th5co/x86_64/lib
+    TAU=$(TAU_DIR)/lib
     CC=tau_cc.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt
-    INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
+    INCLUDE_CFLAGS = -lm -g -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
 endif
 ifeq ($(TOOL), WITH_TAU_COMPILER)
-    TAU=/g/g92/cankur1/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/tau-2.30.1-4k5tump57ky547hmep6duthjhnpwetpx/lib
+    TAU=$(TAU_DIR)/lib
     CC=tau_cc.sh -tau_makefile=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt -optCompInst
     INCLUDE_CFLAGS = -lm -g -O3 -DTIMER_USE_MPI -DHYPRE_BIGINT -D${TOOL}
 endif
