@@ -12,7 +12,7 @@ make TOOL=WITH_<tool_name> <TOOL_NAME>_DIR=$(spack location --install-dir <tool_
 make TOOL=WITH_CALIPER CALIPER_DIR=$(spack location --install-dir caliper) 
 ```
 
-`WITH_<TOOL_NAME>` can be `WITH_CALIPER, WITH_HPCTOOLKIT, WITH_SCOREP WITH_TAU_SOURCE, WITH_TAU_COMPILER (add -optCompInst)`.
+`WITH_<TOOL_NAME>` can be `WITH_CALIPER, WITH_HPCTOOLKIT, WITH_SCOREP WITH_TAU_SOURCE, WITH_TAU_COMPILER`.
 
 Set `TAU_MAKEFILE` for TAU. Example: `TAU_MAKEFILE=$(TAU)/Makefile.tau-papi-mpi-pthread-pdt` 
 
