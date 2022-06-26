@@ -60,8 +60,6 @@ ifeq ($(TOOL), WITH_CALIPER)
 	EXEC_NAME=caliper
 else ifeq ($(TOOL), WITH_HPCTOOLKIT) 
 	EXEC_NAME=hpctoolkit
-else ifeq ($(TOOL), WITH_TIMEMORY) 
-	EXEC_NAME=timemory
 else ifeq ($(TOOL), WITH_TAU) 
 	EXEC_NAME=tau
 else ifeq ($(TOOL), WITH_SCOREP) 

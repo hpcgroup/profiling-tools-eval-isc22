@@ -53,19 +53,16 @@ endif()
 message(STATUS "Score-P support is ${LULESH_USE_SCOREP}")
 
 if (WITH_TAU)
-  # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
   set(LULESH_USE_TAU TRUE)
 endif()
 message(STATUS "TAU sampling support is ${LULESH_USE_TAU}")
 
 if (WITH_TAU_SOURCE)
-  # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
   set(LULESH_USE_TAU_SOURCE TRUE)
 endif()
 message(STATUS "TAU source instrumentation support is ${LULESH_USE_TAU_SOURCE}")
 
 if (WITH_TAU_COMPILER)
-  # run cmake with -DCMAKE_CXX_COMPILER=tau_cxx.sh??
   set(LULESH_USE_TAU_COMPILER TRUE)
 endif()
 message(STATUS "TAU compiler instrumentation support is ${LULESH_USE_TAU_COMPILER}")
