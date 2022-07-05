@@ -104,12 +104,12 @@ CALIPER_CPPFLAGS = -DHAVE_CALIPER
 CALIPER_CXXFLAGS = -I$(CALIPER_DIR)/include
 CALIPER_LDFLAGS = -L$(CALIPER_DIR)/lib64 -lcaliper
 
-#HPCTOOLKIT_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/hpctoolkit-2021.05.15-rdd42gsx7bni3uuatbimhzw5vvtjeo6u
+# HPCTOOLKIT_DIR = $(HOME)/spack/opt/spack/linux-rhel7-broadwell/gcc-8.3.1/hpctoolkit-2021.05.15-rdd42gsx7bni3uuatbimhzw5vvtjeo6u
 HPCTOOLKIT_CPPFLAGS = -DHAVE_HPCTOOLKIT
 HPCTOOLKIT_CXXFLAGS = -I$(HPCTOOLKIT_DIR)/include
 HPCTOOLKIT_LDFLAGS = -L${HPCTOOLKIT_DIR}/lib/hpctoolkit -lhpctoolkit
 
-#SCOREP_DIR = $(HOME)/tools/scorep/scorep-7.1/_build_with_gnu/
+# SCOREP_DIR = $(HOME)/tools/scorep/scorep-7.1/_build_with_gnu/
 SCOREP_CPPFLAGS = -DHAVE_SCOREP
 SCOREP_CXXFLAGS = -I${SCOREP_DIR}/include
 # SCOREP_LDFLAGS = -L${SCOREP_DIR}/lib
