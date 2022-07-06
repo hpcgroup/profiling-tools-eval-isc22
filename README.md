@@ -4,17 +4,17 @@
 caliper@2.6.0%gcc@8.3.1+adiak~cuda+fortran+gotcha~ipo+libdw~libpfm+libunwind+mpi+papi+sampler+shared~sosflow build_type=RelWithDebInfo cuda_arch=none arch=linux-rhel7-broadwell
 ```
 
-# HPCToolkit Spack build line
+## HPCToolkit Spack build line
 ```
 hpctoolkit@2021.05.15%gcc@8.3.1~all-static~cray~cuda~debug+mpi+papi~rocm+viewer arch=linux-rhel7-broadwell
 ```
 
-# Score-P build line
+## Score-P build line
 ```
 ./configure --prefix=<PREFIX_PATH> --with-mpi=openmpi --with-libunwind=<LIBUNWIND_PATH> --with-pdt=<PDT_PATH> --with-nocross-compiler-suite=gcc
 ```
 
-# TAU Spack build line
+## TAU Spack build line
 ```
 tau@2.30.1%gcc@8.3.1~adios2+binutils~comm~craycnl~cuda+elf+fortran~gasnet+io~level_zero+libdwarf+libunwind~likwid+mpi~ompt~opari~opencl~openmp+otf2+papi+pdt~phase~ppc64le~profileparam+pthreads~python~rocm~rocprofiler~roctracer~scorep~shmem~sqlite~x86_64 arch=linux-rhel7-broadwell
 ```
